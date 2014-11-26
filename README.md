@@ -116,7 +116,7 @@ At the moment I'm leaning toward not using Marionette Regions in any of these vi
 
 # Validation
 
-Unless you're using some additional validation framework, Backbone validation is pretty simple and effective for most scenarios. How it works in a nutshell:
+Unless you're using some additional validation framework, Backbone validation is pretty simple and effective for most scenarios. How it works in a nutshell, without Free Forms:
 
 - You check if `model.isValid()`.
 - Then `isValid` calls the model's `validate` method, passing the model's current attributes.
@@ -184,6 +184,9 @@ When the user makes a change in an HTML input, the InputView gets the value and 
 
 Since this validation technique requires some modifications to Backbone's default validation methods, I'm not sure how best to incorporate this into Free Forms. But without it, the elegance of Free Forms's error-handling solution isn't really possible.
 
+Possible solutions:
 
-
+- Provide a FreeForm.Model which provides these new validation methods. Developers would have to use this model as the parent class for their models. Not so great.
+- Provide a FreeForm.applyModelValidation method which developers could call, passing in their preferred BaseModel. This method could apply to Backbone.Model by default
+- need to think about this some more.
 
