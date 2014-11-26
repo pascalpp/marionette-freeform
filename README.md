@@ -184,9 +184,13 @@ When the user makes a change in an HTML input, the InputView gets the value and 
 
 Since this validation technique requires some modifications to Backbone's default validation methods, I'm not sure how best to incorporate this into Free Forms. But without it, the elegance of Free Forms's error-handling solution isn't really possible.
 
-Possible solutions:
+**Possible solutions:**
 
 - Provide a FreeForm.Model which provides these new validation methods. Developers would have to use this model as the parent class for their models. Not so great.
 - Provide a FreeForm.applyModelValidation method which developers could call, passing in their preferred BaseModel. This method could apply to Backbone.Model by default
 - need to think about this some more.
 
+### TODO
+
+- check draft entities into the repo, clean them up
+- build a working demo
