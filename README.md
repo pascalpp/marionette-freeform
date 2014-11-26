@@ -162,14 +162,14 @@ However, one of the key requirements of Free Forms is being able to validate ind
 			}
 		},
 
-- this.validators is undefined in the BaseModel, but can be defined in any subclass. Here we see the example validators on a UserModel (using regexes defined elsewhere).
+- this.validators is undefined in the BaseModel, but can be defined in any subclass. Here are the same example validators from above:
 	
 		validators: {
 			'user_name': function(user_name) {
 				if (! user_name) return 'A username is required.';
 			},
 			'password': function(password) {
-				if (whitespace\_regex.test(password)) return 'Your password cannot contain spaces.';
+				if (whitespace_regex.test(password)) return 'Your password cannot contain spaces.';
 			},
 			'first_name': function(first_name) {
 				if (bob_regex.test(first_name)) return 'Your first name cannot be Bob.';
