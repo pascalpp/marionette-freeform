@@ -127,7 +127,7 @@ Unless you're using some additional validation framework, Backbone validation is
 			if (! attrs.user_name) {
 				return 'User requires a username.';
 			}
-			if (whitespace\_regex.test(attrs.password)) {
+			if (whitespace_regex.test(attrs.password)) {
 				return 'Your password cannot contain spaces.'
 			}
 			if (bob_regex.test(attrs.first_name)) {
