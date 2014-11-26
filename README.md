@@ -37,7 +37,7 @@ Some Elements, such as `radio` and `select`, should also have a `values` attribu
 
 Elements also have these display options as attributes:
 
-- `el`: A CSS selector matching the DOM node for this element. (See ElementView below for more on this.)
+- `el`: A CSS selector matching the DOM node for this element. (A DOM selector in a model is weird, I know. Still mulling this. See ElementView below for more.)
 - `show_label`: Boolean. Shows or hides the label.
 - `show_label_before`: Show the label before the input. e.g. above a text field.
 - `show_label_after`: Show the label after the input. e.g. to the right of a checkbox
