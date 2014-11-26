@@ -91,7 +91,7 @@ An `ElementView` is a `Marionette.ItemView` which displays an `InputView` for th
 
 ## FormView
 
-A `FormView` is a `Marionette.ItemView` (or should it be LayoutView) which receives a `Form` model. The FormView displays an `ElementView` for each element in the form's `elements` collection. The `template` provided to the FormView should define a DOM element for each element, matching the element's `el` selector. This allows you to define the order of elements separately from their order in the collection, and to provide any custom markup or grouping you require.
+A `FormView` is a `Marionette.LayoutView` which receives a `Form` model. The FormView displays an `ElementView` for each element in the form's `elements` collection. The `template` provided to the FormView should define a DOM element for each element, matching the element's `el` selector. This allows you to define the order of elements separately from their order in the collection, and to provide any custom markup or grouping you require.
 
 ### An example FormView template, for a Sign Up page:
 
@@ -110,9 +110,10 @@ Note that the markup is pretty straightforward, and leaves appearance to your CS
 
 At the moment I'm leaning toward not using Marionette Regions in any of these views, and instead assigning an `el` attribute to each Element, which its ElementView will find in the parent FormView and consume as its own. There are a couple reasons for this thinking:
 	
-- Re-rendering HTML form elements generally leads to a bad user experience (losing focus state, cursor position, selection, etc.). So I'm biasing this framework toward rendering elements once and then managing any DOM changes dynamically and automatically. Which means we don't need 
+- Re-rendering HTML form elements generally leads to a bad user experience (losing focus state, cursor position, selection, etc.). So I'm biasing this framework toward rendering elements once and then managing any DOM changes dynamically and automatically. Which means we don't need the dynamic view-swapping that regions provide.
 - HTML forms already require a lot of markup. A goal of of Free Forms is to minimize the markup required, so leaving out regions means one less DOM node per element.
-
+- Since FormView is a LayoutView, developers could still use regions for other purposes.
+- Considering make .el consumption the default behavior, but allowing devs to use regions if they prefer.
 
 # Validation
 
