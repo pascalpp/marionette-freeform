@@ -27,7 +27,7 @@ The building block of Free Forms is the `Element`. It is a model with these attr
 - `label`: A string which is shown in a label next to the element's input.
 - `placeholder`: For text-based elements, a string which is displayed inside the input when empty.
 - `name`: (optional) The name attribute for the input.
-- `name`: (optional) The id attribute for the input.
+- `id`: (optional) The id attribute for the input.
 - `related_model`: (optional) An external model that can be used for input validation, and whcih will ultimately receive its value from the element when the user submits the form.
 - `key`: (optional) The name which corresponds to the related attribute in the related model.
 - `validator`: (optional) A method that can be used to validate the input of the element when the user makes changes. Can provide additional validation on top of the related model's validation, such as asynchronous server-side validation.
