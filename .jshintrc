@@ -3,10 +3,13 @@
 		"$": true,
 		"_": true,
 		"jQuery": true,
+		"Backbone": true,
+		"Marionette": true,
 		"define": true,
 		"require": true,
 		"window": true,
-		"document": true
+		"document": true,
+		"console": true
 	},
 
 	"bitwise": true,

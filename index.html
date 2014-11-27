@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Marionette Free Form</title>
+	
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	
 
 	<script src="bower_components/requirejs/require.js"></script>
 	<script>
@@ -26,7 +31,13 @@
 	</script>
 
 	<script>
-		require(['main']);
+		require(['marionette'], function() {
+			_.templateSettings.escape		= /\{\{(.+?)\}\}/g;  // {{ escaped_value }}
+			_.templateSettings.interpolate	= /\[\[(.+?)\]\]/g;  // [[ raw_value ]]
+			_.templateSettings.evaluate		= /<:([\s\S]+?):>/g; // <: javascript logic :>
+			_.templateSettings.variable		= "data";
+			require(['main']);
+		});
 	</script>
 
 

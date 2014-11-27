@@ -1,9 +1,6 @@
 define(function(require) {
 	'use strict';
 
-	var _ = require('underscore'),
-		Backbone = require('backbone');
-
 	/* this modifies Backbone.Model.prototype to provide per-attribute validation */
 
 	Backbone.Model.prototype.validate = function(attrs) {

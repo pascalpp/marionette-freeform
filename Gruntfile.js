@@ -9,6 +9,16 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
+		connect: {
+			server: {
+				options: {
+					keepalive: true,
+					livereload: true,
+					port: 9000,
+					hostname: '*',
+				}
+			}
+		},
 		jshint: {
 			options: {
 				jshintrc: '.jshintrc',
@@ -45,11 +55,11 @@ module.exports = function(grunt) {
 	});
 
 	// define the js task
-	grunt.registerTask('js', ['watch:js']);
+	grunt.registerTask('dev', ['watch:js']);
 
 	// we can add other tasks to this default task
 	// as we modify other parts of our build process
-	grunt.registerTask('default', ['js']);
+	grunt.registerTask('default', ['dev']);
 
 	// For the quick version of jshinting
 	grunt.event.on('watch', function(action, filepath) {

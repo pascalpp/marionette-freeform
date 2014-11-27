@@ -1,26 +1,19 @@
 define(function(require) {
 	'use strict';
 
-	/* MODULE DEPENDENCIES */
 	var
-	Marionette			= require('marionette'),
-	TextfieldView		= require('./textfield_view'),
-	TextareaView		= require('./textarea_view'),
-	CheckboxView		= require('./checkbox_view'),
+	Element				= require('model/element'),
+	InputTextView		= require('./input_text_view'),
 	ErrorView			= require('./error_view'),
-	Template			= require('text!./element.html'),
-	Log					= require('log');
-	require('setPrefixedClassname');
+	Template			= require('text!template/element.html');
+	require('lib/setPrefixedClassname');
 
-	Log.module('lib/form/element_view');
-	var log = Log.create('form', 'element', '#eeeeee');
+	function log(msg) {
+		console.log.apply(console, arguments);
+	}
 
-	/**
-	@todo
-	-
-	*/
 
-	var element_tags = {
+	var input_tags = {
 		text: '<input type="text">',
 		password: '<input type="password">',
 		textarea: '<textarea></textarea>',
@@ -28,7 +21,7 @@ define(function(require) {
 		select: '<select></select>',
 	};
 
-	var element_selectors = {
+	var input_selectors = {
 		text: 'input[type=text]',
 		password: 'input[type=password]',
 		textarea: 'textarea',
@@ -36,25 +29,11 @@ define(function(require) {
 		select: 'select',
 	};
 
-	var default_options = {
-		text: {
-			show_label: true,
-			show_label_before: true
-		},
-		textarea: {
-			show_label: true,
-			show_label_before: true
-		},
-		checkbox: {
-			show_label: true,
-			show_label_after: true
-		}
-	};
-
 	var view_types = {
-		text: TextfieldView,
-		textarea: TextareaView,
-		checkbox: CheckboxView
+		text: InputTextView,
+		password: InputTextView,
+		//textarea: TextareaView,
+		//checkbox: CheckboxView
 	};
 
 
@@ -65,40 +44,98 @@ define(function(require) {
 		tagName: 'fieldset',
 		template: _.template(Template),
 
-		initialize: function(options) {
+		constructor: function(options) {
+			options = options || {};
+
+			var model = options.model;
+
+			// validate model
+			if (! (model instanceof Element)) throw new Error('ElementView requires an Element model');
+			if (! model.isValid()) throw new Error(model.validationError);
+
+			// set type
+			this.type = model.get('type');
+
+			// setup related model
+			var related_model = model.get('related_model'),
+				related_key = model.get('related_key');
+			if (related_model && related_key) {
+				this.listenTo(related_model, 'change:'+related_key, this.onRelatedModelChange);
+				this.related_model = related_model;
+				this.related_key = related_key;
+				model.unset('related_model');
+				model.unset('related_key');
+			}
+
+			// set up render listeners
+			this.listenTo(this, 'all', this.onAll);
+			this.listenTo(this, 'before:render', this.onBeforeElementRender);
+			this.listenTo(this, 'render', this.onElementRender);
+
+
+			Marionette.LayoutView.call(this, options);
+
+		},
+		onAll: function(event_name) {
+			log(event_name, arguments);
+		},
+		onRelatedModelChange: function(model, value, options) {
+			this.model.set('value', value);
+		},
+		templateHelpers: function() {
+			log('templateHelpers');
+
+			return {
+				cid: this.model.cid,
+				input: input_tags[this.type]
+			};
+
+		},
+		onElementRender: function() {
+			this.createInputView();
+
+		},
+		createInputView: function() {
+			this.addInputToUiHash();
+			var InputView = this.getInputView();
+			this.input_view = new InputView({
+				el: this.ui.input,
+				model: this.model,
+				key: this.key
+			});
+			this.input_view.render();
+		},
+		getInputView: function() {
+			var InputView = this.inputView || view_types[this.type];
+			if (! InputView) throw new Error('No InputView defined for type ' + this.type);
+			return InputView;
+		},
+		addInputToUiHash: function() {
+			this.ui = this.ui || {};
+			var selector = input_selectors[this.type];
+			if (! selector) throw new Error('No selector defined for ' + this.type);
+			this.ui.input = this.$(selector);
+		},
+
+
+		xinitialize: function(options) {
 			log('initialize');
 
-			if (! this.options.model) throw new Error('ElementView requires a model');
-			if (! this.options.key) throw new Error('ElementView requires a model key');
-			if (! this.options.type) throw new Error('ElementView requires a type');
 
-			this.relatedModel = this.options.model;
-			this.key = this.options.key;
-			this.type = this.options.type;
-			delete this.options.model;
-			delete this.options.key;
-			delete this.options.type;
-
-			_.defaults(this.options, default_options[this.type]);
-
-			this.model = new BaseModel(this.options);
 			this.model.set('value', this.relatedModel.get(this.key));
-			this.listenTo(this.relatedModel, 'change:'+this.key, this.onRelatedModelChange);
 			this.listenTo(this.model, 'change:value', this.onChangeValue);
 			this.listenTo(this.model, 'change:error', this.onChangeError);
 
 			this.$el.addClass('element').setPrefixedClassname('type', this.type);
 
-			window['el_'+this.type] = this;
+			window['el_'+this.type] = this; // DNR
 
 		},
 		onBeforeRender: function() {
 			log('onBeforeRender');
 		},
 		onRender: function() {
-			log('render');
-			this.setUiElement();
-			this.createChildElementView();
+			log('onRender');
 		},
 		regions: {
 			error_region: '.error-region'
@@ -129,9 +166,6 @@ define(function(require) {
 			return error;
 		},
 
-		onRelatedModelChange: function(model, value, options) {
-			this.model.set('value', value);
-		},
 		onChangeError: function(model, error, options) {
 			if (error) {
 				var error_view = new ErrorView({
@@ -144,33 +178,6 @@ define(function(require) {
 				this.error_region.empty();
 				this.$el.removeClass('error');
 			}
-		},
-
-		templateHelpers: function() {
-
-			var templateHelpers = {
-				cid: this.model.cid,
-				element_tag: element_tags[this.type]
-			};
-
-			return templateHelpers;
-		},
-
-		createChildElementView: function() {
-			var ChildElementView = view_types[this.type];
-			this.element_view = new ChildElementView({
-				el: this.ui.element,
-				model: this.model,
-				key: this.key
-			});
-			this.element_view.render();
-		},
-
-		setUiElement: function() {
-			this.ui = this.ui || {};
-			var selector = element_selectors[this.type];
-			if (! selector) throw new Error('ElementView has no support for ' + this.type);
-			this.ui.element = this.$(selector);
 		},
 
 		getElementValue: function() {

@@ -1,10 +1,22 @@
 define(function(require) {
 	'use strict';
 
-	var Backbone = require('backbone');
-
 	require('model/validation');
 
+	var default_options = {
+		text: {
+			show_label: true,
+			show_label_before: true
+		},
+		textarea: {
+			show_label: true,
+			show_label_before: true
+		},
+		checkbox: {
+			show_label: true,
+			show_label_after: true
+		}
+	};
 
 	var Element = Backbone.Model.extend({
 		defaults: {
@@ -15,7 +27,7 @@ define(function(require) {
 			name: null,
 			id: null,
 			related_model: null,
-			key: null,
+			related_key: null,
 			validator: null,
 			error: null,
 
@@ -26,6 +38,19 @@ define(function(require) {
 			show_label_after: null,
 			label_class: 'label',
 			error_class: 'error'
+		},
+
+		constructor: function(attrs, options) {
+			attrs = attrs || {};
+			var defaults = default_options[attrs.type] || {};
+			_.defaults(attrs, defaults);
+			Backbone.Model.apply(this, [attrs, options]);
+		},
+
+		validators: {
+			'type': function(type) {
+				if (! type) return 'Element requires a type';
+			}
 		}
 	});
 
