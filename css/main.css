@@ -15,26 +15,50 @@ fieldset {
 	border: 0;
 	margin: 0;
 	padding: 0;
-	margin-bottom: 1em;
 }
 
-
-input[type=text] {
-	font-size: 14px;
-	border-radius: 3px;
-	border: 1px solid rgba(0,0,0,0.1);
-	padding: 5px;
-	padding-bottom: 6px;
-}
-label {
-	font-size: 14px;
-	display: inline-block;
-	border-radius: 3px;
-	border: 1px solid rgba(0,0,0,0.1);
-	padding: 5px;
-}
-
-fieldset {
+fieldset.element  {
 	display: table-cell;
 	vertical-align: middle;
+	margin-bottom: 1em;
+	white-space: nowrap;
+}
+
+.element input[type=text] {
+	font-size: 18px;
+	border-radius: 3px;
+	border: 1px solid rgba(0,0,0,0.1);
+	padding: 5px 8px;
+	padding-bottom: 6px;
+}
+.element input[type=text]:hover {
+	border: 1px solid rgba(0,0,0,0.3);
+}
+.element input[type=text]:hover,
+.element input[type=text]:focus {
+	border: 1px solid rgba(0,0,0,0.3);
+}
+.element.error input[type=text] {
+	border: 1px solid rgba(153,0,0,0.5);
+}
+.element label {
+	font-size: 18px;
+	display: inline-block;
+}
+.element label.label {
+	
+}
+.element label.error {
+	font-style: italic;
+	font-family: Georgia, Serif;
+}
+
+.element.type-text label.label {
+	width: 200px;
+	text-align: right;
+	padding-right: 5px;
+}
+.element.type-text label.error {
+	padding-left: 10px;
+	color: rgba(153,0,0,1);
 }

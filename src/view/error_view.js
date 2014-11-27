@@ -4,7 +4,7 @@ define(function(require) {
 	var ErrorView = Marionette.ItemView.extend({
 		tagName: 'label',
 		className: function() {
-			return this.option.className || 'error';
+			return this.options.className || 'error';
 		},
 		template: _.template('{{ data.error }}'),
 		templateHelpers: function() {

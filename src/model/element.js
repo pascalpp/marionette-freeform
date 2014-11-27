@@ -19,25 +19,27 @@ define(function(require) {
 	};
 
 	var Element = Backbone.Model.extend({
-		defaults: {
-			type: null,
-			value: null,
-			label: null,
-			placeholder: null,
-			name: null,
-			id: null,
-			related_model: null,
-			related_key: null,
-			validator: null,
-			error: null,
+		defaults: function() {
+			return {
+				type: null,
+				value: null,
+				label: null,
+				placeholder: null,
+				name: this.cid,
+				id: this.cid,
+				related_model: null,
+				related_key: null,
+				validator: null,
+				error: null,
 
-			// view options
-			el: null,
-			show_label: null,
-			show_label_before: null,
-			show_label_after: null,
-			label_class: 'label',
-			error_class: 'error'
+				// view options
+				el: null,
+				show_label: null,
+				show_label_before: null,
+				show_label_after: null,
+				label_class: 'label',
+				error_class: 'error'
+			};
 		},
 
 		constructor: function(attrs, options) {

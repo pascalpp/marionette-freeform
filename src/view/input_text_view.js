@@ -3,12 +3,12 @@ define(function(require) {
 
 	var InputView = require('./input_view');
 
-	// <input type="text" id="[[ data.id ]]" name="[[ data.name ]]" value="{{ data.value }}">
 	var InputTextView = InputView.extend({
 		attributes: function() {
 			return {
-				id: this.model.cid,
-				name: this.model.cid,
+				type: this.model.get('type'),
+				id: this.model.get('id'),
+				name: this.model.get('name'),
 				size: this.model.get('size'),
 				placeholder: this.model.get('placeholder'),
 				maxlength: this.model.get('maxlength'),
