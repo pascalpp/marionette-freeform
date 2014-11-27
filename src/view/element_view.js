@@ -6,7 +6,7 @@ define(function(require) {
 	InputTextView		= require('./input_text_view'),
 	ErrorView			= require('./error_view'),
 	Template			= require('text!template/element.html'),
-	log					= require('lib/log');
+	log					= require('lib/log'); /* jshint ignore: line */
 	require('lib/setPrefixedClassname');
 
 
@@ -39,14 +39,12 @@ define(function(require) {
 			this.type = model.get('type');
 
 			// setup related model
-			var related_model = model.get('related_model'),
+			var related_model = model.get('related_model') || model.collection.related_model,
 				related_key = model.get('related_key');
 			if (related_model && related_key) {
 				this.listenTo(related_model, 'change:'+related_key, this.onRelatedModelChange);
 				this.related_model = related_model;
 				this.related_key = related_key;
-				model.unset('related_model');
-				model.unset('related_key');
 
 				// get value from the related model
 				model.set('value', related_model.get(related_key));
@@ -67,17 +65,10 @@ define(function(require) {
 
 		},
 		onAll: function(event_name) {
-			log(event_name, arguments);
+			//log(event_name, arguments);
 		},
 		onRelatedModelChange: function(model, value, options) {
 			this.model.set('value', value);
-		},
-		templateHelpers: function() {
-			log('templateHelpers');
-
-			return {
-				cid: this.model.cid,
-			};
 		},
 		onElementRender: function() {
 			this.$el.addClass('element').setPrefixedClassname('type', this.type);
@@ -129,7 +120,7 @@ define(function(require) {
 		onChangeError: function(model, error, options) {
 			if (error) {
 				var error_view = new ErrorView({
-					for: this.model.cid,
+					for: this.model.get('id'),
 					error: error
 				});
 				this.error_region.show(error_view);

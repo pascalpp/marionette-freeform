@@ -2,7 +2,7 @@ define(function(require) {
 	'use strict';
 
 	var
-	Element				= require('model/element'),
+	ElementList			= require('model/element_list'),
 	ElementView			= require('view/element_view'),
 	Template			= require('text!template/main_view.html'),
 	log					= require('lib/log'); /* jshint ignore: line */
@@ -21,44 +21,52 @@ define(function(require) {
 			'user_name': function(user_name) {
 				/* jshint maxcomplexity: 9 */
 				if (! user_name) return 'A username is required.';
-				if (user_name.length < 3) return 'Your username must be at least 3 characters.';
+				if (! alpha_start.test(user_name)) return 'Your username must start with a letter.';
 				if (whitespace.test(user_name)) return 'Your username may not include spaces.';
 				if (! alphanumeric.test(user_name)) return 'Your username must be alphanumeric.';
-				if (! alpha_start.test(user_name)) return 'Your username must start with a letter.';
+				if (user_name.length < 3) return 'Your username must be at least 3 characters.';
 				if (! alphanumeric_end.test(user_name)) return 'Your username must end with a letter or a number.';
 				if (consecutive_periods.test(user_name)) return 'Your username may not include consecutive periods.';
 				if (consecutive_underscores.test(user_name)) return 'Your username may not include consecutive underscores.';
+			},
+			'first_name': function(first_name) {
+				if (first_name.length > 20) return 'Your name is kinda long.';
 			}
 		},
 	});
 
-	var user = new User({ user_name: 'pascal' });
-
-	var text_element = new Element({
-		type: 'text',
-		value: 'Free Form',
-		related_model: user,
-		related_key: 'user_name',
-		label: 'Username',
-		el: '.username',
-		validator: function(value) {
-
-		}
+	var user = new User({
+		user_name: 'pascal',
+		first_name: 'Pascal',
 	});
-	text_element.on('change:value', function(model, value, options) {
-		console.log(value);
-	});
+
+	var elements = new ElementList([
+		{
+			el: '.username',
+			type: 'text',
+			related_key: 'user_name',
+			label: 'Username'
+		},
+		{
+			el: '.firstname',
+			type: 'text',
+			related_key: 'first_name',
+			label: 'First Name'
+		},
+	], { related_model: user });
 
 
 	var MainView = Marionette.LayoutView.extend({
 		el: '.main',
 		template: _.template(Template),
 		onRender: function() {
-			var username_view = new ElementView({
-				el: this.$(text_element.get('el')),
-				model: text_element
-			});
-			username_view.render();
+			elements.each(function(element) {
+				var view = new ElementView({
+					el: this.$(element.get('el')),
+					model: element
+				});
+				view.render();
+			}, this);
 		}
 	});
 
