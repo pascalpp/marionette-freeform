@@ -4,6 +4,7 @@ define(function(require) {
 	var
 	Element				= require('model/element'),
 	InputTextView		= require('./input_text_view'),
+	InputCheckboxView	= require('./checkbox_view'),
 	ErrorView			= require('./error_view'),
 	Template			= require('text!template/element.html'),
 	log					= require('lib/log'); /* jshint ignore: line */
@@ -15,7 +16,7 @@ define(function(require) {
 		text: InputTextView,
 		password: InputTextView,
 		//textarea: TextareaView,
-		//checkbox: CheckboxView
+		checkbox: InputCheckboxView
 	};
 
 

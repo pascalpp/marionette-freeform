@@ -53,6 +53,12 @@ define(function(require) {
 			related_key: 'first_name',
 			label: 'First Name'
 		},
+		{
+			el: '.admin',
+			type: 'checkbox',
+			related_key: 'admin',
+			label: 'Administrator'
+		},
 	], { related_model: user });
 
 

@@ -62,3 +62,14 @@ fieldset.element  {
 	padding-left: 10px;
 	color: rgba(153,0,0,1);
 }
+.element.type-checkbox .input-region {
+	width: 200px;
+	padding-right: 5px;
+	display: inline-block;
+	text-align: right;
+}
+.element.type-checkbox input {
+	position: relative;
+	top: -2px;
+}
+
