@@ -2,7 +2,7 @@ define(function(require) {
 	'use strict';
 
 	var
-	ElementList			= require('model/element_list'),
+	Form				= require('model/form'),
 	ElementView			= require('view/element_view'),
 	Template			= require('text!template/main_view.html'),
 	log					= require('lib/log'); /* jshint ignore: line */
@@ -36,11 +36,12 @@ define(function(require) {
 	});
 
 	var user = new User({
-		user_name: 'pascal',
+		user_name: 'pascal.',
 		first_name: 'Pascal',
+		admin: true,
 	});
 
-	var elements = new ElementList([
+	var elements = [
 		{
 			el: '.username',
 			type: 'text',
@@ -59,14 +60,19 @@ define(function(require) {
 			related_key: 'admin',
 			label: 'Administrator'
 		},
-	], { related_model: user });
+	];
+	window.elements = elements; // DNR
 
+	var form = new Form({
+		elements: elements,
+		related_model: user
+	});
 
 	var MainView = Marionette.LayoutView.extend({
 		el: '.main',
 		template: _.template(Template),
 		onRender: function() {
-			elements.each(function(element) {
+			form.get('elements').each(function(element) {
 				var view = new ElementView({
 					el: this.$(element.get('el')),
 					model: element

@@ -11,7 +11,7 @@ define(function(require) {
 			// listen for external changes to the model
 			this.listenTo(this.model, 'change:value', this.onModelChangeValue);
 
-			// these steps allow the view to consume and existing dom element
+			// these steps allow the view to consume an existing dom element
 			this.listenTo(this, 'render', this.setAttributes);
 			var className = this.model.get('className');
 			if (className) this.$el.addClass(className);
@@ -24,7 +24,6 @@ define(function(require) {
 		},
 		triggers: {
 			'change': 'input:change',
-			'keyup': 'input:change'
 		},
 		onInputChange: function() {
 			var value = this.getInputValue();

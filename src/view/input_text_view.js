@@ -14,7 +14,11 @@ define(function(require) {
 				maxlength: this.model.get('maxlength'),
 				value: this.model.get('value')
 			};
-		}
+		},
+		triggers: {
+			'change': 'input:change',
+			'keyup': 'input:change',
+		},
 	});
 
 	return InputTextView;
