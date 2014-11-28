@@ -122,10 +122,10 @@ define(function(require) {
 					error: error
 				});
 				this.error_region.show(error_view);
-				this.$el.addClass(this.model.get('error_class'));
+				this.$el.addClass('element-'+this.model.get('error_class'));
 			} else {
 				this.error_region.empty();
-				this.$el.removeClass(this.model.get('error_class'));
+				this.$el.removeClass('element-'+this.model.get('error_class'));
 			}
 		}
 

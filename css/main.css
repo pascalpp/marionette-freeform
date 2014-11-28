@@ -6,7 +6,6 @@ body {
 	line-height: 1.3;
 }
 
-
 form: {
 	border: 0;
 	margin: 0;
@@ -46,7 +45,7 @@ fieldset.element  {
 .element input[type=text]:focus {
 	border: 1px solid rgba(0,0,0,0.3);
 }
-.element.error input[type=text] {
+.element.element-error input[type=text] {
 	border: 1px solid rgba(153,0,0,0.5);
 }
 .element label {
