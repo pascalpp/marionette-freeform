@@ -3,8 +3,8 @@ define(function(require) {
 
 	var
 	Form				= require('model/form'),
-	ElementView			= require('view/element_view'),
-	Template			= require('text!template/main_view.html'),
+	FormView			= require('view/form_view'),
+	Template			= require('text!template/form.html'),
 	log					= require('lib/log'); /* jshint ignore: line */
 	require('model/validation');
 
@@ -68,22 +68,12 @@ define(function(require) {
 		related_model: user
 	});
 
-	var MainView = Marionette.LayoutView.extend({
-		el: '.main',
+	var form_view = new FormView({
+		el: 'form',
 		template: _.template(Template),
-		onRender: function() {
-			form.get('elements').each(function(element) {
-				var view = new ElementView({
-					el: this.$(element.get('el')),
-					model: element
-				});
-				view.render();
-			}, this);
-		}
+		model: form
 	});
-
-	var main_view = new MainView();
-	main_view.render();
+	form_view.render();
 
 
 });
