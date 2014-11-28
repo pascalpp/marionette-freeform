@@ -20,9 +20,6 @@ define(function(require) {
 	};
 
 
-
-	/* parent element view, meant to be subclassed for specific elements */
-
 	var ElementView = Marionette.LayoutView.extend({
 		tagName: 'fieldset',
 		template: _.template(Template),

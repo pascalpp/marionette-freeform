@@ -1,6 +1,8 @@
 define(function(require) {
 	'use strict';
 
+	/* parent input view, meant to be subclassed for specific input types */
+
 	var InputView = Marionette.ItemView.extend({
 		tagName: 'input',
 		template: _.template(''),
