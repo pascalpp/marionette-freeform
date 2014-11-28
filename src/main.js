@@ -9,6 +9,7 @@ define(function(require) {
 	require('model/validation');
 
 
+	// some regexes used for validation
 	var alphanumeric = new RegExp('^[a-z0-9_\\.]+$', 'i');
 	var whitespace = new RegExp('\\s');
 	var consecutive_periods = new RegExp('\\.\\.', 'i');
@@ -16,6 +17,8 @@ define(function(require) {
 	var alpha_start = new RegExp('^[a-z]', 'i');
 	var alphanumeric_end = new RegExp('[a-z0-9]$', 'i');
 
+
+	// a User model with some validators defined
 	var User = Backbone.Model.extend({
 		validators: {
 			'user_name': function(user_name) {
@@ -35,12 +38,19 @@ define(function(require) {
 		},
 	});
 
+
+	// define a user with some attributes
 	var user = new User({
 		user_name: 'pascal.',
 		first_name: 'Pascal',
 		admin: true,
 	});
 
+
+	// define an array of form elements
+	// each element should have a type and an el
+	// label is optional
+	// use a related_key to link the element to an attribute of another model (e.g. the user defined above)
 	var elements = [
 		{
 			el: '.username',
@@ -61,13 +71,18 @@ define(function(require) {
 			label: 'Administrator'
 		},
 	];
-	window.elements = elements; // DNR
 
+
+	// define a form model
+	// pass in our array of elements
+	// pass in our user as the related_model
 	var form = new Form({
 		elements: elements,
 		related_model: user
 	});
 
+
+	// create a form view to display the form
 	var form_view = new FormView({
 		el: 'form',
 		template: _.template(Template),
