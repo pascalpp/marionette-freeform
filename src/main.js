@@ -1,13 +1,19 @@
+/* global hljs  */
 define(function(require) {
 	'use strict';
 
 	var
 	Form				= require('model/form'),
+	FormText			= require('text!model/form.js'),
 	FormView			= require('view/form_view'),
 	Template			= require('text!template/form.html'),
 	log					= require('lib/log'); /* jshint ignore: line */
 	require('model/validation');
 
+	$('pre code').text(FormText);
+	$('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	});
 
 	// some regexes used for validation
 	var alphanumeric = new RegExp('^[a-z0-9_\\.]+$', 'i');
