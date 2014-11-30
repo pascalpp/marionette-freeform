@@ -27,8 +27,8 @@ define(function(require) {
 				placeholder: null,
 				name: this.cid,
 				id: this.cid,
-				related_model: null,
 				related_key: null,
+				related_model: null,
 				validator: null,
 				error: null,
 
