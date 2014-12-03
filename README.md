@@ -1,10 +1,10 @@
-Marionette FreeForm
+marionette-freeform
 ==========
 
 Draft specification by [@pascalpp](http://github.com/pascalpp), November 2014.
 
 
-**Marionette FreeForm** (working title) is a library of Model and View entities based on [Marionette](http://marionettejs.com) and [Backbone](http://backbonejs.org), designed to facilitate building HTML forms, along with validation, error messaging, and submission.
+**marionette-freeform** (working title) is a library of Model and View entities based on [Marionette](http://marionettejs.com) and [Backbone](http://backbonejs.org), designed to facilitate building HTML forms, along with validation, error messaging, and submission.
 
 I've already started building some of the entities described here. This is a work in progress and is not yet feature-complete. You can play with some working examples on the [demo page](http://pascalpp.github.io/marionette-freeform/).
 
