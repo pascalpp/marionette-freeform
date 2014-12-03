@@ -6,7 +6,7 @@ define(function(require) {
 		className: function() {
 			return this.options.className || 'error';
 		},
-		template: _.template('{{ data.error }}'),
+		template: _.template('<%- error %>'),
 		templateHelpers: function() {
 			return {
 				error: this.options.error

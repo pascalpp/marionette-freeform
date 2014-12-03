@@ -79,12 +79,12 @@ define(function(require) {
 
 	// create a form view to display the form
 	var form_view = new FormView({
-		el: 'form',
 		template: _.template(Template),
 		model: form
 	});
-	form_view.render();
-
-
 	/* end example */
+
+	return form_view;
+
+
 });

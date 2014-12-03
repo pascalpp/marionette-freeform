@@ -1,8 +1,8 @@
-<: if (data.label && data.show_label && data.show_label_before) { :>
-	<label class="[[ data.label_class ]]" for="[[ data.id ]]">{{ data.label }}</label>
-<: } :>
+<% if (label && show_label && show_label_before) { %>
+	<label class="<%= label_class %>" for="<%= id %>"><%- label %></label>
+<% } %>
 <span class="input-region"></span>
-<: if (data.label && data.show_label && data.show_label_after) { :>
-	<label class="[[ data.label_class ]]" for="[[ data.id ]]">{{ data.label }}</label>
-<: } :>
+<% if (label && show_label && show_label_after) { %>
+	<label class="<%= label_class %>" for="<%= id %>"><%- label %></label>
+<% } %>
 <span class="error-region"></span>

@@ -7,54 +7,71 @@
 	<title>Marionette Free Form</title>
 	
 	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<link href="src/theme/freeform-inline.css" rel="stylesheet" type="text/css">
 	
-
-	<script src="bower_components/requirejs/require.js"></script>
-	<script src="src/lib/highlight/highlight.pack.js"></script>
-	<script>
-	(function(requirejs) {
-
-		var config = {
-			baseUrl: '/src/',
-			paths: {
-				'jquery': '../bower_components/jquery/dist/jquery',
-				'backbone': '../bower_components/backbone/backbone',
-				'marionette': '../bower_components/marionette/lib/backbone.marionette',
-				'underscore': '../bower_components/underscore/underscore',
-				'mocha': '../bower_components/mocha/mocha',
-				'chai': '../bower_components/chai/chai',
-				'text': '../bower_components/requirejs-text/text'
-			}
-		}
-
-		requirejs.config(config);
-	})(requirejs);
-	</script>
-
-	<script>
-		require(['marionette'], function() {
-			_.templateSettings.escape		= /\{\{(.+?)\}\}/g;  // {{ escaped_value }}
-			_.templateSettings.interpolate	= /\[\[(.+?)\]\]/g;  // [[ raw_value ]]
-			_.templateSettings.evaluate		= /<:([\s\S]+?):>/g; // <: javascript logic :>
-			_.templateSettings.variable		= "data";
-			require(['main']);
-		});
-	</script>
-
-
 </head>
 <body>
 
 <h1>marionette-freeforms</h1>
 
-<h2>Example Output</h2>
+<article>
+	<p>Marionette-FreeForms is a library of models and views you can use to build forms in Marionette, using model validation to display contextual error messages as users fill out your forms. Choose an example to see it in action.</p>
+</article>
 
-<form></form>
+<form class="chooser">
+	<select class="examples">
+		<option>Choose an example:</option>
+	</select>
+	<select class="themes" style="display:none">
+		<option>TODO Choose a theme:</option>
+		<option value="inline">Inline</option>
+	</select>
+</form>
 
-<h2>Example Code</h2>
+<div class="example-region"></div>
 
-<pre><code class="javascript"></code></pre>
+<script type="text/template" class="example">
+	<h2 class="title"></h2>
+	
+	<article></article>
 
+	<h3>Example Output</h3>
+
+	<form class="freeform-inline"></form>
+
+	<h3>Example Code</h3>
+
+	<pre><code class="javascript"></code></pre>
+</script>
+
+
+<script src="bower_components/requirejs/require.js"></script>
+<script src="src/lib/highlight/highlight.pack.js"></script>
+<script>
+(function(requirejs) {
+
+	var config = {
+		baseUrl: '/src/',
+		paths: {
+			'jquery': '../bower_components/jquery/dist/jquery',
+			'backbone': '../bower_components/backbone/backbone',
+			'marionette': '../bower_components/marionette/lib/backbone.marionette',
+			'underscore': '../bower_components/underscore/underscore',
+			'mocha': '../bower_components/mocha/mocha',
+			'chai': '../bower_components/chai/chai',
+			'text': '../bower_components/requirejs-text/text'
+		}
+	}
+
+	requirejs.config(config);
+})(requirejs);
+</script>
+
+<script>
+	require(['marionette'], function() {
+		require(['main']);
+	});
+</script>
 
 </body>
 </html>
