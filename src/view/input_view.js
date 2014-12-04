@@ -18,22 +18,25 @@ define(function(require) {
 			var className = this.model.get('className');
 			if (className) this.$el.addClass(className);
 		},
-		initialize: function() {
-		},
+
 		setAttributes: function() {
 			var attributes = _.result(this, 'attributes');
 			this.$el.attr(attributes);
 		},
+
 		triggers: {
 			'change': 'input:change',
 		},
+
 		onInputChange: function() {
 			var value = this.getInputValue();
 			this.model.set('value', value, { from: this });
 		},
+
 		getInputValue: function() {
 			return this.$el.val();
 		},
+
 		onModelChangeValue: function(model, value, options) {
 			if (options.from !== this) {
 				this.$el.val(value);

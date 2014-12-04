@@ -4,44 +4,57 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Marionette Free Form</title>
+	<title>marionette-freeform</title>
 	
 	<link href="css/main.css" rel="stylesheet" type="text/css">
 	<link href="src/theme/freeform-inline.css" rel="stylesheet" type="text/css">
+	<link href="src/theme/freeform-stacked.css" rel="stylesheet" type="text/css">
+	<link href="src/theme/freeform-mixed.css" rel="stylesheet" type="text/css">
 	
 </head>
 <body>
 
-<h1>marionette-freeforms</h1>
+<a href="https://github.com/pascalpp/marionette-freeform"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+<h1>marionette-freeform</h1>
 
 <article>
-	<p>Marionette-FreeForms is a library of models and views you can use to build forms in Marionette, using model validation to display contextual error messages as users fill out your forms. Choose an example to see it in action.</p>
+	<p><code>marionette-freeform</code> is a library of models and views you can use to build forms in <a href="http://marionettejs.com/">Marionette</a>, using model validation to display contextual error messages as users fill out your forms. Choose an example to see it in action.</p>
+	<p><em>This library is agnostic as to the appearance of your forms. A few themes are provided to give you an idea of what’s possible.</em></p>
 </article>
 
-<form class="chooser">
-	<select class="examples">
-		<option>Choose an example:</option>
-	</select>
-	<select class="themes" style="display:none">
-		<option>TODO Choose a theme:</option>
-		<option value="inline">Inline</option>
-	</select>
-</form>
+<div class="main"></div>
 
-<div class="example-region"></div>
+
+<script type="text/template" class="main">
+	<div class="chooser-region"></div>
+	<div class="example-region"></div>
+</script>
+
+
+<script type="text/template" class="chooser">
+	<fieldset class="examples"></fieldset>
+	<fieldset class="themes"></fieldset>
+</script>
+
 
 <script type="text/template" class="example">
 	<h2 class="title"></h2>
 	
 	<article></article>
 
-	<h3>Example Output</h3>
+	<h3>The Form</h3>
 
-	<form class="freeform-inline"></form>
+	<form></form>
 
-	<h3>Example Code</h3>
+	<h3>The Template</h3>
 
-	<pre><code class="javascript"></code></pre>
+	<pre class="template"><code class="html"></code></pre>
+
+	<h3>The Code</h3>
+
+	<pre class="code"><code class="javascript"></code></pre>
+
 </script>
 
 
@@ -51,7 +64,7 @@
 (function(requirejs) {
 
 	var config = {
-		baseUrl: '/src/',
+		baseUrl: 'src/',
 		paths: {
 			'jquery': '../bower_components/jquery/dist/jquery',
 			'backbone': '../bower_components/backbone/backbone',

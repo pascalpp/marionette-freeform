@@ -33,19 +33,30 @@ article code {
 	border: 1px solid rgba(0,0,0,0.1);
 }
 
+article em {
+	font-size: 14px;
+	color: #666;
+}
+
+.chooser fieldset {
+	display: inline-block;
+}
 .chooser select {
-	font-size: 24px;
+	font-size: 18px;
 	margin-bottom: 20px;
 	margin-right: 20px;
 }
-
 
 pre {
 	tab-size: 4;
 	font-size: 16px;
 	border: 1px solid rgba(0,0,0,0.1);
+	margin-bottom: 30px;
 }
 pre code {
 	overflow: scroll;
 }
 
+.example-region {
+	border-top: 1px solid rgba(0,0,0,0.3);
+}

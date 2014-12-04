@@ -5,16 +5,20 @@ define(function(require) {
 
 	var default_options = {
 		text: {
-			show_label: true,
+			value: '',
 			show_label_before: true
 		},
 		textarea: {
-			show_label: true,
+			value: '',
 			show_label_before: true
 		},
 		checkbox: {
-			show_label: true,
+			value: false,
 			show_label_after: true
+		},
+		select: {
+			value: '',
+			show_label_before: true
 		}
 	};
 
@@ -34,7 +38,7 @@ define(function(require) {
 
 				// view options
 				el: null,
-				show_label: null,
+				show_label: true,
 				show_label_before: null,
 				show_label_after: null,
 				label_class: 'label',
@@ -44,16 +48,13 @@ define(function(require) {
 
 		constructor: function(attrs, options) {
 			attrs = attrs || {};
+			if (! attrs.type) throw new Error('Element requires a type.');
+
 			var defaults = default_options[attrs.type] || {};
 			_.defaults(attrs, defaults);
 			Backbone.Model.apply(this, [attrs, options]);
-		},
-
-		validators: {
-			'type': function(type) {
-				if (! type) return 'Element requires a type';
-			}
 		}
+
 	});
 
 	return Element;

@@ -1,0 +1,89 @@
+.freeform-mixed {
+	margin-left: 50px;
+
+	.element  {
+		display: block;
+		margin-bottom: 1em;
+		white-space: nowrap;
+
+		.input-region {
+			display: inline-block;
+		}
+
+		input[type=text],
+		select,
+		textarea {
+			display: block;
+			margin: 0;
+			font-family: inherit;
+			font-size: 18px;
+			line-height: 1.8em;
+			border-radius: 3px;
+			border: 1px solid rgba(0,0,0,0.1);
+			padding: 4px 8px;
+			width: 100%;
+			box-sizing: border-box;
+			
+			&:hover,
+			&:focus {
+				border: 1px solid rgba(0,0,0,0.3);
+			}
+		}
+
+		input[type=text],
+		select {
+			height: 1.8em;
+		}
+
+		label {
+			display: inline-block;
+			font-size: 18px;
+			user-select: none;
+		}
+		label.label {
+			display: block;
+			margin-bottom: 5px;
+		}
+		label.error {
+			font-style: italic;
+			font-family: Georgia, Serif;
+			color: rgba(153,0,0,1);
+			padding-left: 10px;
+		}
+	}
+
+	.element.element-error {
+		input[type=text],
+		select,
+		textarea {
+			border: 1px solid rgba(153,0,0,0.5);
+		}
+	}
+
+	.element.type-text,
+	.element.type-textarea,
+	.element.type-select {
+		.input-region {
+			width: 280px;
+		}
+	}
+
+	.element.type-textarea {
+		label.error {
+			vertical-align: top;
+			margin-top: 5px;
+		}
+	}
+
+	.element.type-checkbox {
+		input {
+			position: relative;
+			top: -2px;
+		}
+		label.label {
+			display: inline-block;
+		}
+		
+	}
+
+}

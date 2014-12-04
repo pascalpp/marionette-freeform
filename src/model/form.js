@@ -24,10 +24,6 @@ define(function(require) {
 
 		validators: {
 			'elements': function(elements) {
-				if (! (elements instanceof ElementList)) {
-					return 'Form.elements must be an ElementList.';
-				}
-
 				var invalid = elements.filter(function(element) {
 					if (element.get('error')) return element;
 				});

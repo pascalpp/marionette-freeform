@@ -4,7 +4,9 @@ define(function(require) {
 	var
 	Element				= require('model/element'),
 	InputTextView		= require('./input_text_view'),
+	InputTextareaView	= require('./input_textarea_view'),
 	InputCheckboxView	= require('./input_checkbox_view'),
+	InputSelectView		= require('./input_select_view'),
 	ErrorView			= require('./error_view'),
 	Template			= require('text!template/element.html'),
 	log					= require('lib/log'); /* jshint ignore: line */
@@ -15,14 +17,29 @@ define(function(require) {
 	var view_types = {
 		text: InputTextView,
 		password: InputTextView,
-		//textarea: TextareaView,
-		checkbox: InputCheckboxView
+		textarea: InputTextareaView,
+		checkbox: InputCheckboxView,
+		select: InputSelectView
 	};
 
 
 	var ElementView = Marionette.LayoutView.extend({
 		tagName: 'fieldset',
 		template: _.template(Template),
+
+		regions: {
+			input_region: '.input-region',
+			error_region: '.error-region'
+		},
+		elementViewEvents: {
+			'before:render': 'onBeforeElementRender',
+			'render': 'onElementRender',
+			'all': 'onAll'
+		},
+		elementModelEvents: {
+			'change:value': 'onChangeValue',
+			'change:error': 'onChangeError'
+		},
 
 		constructor: function(options) {
 			options = options || {};
@@ -31,14 +48,22 @@ define(function(require) {
 
 			// validate model
 			if (! (model instanceof Element)) throw new Error('ElementView requires an Element model');
-			if (! model.isValid()) throw new Error(model.validationError);
 
 			// set type
 			this.type = model.get('type');
 
-			// setup related model
-			var related_model = model.get('related_model') || model.collection.related_model,
+			Marionette.LayoutView.call(this, options);
+
+			this.setupRelatedModel(model);
+			this.bindEntityEvents(this, this.elementViewEvents);
+			this.bindEntityEvents(model, this.elementModelEvents);
+
+		},
+
+		setupRelatedModel: function(model) {
+			var related_model = model.get('related_model') || model.collection && model.collection.related_model,
 				related_key = model.get('related_key');
+
 			if (related_model && related_key) {
 				this.listenTo(related_model, 'change:'+related_key, this.onRelatedModelChange);
 				this.related_model = related_model;
@@ -48,25 +73,18 @@ define(function(require) {
 				model.set('value', related_model.get(related_key));
 			}
 
-			// set up render listeners
-			this.listenTo(this, 'all', this.onAll);
-			this.listenTo(this, 'before:render', this.onBeforeElementRender);
-			this.listenTo(this, 'render', this.onElementRender);
-
-			// model listeners
-			this.listenTo(model, 'change:value', this.onChangeValue);
-			this.listenTo(model, 'change:error', this.onChangeError);
-
-			Marionette.LayoutView.call(this, options);
-
-			window['el_'+this.type] = this; // DNR
-
 		},
+
+
+
 		onAll: function(event_name) {
 			//log(event_name, arguments);
 		},
 		onRelatedModelChange: function(model, value, options) {
 			this.model.set('value', value);
+		},
+		onBeforeElementRender: function() {
+
 		},
 		onElementRender: function() {
 			this.$el.addClass('element').setPrefixedClassname('type', this.type);
@@ -75,8 +93,7 @@ define(function(require) {
 		createInputView: function() {
 			var InputView = this.getInputView();
 			this.input_view = new InputView({
-				model: this.model,
-				key: this.key
+				model: this.model
 			});
 			this.input_region.show(this.input_view);
 		},
@@ -86,11 +103,6 @@ define(function(require) {
 			return InputView;
 		},
 
-
-		regions: {
-			input_region: '.input-region',
-			error_region: '.error-region'
-		},
 
 		onChangeValue: function(model, value, options) {
 			var error = this.validate(value);

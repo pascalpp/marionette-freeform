@@ -1,0 +1,64 @@
+.freeform-stacked {
+  margin-left: 50px;
+  margin-bottom: 40px; }
+  .freeform-stacked .element {
+    margin-bottom: 20px; }
+    .freeform-stacked .element .input-region {
+      display: block; }
+    .freeform-stacked .element input[type=text],
+    .freeform-stacked .element select,
+    .freeform-stacked .element textarea {
+      display: block;
+      margin: 0;
+      font-family: inherit;
+      font-size: 18px;
+      line-height: 1.8em;
+      border-radius: 3px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 4px 8px;
+      width: 100%;
+      box-sizing: border-box; }
+      .freeform-stacked .element input[type=text]:hover, .freeform-stacked .element input[type=text]:focus,
+      .freeform-stacked .element select:hover,
+      .freeform-stacked .element select:focus,
+      .freeform-stacked .element textarea:hover,
+      .freeform-stacked .element textarea:focus {
+        border: 1px solid rgba(0, 0, 0, 0.3); }
+    .freeform-stacked .element input[type=text],
+    .freeform-stacked .element select {
+      height: 1.8em; }
+    .freeform-stacked .element label {
+      display: block;
+      font-size: 18px;
+      user-select: none; }
+    .freeform-stacked .element label.label {
+      margin-bottom: 5px; }
+    .freeform-stacked .element .error-region {
+      display: block;
+      min-height: 25px;
+      margin-bottom: -20px;
+      padding-top: 5px; }
+    .freeform-stacked .element label.error {
+      font-size: 14px;
+      font-style: italic;
+      font-family: Georgia, Serif;
+      color: #990000; }
+  .freeform-stacked .element.element-error input[type=text],
+  .freeform-stacked .element.element-error select,
+  .freeform-stacked .element.element-error textarea {
+    border: 1px solid rgba(153, 0, 0, 0.5); }
+  .freeform-stacked .element.type-text .input-region,
+  .freeform-stacked .element.type-textarea .input-region,
+  .freeform-stacked .element.type-select .input-region {
+    width: 280px; }
+  .freeform-stacked .element.type-checkbox .input-region {
+    display: inline-block; }
+  .freeform-stacked .element.type-checkbox input {
+    display: inline-block;
+    position: relative;
+    top: -2px; }
+  .freeform-stacked .element.type-checkbox label.label {
+    display: inline-block;
+    margin: 0; }
+
+/*# sourceMappingURL=freeform-stacked.css.map */

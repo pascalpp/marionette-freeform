@@ -3,17 +3,19 @@ define(function(require) {
 
 	var InputView = require('./input_view');
 
-	var InputTextView = InputView.extend({
+	var InputTextareaView = InputView.extend({
+
+		tagName: 'textarea',
+		template: _.template('<%= value %>'),
 
 		attributes: function() {
 			return {
-				type: this.model.get('type'),
 				id: this.model.get('id'),
 				name: this.model.get('name'),
-				size: this.model.get('size'),
+				rows: this.model.get('rows'),
+				cols: this.model.get('cols'),
 				placeholder: this.model.get('placeholder'),
 				maxlength: this.model.get('maxlength'),
-				value: this.model.get('value')
 			};
 		},
 
@@ -24,6 +26,6 @@ define(function(require) {
 
 	});
 
-	return InputTextView;
+	return InputTextareaView;
 
 });
