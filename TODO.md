@@ -1,7 +1,7 @@
 marionette-freeform TODO
 ==========
 
-- [ ] button elements (submit, reset, generic?)
+- [x] button elements (submit, reset, generic?)
 - [ ] radio button elements
 - [ ] validator options
     - e.g. options.strict
