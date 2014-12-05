@@ -12,7 +12,8 @@
   "keywords": [
     "marionette",
     "backbone",
-    "form"
+    "form",
+    "library"
   ],
   "author": "Pascal <pascal@pascal.com>",
   "license": "MIT",
@@ -20,15 +21,27 @@
     "url": "https://github.com/pascalpp/marionette-freeform/issues"
   },
   "homepage": "https://github.com/pascalpp/marionette-freeform",
+  "dependencies": {
+    "backbone": "1.0.0 - 1.1.2",
+    "backbone.marionette": "^2.2.2",
+    "underscore": "1.4.4 - 1.6.0"
+  },
   "devDependencies": {
+    "chai": "^1.10.0",
+    "chai-jq": "0.0.8",
     "grunt": "^0.4.5",
     "grunt-contrib-connect": "^0.9.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-sass": "^0.8.1",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-test": "^0.12.4",
+    "jquery": "^1.8.0 || ^2.0.0",
+    "jsdom": "^0.10.5",
     "jshint-stylish": "^1.0.0",
     "load-grunt-tasks": "^1.0.0",
     "mocha": "^2.0.1",
+    "sinon": "^1.12.1",
+    "sinon-chai": "^2.6.0",
     "unwrap": "^0.1.0"
   }
 }
