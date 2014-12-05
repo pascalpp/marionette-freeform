@@ -11,6 +11,15 @@ define(function(require) {
 
 		attribute_keys: ['type', 'id', 'name', 'disabled'],
 
+		constructor: function() {
+			Marionette.ItemView.apply(this, arguments);
+
+			// these steps allow the view to consume an existing dom element
+			this.listenTo(this, 'render', this.setAttributes);
+			var className = this.model.get('className');
+			if (className) this.$el.addClass(className);
+		},
+
 		triggers: function() {
 			var triggers = {},
 				trigger = this.model.get('trigger');

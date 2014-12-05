@@ -3,30 +3,11 @@ define(function(require) {
 
 	var
 	Element				= require('model/element'),
-	InputTextView		= require('./input_text_view'),
-	InputTextareaView	= require('./input_textarea_view'),
-	InputCheckboxView	= require('./input_checkbox_view'),
-	InputSelectView		= require('./input_select_view'),
-	InputButtonView		= require('./input_button_view'),
-	InputButtonsetView	= require('./input_buttonset_view'),
+	InputViews			= require('./input_view_types'),
 	ErrorView			= require('./error_view'),
 	Template			= require('text!template/element.html'),
 	log					= require('lib/log'); /* jshint ignore: line */
 	require('lib/setPrefixedClassname');
-
-
-
-	var view_types = {
-		text: InputTextView,
-		password: InputTextView,
-		textarea: InputTextareaView,
-		checkbox: InputCheckboxView,
-		select: InputSelectView,
-		submit: InputButtonView,
-		reset: InputButtonView,
-		button: InputButtonView,
-		buttonset: InputButtonsetView
-	};
 
 
 	var ElementView = Marionette.LayoutView.extend({
@@ -63,6 +44,8 @@ define(function(require) {
 			this.setupRelatedModel(model);
 			this.bindEntityEvents(this, this.elementViewEvents);
 			this.bindEntityEvents(model, this.elementModelEvents);
+
+			window['el_'+this.type] = this;
 
 		},
 
@@ -107,7 +90,7 @@ define(function(require) {
 			this.input_region.show(this.input_view);
 		},
 		getInputView: function() {
-			var InputView = this.inputView || view_types[this.type];
+			var InputView = this.inputView || InputViews[this.type];
 			if (! InputView) throw new Error('No InputView defined for type ' + this.type);
 			return InputView;
 		},
@@ -131,7 +114,7 @@ define(function(require) {
 			}
 			var validator = this.model.get('validator');
 			if (_.isFunction(validator)) {
-				error = validator.call(this, value);
+				error = validator.call(this.model, value);
 			}
 			return error;
 		},

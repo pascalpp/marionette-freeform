@@ -3,7 +3,7 @@ define(function(require) {
 
 	var Form = require('model/form'),
 		FormView = require('view/form_view'),
-		Template = require('text!template/form.html'),
+		Template = require('text!template/related_model.html'),
 		log = require('lib/log'); /* jshint ignore: line */
 	require('model/validation');
 

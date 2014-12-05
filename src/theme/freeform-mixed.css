@@ -2,74 +2,15 @@
   margin-left: 50px;
   margin-bottom: 35px; }
   .freeform-mixed .element {
-    display: block;
     margin-bottom: 1em;
     white-space: nowrap; }
     .freeform-mixed .element .input-region {
       display: inline-block; }
-    .freeform-mixed .element input,
-    .freeform-mixed .element select,
-    .freeform-mixed .element button,
-    .freeform-mixed .element textarea {
-      margin: 0;
-      font-family: inherit;
-      font-size: 18px;
-      line-height: 1.8em;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      box-sizing: border-box; }
-    .freeform-mixed .element input[type=text],
-    .freeform-mixed .element input[type=password],
-    .freeform-mixed .element select,
-    .freeform-mixed .element textarea {
-      display: block;
-      width: 100%;
-      padding: 0.03em 0.4em;
-      border-radius: 3px; }
-      .freeform-mixed .element input[type=text]:hover, .freeform-mixed .element input[type=text]:focus,
-      .freeform-mixed .element input[type=password]:hover,
-      .freeform-mixed .element input[type=password]:focus,
-      .freeform-mixed .element select:hover,
-      .freeform-mixed .element select:focus,
-      .freeform-mixed .element textarea:hover,
-      .freeform-mixed .element textarea:focus {
-        border: 1px solid rgba(0, 0, 0, 0.3); }
-    .freeform-mixed .element input[type=text],
-    .freeform-mixed .element input[type=password],
-    .freeform-mixed .element select {
-      height: 1.8em; }
-    .freeform-mixed .element select,
-    .freeform-mixed .element button {
-      background-color: white;
-      box-shadow: inset 0 -2.5em 2.5em -2.5em rgba(0, 0, 0, 0.1); }
-      .freeform-mixed .element select[disabled],
-      .freeform-mixed .element button[disabled] {
-        box-shadow: none;
-        opacity: 0.5; }
-      .freeform-mixed .element select:active,
-      .freeform-mixed .element button:active {
-        box-shadow: inset 0 2.5em 2.5em -2.5em rgba(0, 0, 0, 0.1); }
-    .freeform-mixed .element button {
-      border: 1px solid rgba(0, 0, 0, 0.3);
-      border-radius: 4px;
-      padding: 0.1em 0.8em; }
-      .freeform-mixed .element button:hover, .freeform-mixed .element button:focus {
-        border: 1px solid rgba(0, 0, 0, 0.5); }
-    .freeform-mixed .element label {
-      display: inline-block;
-      font-size: 18px;
-      user-select: none; }
     .freeform-mixed .element label.label {
       display: block;
       margin-bottom: 5px; }
     .freeform-mixed .element label.error {
-      font-style: italic;
-      font-family: Georgia, Serif;
-      color: #990000;
       padding-left: 10px; }
-  .freeform-mixed .element.element-error input[type=text],
-  .freeform-mixed .element.element-error select,
-  .freeform-mixed .element.element-error textarea {
-    border: 1px solid rgba(153, 0, 0, 0.5); }
   .freeform-mixed .element.type-text .input-region,
   .freeform-mixed .element.type-textarea .input-region,
   .freeform-mixed .element.type-select .input-region {
@@ -83,12 +24,5 @@
     margin-right: 0.3em; }
   .freeform-mixed .element.type-checkbox label.label {
     display: inline-block; }
-  .freeform-mixed .element.type-buttonset button {
-    margin-right: 0.5em; }
-  .freeform-mixed .element.type-buttonset button[type=submit] {
-    background-color: rgba(0, 102, 255, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.5); }
-    .freeform-mixed .element.type-buttonset button[type=submit]:hover, .freeform-mixed .element.type-buttonset button[type=submit]:focus {
-      border: 1px solid rgba(0, 0, 0, 0.7); }
 
 /*# sourceMappingURL=freeform-mixed.css.map */

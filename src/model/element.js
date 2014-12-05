@@ -20,6 +20,10 @@ define(function(require) {
 			value: '',
 			show_label_before: true
 		},
+		buttonfield: {
+			value: '',
+			show_label_before: true
+		},
 		submit: {
 			show_label_before: false,
 			show_label_after: false,

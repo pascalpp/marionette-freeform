@@ -3,7 +3,6 @@
 	margin-bottom: 35px;
 
 	.element  {
-		display: block;
 		margin-bottom: 1em;
 		white-space: nowrap;
 
@@ -11,85 +10,12 @@
 			display: inline-block;
 		}
 
-		input,
-		select,
-		button,
-		textarea {
-			margin: 0;
-			font-family: inherit;
-			font-size: 18px;
-			line-height: 1.8em;
-			border: 1px solid rgba(0,0,0,0.1);
-			box-sizing: border-box;
-		}
-
-		input[type=text],
-		input[type=password],
-		select,
-		textarea {
-			display: block;
-			width: 100%;
-			padding: 0.03em 0.4em;
-			border-radius: 3px;
-			
-			&:hover,
-			&:focus {
-				border: 1px solid rgba(0,0,0,0.3);
-			}
-		}
-		
-		input[type=text],
-		input[type=password],
-		select {
-			height: 1.8em;
-		}
-		
-		select,
-		button {
-			background-color: white;
-			box-shadow: inset 0 -2.5em 2.5em -2.5em rgba(0,0,0,0.1);
-			
-			&[disabled] {
-				box-shadow: none;
-				opacity: 0.5;
-			}
-			&:active {
-				box-shadow: inset 0 2.5em 2.5em -2.5em rgba(0,0,0,0.1);
-			}
-		}
-		
-		button {
-			border: 1px solid rgba(0,0,0,0.3);
-			border-radius: 4px;
-			padding: 0.1em 0.8em;
-			&:hover,
-			&:focus {
-				border: 1px solid rgba(0,0,0,0.5);
-			}
-		}
-
-		label {
-			display: inline-block;
-			font-size: 18px;
-			user-select: none;
-		}
 		label.label {
 			display: block;
 			margin-bottom: 5px;
 		}
 		label.error {
-			font-style: italic;
-			font-family: Georgia, Serif;
-			color: rgba(153,0,0,1);
 			padding-left: 10px;
-		}
-	}
-
-	.element.element-error {
-		input[type=text],
-		select,
-		textarea {
-			border: 1px solid rgba(153,0,0,0.5);
 		}
 	}
 
@@ -116,20 +42,6 @@
 		}
 		label.label {
 			display: inline-block;
-		}
-	}
-
-	.element.type-buttonset {
-		button {
-			margin-right: 0.5em;
-		}
-		button[type=submit] {
-			background-color: rgba(0,102,255,0.05);
-			border: 1px solid rgba(0,0,0,0.5);
-			&:hover,
-			&:focus {
-				border: 1px solid rgba(0,0,0,0.7);
-			}
 		}
 	}
 

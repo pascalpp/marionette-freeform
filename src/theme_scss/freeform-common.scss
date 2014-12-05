@@ -1,0 +1,159 @@
+.freeform-inline,
+.freeform-mixed,
+.freeform-stacked {
+
+	.element  {
+		display: block;
+
+		input,
+		select,
+		button,
+		textarea {
+			margin: 0;
+			font-family: inherit;
+			font-size: 18px;
+			line-height: 1.8em;
+			border: 1px solid rgba(0,0,0,0.1);
+			box-sizing: border-box;
+		}
+
+		input[type=text],
+		input[type=password],
+		select,
+		textarea {
+			display: block;
+			width: 100%;
+			padding: 0.03em 0.4em;
+			border-radius: 3px;
+			
+			&:hover,
+			&:focus {
+				border: 1px solid rgba(0,0,0,0.3);
+			}
+		}
+		
+		input[type=text],
+		input[type=password],
+		select {
+			height: 1.8em;
+		}
+		
+		select,
+		button {
+			background-color: white;
+			color: #000;
+			box-shadow: inset 0 -2.5em 2.5em -2.5em rgba(0,0,0,0.1);
+			
+			&[disabled] {
+				box-shadow: none;
+				opacity: 0.5;
+			}
+			&:active {
+				box-shadow: inset 0 2.5em 2.5em -2.5em rgba(0,0,0,0.1);
+			}
+		}
+		
+		button {
+			border: 1px solid rgba(0,0,0,0.3);
+			border-radius: 4px;
+			padding: 0.1em 0.8em;
+			&:hover,
+			&:focus {
+				border: 1px solid rgba(0,0,0,0.5);
+			}
+		}
+
+		label {
+			display: inline-block;
+			font-size: 18px;
+			user-select: none;
+		}
+		label.error {
+			font-style: italic;
+			font-family: Georgia, Serif;
+			color: rgba(153,0,0,1);
+		}
+	}
+
+	.element.element-error {
+		input[type=text],
+		input[type=password],
+		select,
+		button[type=submit],
+		textarea {
+			border: 1px solid rgba(153,0,0,0.5);
+		}
+	}
+
+	.element.type-text,
+	.element.type-textarea,
+	.element.type-select {
+		.input-region {
+			width: 280px;
+		}
+		label.label {
+			width: 140px;
+			text-align: right;
+			padding-right: 5px;
+		}
+	}
+
+	.element.type-textarea {
+		> * {
+			vertical-align: top;
+		}
+		label {
+			margin-top: 5px;
+		}
+	}
+
+	.element.type-checkbox {
+		padding-left: 146px;
+		input {
+			margin-right: 0.3em;
+		}
+	}
+
+	.element.type-button,
+	.element.type-buttonset {
+		padding-left: 146px;
+	}
+
+	.element.type-buttonset {
+		button {
+			margin-right: 0.5em;
+		}
+		button[type=submit] {
+			background-color: rgba(0,102,255,0.05);
+			border: 1px solid rgba(0,0,0,0.5);
+			&:hover,
+			&:focus {
+				border: 1px solid rgba(0,0,0,0.7);
+			}
+		}
+	}
+
+	.element.type-buttonfield {
+
+		.input-region > * {
+			display: block;
+			width: 400px;
+			position: relative;
+		}
+		
+		input {
+			height: 2.2em;
+			border: 1px solid rgba(0,0,0,0.3);
+		}
+		
+		button {
+			height: 2.2em;
+			position: absolute;
+			top: 0;
+			right: 0;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+	}
+
+}

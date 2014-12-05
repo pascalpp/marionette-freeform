@@ -10,7 +10,10 @@ define(function(require) {
 	BasicTemplate			= require('text!template/basic.html'),
 	RelatedExample			= require('examples/related_model'),
 	RelatedCode				= require('text!examples/related_model.js'),
-	RelatedTemplate			= require('text!template/form.html'),
+	RelatedTemplate			= require('text!template/related_model.html'),
+	ButtonFieldExample		= require('examples/button_field'),
+	ButtonFieldCode			= require('text!examples/button_field.js'),
+	ButtonFieldTemplate		= require('text!template/button_field.html'),
 	log						= require('lib/log'); /* jshint ignore: line */
 	require('lib/setPrefixedClassname');
 
@@ -32,6 +35,13 @@ define(function(require) {
 			view: RelatedExample,
 			code: RelatedCode,
 			template: RelatedTemplate
+		},
+		'button_field': {
+			label: 'Buttonfield',
+			description: 'A very simple field consisting of a combined text field and button. This one requires a bit of CSS to achieve its appearance, of course.',
+			view: ButtonFieldExample,
+			code: ButtonFieldCode,
+			template: ButtonFieldTemplate
 		},
 	};
 

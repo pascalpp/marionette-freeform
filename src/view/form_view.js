@@ -3,7 +3,8 @@ define(function(require) {
 
 	var
 	Form				= require('model/form'),
-	ElementView			= require('view/element_view'),
+	ElementView			= require('./element_view'),
+	InputViews			= require('./input_view_types'),
 	log					= require('lib/log'); /* jshint ignore: line */
 
 
@@ -78,20 +79,35 @@ define(function(require) {
 		},
 
 		addElementView: function(element) {
-			var view = new this.elementView({
+			var View = this.getElementView(element);
+			var view = new View({
 				el: this.$(element.get('el')),
 				model: element
 			});
 			view.render();
 		},
 
+		getElementView: function(element) {
+			if (element.get('raw')) {
+				var type = element.get('type');
+				var View = InputViews[type];
+				if (View) {
+					return View;
+				} else {
+					throw new Error('No raw InputView defined for type '+ type);
+				}
+			} else {
+				return this.elementView;
+			}
+		},
+
 		onBeforeFormSubmit: function() {
 			if (this.model.isValid()) {
 				this.triggerMethod('form:submit');
-				log('Form is valid. Implement your own onFormSubmit handler to do something with the form data.')
+				log('Form is valid. Implement your own onFormSubmit handler to do something with the form data.');
 			} else {
 				this.triggerMethod('form:submit:error', this.model.validationError);
-				log('Form is not valid.', this.model.validationError)
+				log('Form is not valid.', this.model.validationError);
 			}
 		}
 
