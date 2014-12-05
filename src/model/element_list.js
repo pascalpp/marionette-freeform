@@ -1,7 +1,7 @@
 define(function(require) {
 	'use strict';
 
-	var Element = require('model/element');
+	var Element = require('./element');
 
 
 	var ElementList = Backbone.Collection.extend({

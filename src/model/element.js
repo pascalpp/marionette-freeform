@@ -1,7 +1,7 @@
 define(function(require) {
 	'use strict';
 
-	require('model/validation');
+	require('./validation');
 
 	var default_options = {
 		text: {

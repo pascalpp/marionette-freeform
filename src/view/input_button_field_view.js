@@ -2,8 +2,8 @@ define(function(require) {
 	'use strict';
 
 	var
-	Element				= require('model/element'),
-	log					= require('lib/log'); /* jshint ignore: line */
+	Element				= require('src/model/element'),
+	log					= require('src/lib/log'); /* jshint ignore: line */
 
 
 	var InputViews;
@@ -48,7 +48,6 @@ define(function(require) {
 
 			var button = this.model.get('button');
 			var ButtonView = InputViews[button.get('type')];
-			log(ButtonView.prototype);
 			this.button_view = new ButtonView({
 				el: this.ui.button,
 				model: button

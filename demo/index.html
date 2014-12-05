@@ -7,10 +7,10 @@
 	<title>marionette-freeform</title>
 	
 	<link href="css/main.css" rel="stylesheet" type="text/css">
-	<link href="src/theme/freeform-common.css" rel="stylesheet" type="text/css">
-	<link href="src/theme/freeform-inline.css" rel="stylesheet" type="text/css">
-	<link href="src/theme/freeform-stacked.css" rel="stylesheet" type="text/css">
-	<link href="src/theme/freeform-mixed.css" rel="stylesheet" type="text/css">
+	<link href="css/theme/freeform-common.css" rel="stylesheet" type="text/css">
+	<link href="css/theme/freeform-inline.css" rel="stylesheet" type="text/css">
+	<link href="css/theme/freeform-stacked.css" rel="stylesheet" type="text/css">
+	<link href="css/theme/freeform-mixed.css" rel="stylesheet" type="text/css">
 	
 </head>
 <body>
@@ -65,31 +65,16 @@
 </script>
 
 
-<script src="bower_components/requirejs/require.js"></script>
-<script src="src/lib/highlight/highlight.pack.js"></script>
+<script src="../bower_components/requirejs/require.js"></script>
+<script>window.baseUrl = '../';</script>
+<script src="../requirejs-config.js"></script>
+<script src="js/highlight/highlight.pack.js"></script>
 <script>
-(function(requirejs) {
-
-	var config = {
-		baseUrl: 'src/',
-		paths: {
-			'jquery': '../bower_components/jquery/dist/jquery',
-			'backbone': '../bower_components/backbone/backbone',
-			'marionette': '../bower_components/marionette/lib/backbone.marionette',
-			'underscore': '../bower_components/underscore/underscore',
-			'mocha': '../bower_components/mocha/mocha',
-			'chai': '../bower_components/chai/chai',
-			'text': '../bower_components/requirejs-text/text'
-		}
-	}
-
-	requirejs.config(config);
-})(requirejs);
 </script>
 
 <script>
 	require(['marionette'], function() {
-		require(['main']);
+		require(['demo/js/main']);
 	});
 </script>
 

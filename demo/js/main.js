@@ -3,19 +3,19 @@ define(function(require) {
 	'use strict';
 
 	var
-	Form					= require('model/form'),
-	FormView				= require('view/form_view'),
-	BasicExample			= require('examples/basic'),
-	BasicCode				= require('text!examples/basic.js'),
-	BasicTemplate			= require('text!template/basic.html'),
-	RelatedExample			= require('examples/related_model'),
-	RelatedCode				= require('text!examples/related_model.js'),
-	RelatedTemplate			= require('text!template/related_model.html'),
-	ButtonFieldExample		= require('examples/button_field'),
-	ButtonFieldCode			= require('text!examples/button_field.js'),
-	ButtonFieldTemplate		= require('text!template/button_field.html'),
-	log						= require('lib/log'); /* jshint ignore: line */
-	require('lib/setPrefixedClassname');
+	Form					= require('src/model/form'),
+	FormView				= require('src/view/form_view'),
+	BasicExample			= require('./examples/basic'),
+	BasicCode				= require('text!./examples/basic.js'),
+	BasicTemplate			= require('text!./examples/template/basic.html'),
+	RelatedExample			= require('./examples/related_model'),
+	RelatedCode				= require('text!./examples/related_model.js'),
+	RelatedTemplate			= require('text!./examples/template/related_model.html'),
+	ButtonFieldExample		= require('./examples/button_field'),
+	ButtonFieldCode			= require('text!./examples/button_field.js'),
+	ButtonFieldTemplate		= require('text!./examples/template/button_field.html'),
+	log						= require('src/lib/log'); /* jshint ignore: line */
+	require('src/lib/setPrefixedClassname');
 
 	var jshint = new RegExp('\\s+\/\\* jshint.*\\*\/', 'gim');
 	var begin = new RegExp('[^•]+\/\\* begin example \\*\/\n', 'gim');

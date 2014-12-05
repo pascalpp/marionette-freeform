@@ -1,11 +1,11 @@
 define(function(require) {
 	'use strict';
 
-	var Form = require('model/form'),
-		FormView = require('view/form_view'),
-		Template = require('text!template/basic.html'),
-		log = require('lib/log'); /* jshint ignore: line */
-	require('model/validation');
+	var Form = require('src/model/form'),
+		FormView = require('src/view/form_view'),
+		Template = require('text!./template/basic.html'),
+		log = require('src/lib/log'); /* jshint ignore: line */
+	require('src/model/validation');
 
 	/* begin example */
 	// define an array of form elements

@@ -2,10 +2,10 @@ define(function(require) {
 	'use strict';
 
 	var
-	Form				= require('model/form'),
+	Form				= require('src/model/form'),
 	ElementView			= require('./element_view'),
 	InputViews			= require('./input_view_types'),
-	log					= require('lib/log'); /* jshint ignore: line */
+	log					= require('src/lib/log'); /* jshint ignore: line */
 
 
 	var FormView = Marionette.LayoutView.extend({

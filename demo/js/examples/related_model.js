@@ -1,11 +1,11 @@
 define(function(require) {
 	'use strict';
 
-	var Form = require('model/form'),
-		FormView = require('view/form_view'),
-		Template = require('text!template/related_model.html'),
-		log = require('lib/log'); /* jshint ignore: line */
-	require('model/validation');
+	var Form = require('src/model/form'),
+		FormView = require('src/view/form_view'),
+		Template = require('text!./template/related_model.html'),
+		log = require('src/lib/log'); /* jshint ignore: line */
+	require('src/model/validation');
 
 	/* begin example */
 	// some regexes used for validation

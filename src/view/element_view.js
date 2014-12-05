@@ -2,12 +2,12 @@ define(function(require) {
 	'use strict';
 
 	var
-	Element				= require('model/element'),
+	Element				= require('src/model/element'),
 	InputViews			= require('./input_view_types'),
 	ErrorView			= require('./error_view'),
-	Template			= require('text!template/element.html'),
-	log					= require('lib/log'); /* jshint ignore: line */
-	require('lib/setPrefixedClassname');
+	Template			= require('text!src/template/element.html'),
+	log					= require('src/lib/log'); /* jshint ignore: line */
+	require('src/lib/setPrefixedClassname');
 
 
 	var ElementView = Marionette.LayoutView.extend({
