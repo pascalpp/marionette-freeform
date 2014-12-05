@@ -17,7 +17,12 @@ define(function(require) {
 		},
 
 		triggers: {
-			'submit': 'before:form:submit'
+			'submit': 'before:form:submit',
+			'reset': {
+				event: 'form:reset',
+				preventDefault: false,
+				stopPropagation: false
+			}
 		},
 
 		constructor: function(options) {
@@ -57,6 +62,14 @@ define(function(require) {
 
 		onFormRender: function() {
 			this.addElementViews();
+		},
+		onFormReset: function() {
+			// form reset doesn't trigger any change event on the inputs that are changed by resetting
+			// so we have to shim that event in order to reset any validation errors
+			// have to defer this so the reset event can complete and values are restored
+			_.defer(_.bind(function() {
+				this.$('input, select, textarea').trigger('change');
+			}, this));
 		},
 
 		addElementViews: function() {

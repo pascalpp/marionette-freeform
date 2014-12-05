@@ -8,16 +8,7 @@ define(function(require) {
 		tagName: 'textarea',
 		template: _.template('<%= value %>'),
 
-		attributes: function() {
-			return {
-				id: this.model.get('id'),
-				name: this.model.get('name'),
-				rows: this.model.get('rows'),
-				cols: this.model.get('cols'),
-				placeholder: this.model.get('placeholder'),
-				maxlength: this.model.get('maxlength'),
-			};
-		},
+		attribute_keys: ['id', 'name', 'rows', 'cols', 'placeholder', 'maxlength', 'disabled'],
 
 		triggers: {
 			'change': 'input:change',

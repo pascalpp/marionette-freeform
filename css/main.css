@@ -20,6 +20,10 @@ fieldset {
 	padding: 0;
 }
 
+p {
+	margin: 0.5em 0;
+}
+
 article {
 	font-family: Georgia, Serif;
 	font-size: 18px;
@@ -33,9 +37,27 @@ article code {
 	border: 1px solid rgba(0,0,0,0.1);
 }
 
-article em {
+.head article {
+	float: left;
+	width: 60%;
+}
+
+.head aside {
+	float: left;
+	font-family: Georgia, Serif;
+	width: 35%;
+	margin-left: 5%;
+	max-width: 400px;
+}
+
+.head aside em {
 	font-size: 14px;
 	color: #666;
+}
+
+.main {
+	clear: both;
+	padding-top: 1em;
 }
 
 .chooser fieldset {
@@ -55,8 +77,13 @@ pre {
 }
 pre code {
 	overflow: scroll;
+	padding: 0.5em 1em;
 }
 
 .example-region {
 	border-top: 1px solid rgba(0,0,0,0.3);
+}
+
+pre .comment, pre .template_comment, pre .diff .header, pre .javadoc {
+	font-style: normal;
 }

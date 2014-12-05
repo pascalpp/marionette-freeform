@@ -1,6 +1,6 @@
 .freeform-stacked {
 	margin-left: 50px;
-	margin-bottom: 40px;
+	margin-bottom: 35px;
 
 	.element  {
 		margin-bottom: 20px;
@@ -9,29 +9,61 @@
 			display: block;
 		}
 
-		input[type=text],
+		input,
 		select,
+		button,
 		textarea {
-			display: block;
 			margin: 0;
 			font-family: inherit;
 			font-size: 18px;
 			line-height: 1.8em;
-			border-radius: 3px;
 			border: 1px solid rgba(0,0,0,0.1);
-			padding: 4px 8px;
-			width: 100%;
 			box-sizing: border-box;
+		}
+
+		input[type=text],
+		input[type=password],
+		select,
+		textarea {
+			display: block;
+			width: 100%;
+			padding: 0.03em 0.4em;
+			border-radius: 3px;
 			
 			&:hover,
 			&:focus {
 				border: 1px solid rgba(0,0,0,0.3);
 			}
 		}
-
+		
 		input[type=text],
+		input[type=password],
 		select {
 			height: 1.8em;
+		}
+		
+		select,
+		button {
+			background-color: white;
+			box-shadow: inset 0 -2.5em 2.5em -2.5em rgba(0,0,0,0.1);
+			
+			&[disabled] {
+				box-shadow: none;
+				opacity: 0.5;
+			}
+			&:active {
+				box-shadow: inset 0 2.5em 2.5em -2.5em rgba(0,0,0,0.1);
+			}
+		}
+		
+		button {
+			border: 1px solid rgba(0,0,0,0.3);
+			border-radius: 4px;
+			padding: 0.1em 0.8em;
+			&:hover,
+			&:focus {
+				border: 1px solid rgba(0,0,0,0.5);
+			}
 		}
 
 		label {
@@ -79,15 +111,28 @@
 			display: inline-block;
 		}
 		input {
-			display: inline-block;
 			position: relative;
-			top: -2px;
+			top: -1px;
+			margin-right: 0.3em;
 		}
 		label.label {
 			display: inline-block;
 			margin: 0;
 		}
-		
+	}
+
+	.element.type-buttonset {
+		button {
+			margin-right: 0.5em;
+		}
+		button[type=submit] {
+			background-color: rgba(0,102,255,0.05);
+			border: 1px solid rgba(0,0,0,0.5);
+			&:hover,
+			&:focus {
+				border: 1px solid rgba(0,0,0,0.7);
+			}
+		}
 	}
 
 }

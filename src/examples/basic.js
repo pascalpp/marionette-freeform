@@ -9,8 +9,9 @@ define(function(require) {
 
 	/* begin example */
 	// define an array of form elements
-	// each element should have a type and an el
-	// label is optional
+	// each element should have a `type`
+	// and an `el` selector matching a DOM element in your template
+	// label and value is optional
 	// each element can provide its own validator function
 	var elements = [
 		{
@@ -54,7 +55,8 @@ define(function(require) {
 			value: 'A sample description',
 			rows: 4,
 			validator: function(value) {
-				if (! value) return 'A description is required.'
+				if (! value) return 'A description is required.';
+				if (value === 'dumb') return 'Your description can’t be dumb.';
 			}
 		},
 		{
@@ -67,6 +69,18 @@ define(function(require) {
 				}
 			}
 		},
+		// a button element can have type `submit`, `reset`, or generic `button`
+		// for submit/reset buttons, the native submit/reset actions will fire as usual
+		// FormView captures the submit event and validates before allowing submission to continue
+		// buttons can also define a `trigger` gets fired when the button is clicked
+		// (not yet sure how best to bubble that trigger event up to the FormView)
+		{
+			el: '.button',
+			type: 'submit',
+			label: 'Submit',
+			trigger: 'click:submit'
+		},
+
 	];
 
 	// define a form model

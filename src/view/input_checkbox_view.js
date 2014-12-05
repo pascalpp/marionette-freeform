@@ -5,14 +5,16 @@ define(function(require) {
 
 	var InputCheckboxView = InputView.extend({
 
+		attribute_keys: ['type', 'id', 'name', 'disabled'],
+
 		attributes: function() {
-			return {
-				type: this.model.get('type'),
-				id: this.model.get('id'),
-				name: this.model.get('name'),
-				size: this.model.get('size'),
-				checked: !! this.model.get('value')
-			};
+			// use super method to apply attribute_keys
+			var attributes = InputView.prototype.attributes.call(this);
+
+			// add checked attribute as forced boolean of model.value
+			attributes['checked'] = !! this.model.get('value');
+
+			return attributes;
 		},
 
 		getInputValue: function() {

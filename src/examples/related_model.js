@@ -69,6 +69,29 @@ define(function(require) {
 			related_key: 'admin',
 			label: 'Administrator'
 		},
+		// a buttonset defines a list of buttons to be shown together
+		// see the basic example for explanations of the different button types
+		{
+			el: '.buttons',
+			type: 'buttonset',
+			buttons: [
+				{
+					type: 'submit',
+					label: 'Submit',
+					trigger: 'click:submit'
+				},
+				{
+					type: 'reset',
+					label: 'Reset',
+					trigger: 'click:reset'
+				},
+				{
+					type: 'button',
+					label: 'Cancel',
+					trigger: 'click:cancel'
+				},
+			]
+		}
 	];
 
 	// define a form model

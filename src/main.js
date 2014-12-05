@@ -15,7 +15,7 @@ define(function(require) {
 	require('lib/setPrefixedClassname');
 
 	var jshint = new RegExp('\\s+\/\\* jshint.*\\*\/', 'gim');
-	var begin = new RegExp('[^•]+\/\\* begin example \\*\/', 'gim');
+	var begin = new RegExp('[^•]+\/\\* begin example \\*\/\n', 'gim');
 	var end = new RegExp('\\s+\/\\* end example \\*\/[^•]+', 'gim');
 
 	var examples = {
@@ -87,7 +87,8 @@ define(function(require) {
 			code = code.replace(end, '');
 			code += '\n\n';
 			code += '\t// show the form in some region\n';
-			code += '\tmy_region.show(form_view);\n\n';
+			code += '\tmy_region.show(form_view);\n';
+			code = code.replace(/^\t/gim, '');
 
 			this.ui.code.text(code);
 		},

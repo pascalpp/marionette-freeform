@@ -7,6 +7,8 @@ define(function(require) {
 	InputTextareaView	= require('./input_textarea_view'),
 	InputCheckboxView	= require('./input_checkbox_view'),
 	InputSelectView		= require('./input_select_view'),
+	InputButtonView		= require('./input_button_view'),
+	InputButtonsetView	= require('./input_buttonset_view'),
 	ErrorView			= require('./error_view'),
 	Template			= require('text!template/element.html'),
 	log					= require('lib/log'); /* jshint ignore: line */
@@ -19,7 +21,11 @@ define(function(require) {
 		password: InputTextView,
 		textarea: InputTextareaView,
 		checkbox: InputCheckboxView,
-		select: InputSelectView
+		select: InputSelectView,
+		submit: InputButtonView,
+		reset: InputButtonView,
+		button: InputButtonView,
+		buttonset: InputButtonsetView
 	};
 
 
@@ -88,6 +94,9 @@ define(function(require) {
 		},
 		onElementRender: function() {
 			this.$el.addClass('element').setPrefixedClassname('type', this.type);
+			if (_(['submit', 'reset']).contains(this.type)) {
+				this.$el.addClass('type-button');
+			}
 			this.createInputView();
 		},
 		createInputView: function() {

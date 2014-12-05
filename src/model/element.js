@@ -19,6 +19,11 @@ define(function(require) {
 		select: {
 			value: '',
 			show_label_before: true
+		},
+		submit: {
+			show_label_before: false,
+			show_label_after: false,
+			show_error: false
 		}
 	};
 
@@ -31,6 +36,7 @@ define(function(require) {
 				placeholder: null,
 				name: this.cid,
 				id: this.cid,
+				disabled: false,
 				related_key: null,
 				related_model: null,
 				validator: null,
@@ -39,6 +45,7 @@ define(function(require) {
 				// view options
 				el: null,
 				show_label: true,
+				show_error: true,
 				show_label_before: null,
 				show_label_after: null,
 				label_class: 'label',

@@ -1,6 +1,8 @@
 define(function(require) {
 	'use strict';
 
+	var InputAttributes = require('./input_attributes');
+
 	/* parent input view, meant to be subclassed for specific input types */
 
 	var InputView = Marionette.ItemView.extend({
@@ -17,11 +19,6 @@ define(function(require) {
 			this.listenTo(this, 'render', this.setAttributes);
 			var className = this.model.get('className');
 			if (className) this.$el.addClass(className);
-		},
-
-		setAttributes: function() {
-			var attributes = _.result(this, 'attributes');
-			this.$el.attr(attributes);
 		},
 
 		triggers: {
@@ -43,6 +40,9 @@ define(function(require) {
 			}
 		}
 	});
+
+	// apply methods from InputAttributes mixin
+	_.extend(InputView.prototype, InputAttributes);
 
 	return InputView;
 

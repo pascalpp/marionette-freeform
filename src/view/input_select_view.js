@@ -1,25 +1,32 @@
 define(function(require) {
 	'use strict';
 
-	/* parent input view, meant to be subclassed for specific input types */
+	var InputAttributes = require('./input_attributes');
+
 
 	var InputSelectOptionView = Marionette.ItemView.extend({
 		tagName: 'option',
 		template: _.template('<%- label %>'),
-		attributes: function() {
-			return {
-				value: this.model.get('value'),
-				disabled: this.model.get('disabled'),
-				selected: (this.model.get('value') === this.options.selected)
-			};
-		},
+		attribute_keys: ['value', 'disabled']
+	});
 
+	// apply methods from InputAttributes mixin
+	_.extend(InputSelectOptionView.prototype, InputAttributes, {
+		attributes: function() {
+			// use super method to apply attribute_keys
+			var attributes = InputAttributes.attributes.call(this);
+
+			// add selected attribute if model value matches options.selected
+			attributes['selected'] = (this.model.get('value') === this.options.selected);
+
+			return attributes;
+		}
 	});
 
 
 	var InputSelectView = Marionette.CollectionView.extend({
+
 		tagName: 'select',
-		template: _.template(''),
 
 		childView: InputSelectOptionView,
 		childViewOptions: function() {
@@ -58,18 +65,7 @@ define(function(require) {
 			if (className) this.$el.addClass(className);
 		},
 
-		attributes: function() {
-			return {
-				id: this.model.get('id'),
-				name: this.model.get('name'),
-				size: this.model.get('size'),
-			};
-		},
-
-		setAttributes: function() {
-			var attributes = _.result(this, 'attributes');
-			this.$el.attr(attributes);
-		},
+		attribute_keys: ['id', 'name', 'disabled'],
 
 		triggers: {
 			'change': 'input:change',
@@ -90,6 +86,9 @@ define(function(require) {
 			}
 		}
 	});
+
+	// apply methods from InputAttributes mixin
+	_.extend(InputSelectView.prototype, InputAttributes);
 
 	return InputSelectView;
 
