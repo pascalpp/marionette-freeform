@@ -24,7 +24,6 @@ define(function(require) {
 			'all': 'onAll'
 		},
 		elementModelEvents: {
-			'change:value': 'onChangeValue',
 			'change:error': 'onChangeError'
 		},
 
@@ -34,36 +33,19 @@ define(function(require) {
 			var model = options.model;
 
 			// validate model
-			if (! (model instanceof Element)) throw new Error('ElementView requires an Element model');
+			if (! (model instanceof Element)) throw new Error('ElementView requires an Element model.');
 
 			// set type
 			this.type = model.get('type');
 
 			Marionette.LayoutView.call(this, options);
 
-			this.setupRelatedModel(model);
 			this.bindEntityEvents(this, this.elementViewEvents);
 			this.bindEntityEvents(model, this.elementModelEvents);
 
-			window['el_'+this.type] = this;
+			window['el_'+this.type] = this; // DNR
 
 		},
-
-		setupRelatedModel: function(model) {
-			var related_model = model.get('related_model') || model.collection && model.collection.related_model,
-				related_key = model.get('related_key');
-
-			if (related_model && related_key) {
-				this.listenTo(related_model, 'change:'+related_key, this.onRelatedModelChange);
-				this.related_model = related_model;
-				this.related_key = related_key;
-
-				// get value from the related model
-				model.set('value', related_model.get(related_key));
-			}
-		},
-
-
 
 		onAll: function(event_name) {
 			//log(event_name, arguments);
@@ -92,30 +74,6 @@ define(function(require) {
 			var InputView = this.inputView || InputViews[this.type];
 			if (! InputView) throw new Error('No InputView defined for type ' + this.type);
 			return InputView;
-		},
-
-
-		onChangeValue: function(model, value, options) {
-			var error = this.validate(value);
-
-			if (error) {
-				this.model.set('error', error);
-			} else {
-				this.model.unset('error');
-				if (this.related_model) this.related_model.set(this.related_key, value);
-			}
-		},
-		validate: function(value) {
-			var error;
-			if (this.related_model) {
-				error = this.related_model.validateAttribute(this.related_key, value);
-				if (error) return error;
-			}
-			var validator = this.model.get('validator');
-			if (_.isFunction(validator)) {
-				error = validator.call(this.model, value);
-			}
-			return error;
 		},
 
 		onChangeError: function(model, error, options) {

@@ -1,9 +1,11 @@
+/* global describe, it, expect, beforeEach */
+/* jshint expr: true */
 define(function(require) {
+	'use strict';
 
 	var Element = require('src/model/element');
 
 	describe('Element', function() {
-		'use strict';
 
 		describe('with no type', function() {
 			beforeEach(function() {
@@ -277,9 +279,12 @@ define(function(require) {
 		});
 
 		describe('with a related model and related key', function() {
+			this.timeout(0); // DNR
+
 			beforeEach(function() {
 				this.error = null;
 				this.related_model = new Backbone.Model({ foo: 'related_value' });
+				this.new_related_model = new Backbone.Model({ foo: 'new_related_value' });
 				this.options = {
 					type: 'text',
 					related_key: 'foo',
@@ -301,6 +306,87 @@ define(function(require) {
 			it('should get its initial value from the related model', function() {
 				expect(this.element.get('value')).to.equal('related_value');
 			});
+			it('element value should get updated when the related value changes', function() {
+				this.related_model.set('foo','related_changed_value');
+				expect(this.element.get('value')).to.equal('related_changed_value');
+			});
+			it('related value should get updated when the element value changes', function() {
+				this.element.set('value','element_changed_value');
+				expect(this.related_model.get('foo')).to.equal('element_changed_value');
+			});
+			it('should not throw an error if initial value is invalid', function() {
+				var element;
+				var error;
+				var RelatedModel = Backbone.Model.extend({
+					validators: {
+						'foo': function(foo) {
+							// this validator always fails, to prove the test
+							return 'Value is erroneous.';
+						}
+					}
+				});
+				var related_model = new RelatedModel({
+					foo: 'bar',
+				});
+				this.validatorSpy = this.sinon.spy(related_model.validators, 'foo');
+				var options = {
+					type: 'text',
+					related_key: 'foo',
+					related_model: related_model
+				};
+				try {
+					element = new Element(options);
+				} catch(e) {
+					error = e;
+				}
+
+				expect(error).to.not.exist;
+				expect(element).to.exist;
+			});
+			it('should set element.error to related_model.validationError', function() {
+				var element;
+				var error;
+				var RelatedModel = Backbone.Model.extend({
+					validators: {
+						'foo': function(foo) {
+							// this validator always fails, to prove the test
+							return 'Error message from related model.';
+						}
+					}
+				});
+				var related_model = new RelatedModel({
+					foo: 'bar',
+				});
+				var options = {
+					type: 'text',
+					related_key: 'foo',
+					related_model: related_model
+				};
+				try {
+					element = new Element(options);
+				} catch(e) {
+					error = e;
+				}
+
+				element.set('value','foo');
+				expect(element.get('error')).to.equal('Error message from related model.');
+			});
+
+			describe('when related model changes', function() {
+				it('should update its values', function() {
+					expect(this.element.get('value')).to.equal('related_value');
+					this.element.set('related_model', this.new_related_model);
+					expect(this.element.get('value')).to.equal('new_related_value');
+				});
+				it('should stop listening to the old related model', function() {
+					expect(this.element.get('value')).to.equal('related_value');
+					this.element.set('related_model', this.new_related_model);
+					expect(this.element.get('value')).to.equal('new_related_value');
+					this.related_model.set('foo', 'bar');
+					expect(this.element.get('value')).to.equal('new_related_value');
+				});
+			});
+
 		});
 
 		describe('with a related model but no related key', function() {

@@ -13,35 +13,31 @@ define(function(require) {
 			this.setupElements(attrs);
 
 			Backbone.Model.apply(this, [attrs, options]);
+
+			this.listenTo(this, 'change:related_model', this.onChangeRelatedModel);
 		},
 
 		setupElements: function(attrs) {
-			// if elements is already an ElementList
-			// make sure models get their initial value from related model, if defined
-			if (attrs.elements instanceof ElementList) {
-				if (attrs.related_model) {
-					attrs.elements.related_model = attrs.related_model;
-					attrs.elements.each(function(element) {
-						element.getInitialValueFromRelatedModel();
-					});
-				}
-
 			// if elements is an array
 			// convert it to an ElementList, passing the related model, if defined
-			} else if (_.isArray(attrs.elements)) {
-				var options = {};
-				if (attrs.related_model) {
-					options.related_model = attrs.related_model;
-				}
-				attrs.elements = new ElementList(attrs.elements, options);
+			if (_.isArray(attrs.elements)) {
+				attrs.elements = new ElementList(attrs.elements);
 			}
 
-			// ensure that elements is an ElementList by now
+			// ensure that elements is an ElementList
 			if (! (attrs.elements instanceof ElementList)) {
 				throw new Error('Form.elements must be an array or an ElementList');
 			}
 
+			if (attrs.related_model) {
+				attrs.elements.setRelatedModel(attrs.related_model);
+			}
+
 			return attrs;
+		},
+
+		onChangeRelatedModel: function(model, related_model, options) {
+			this.get('elements').setRelatedModel(related_model);
 		},
 
 		validators: {

@@ -1,3 +1,5 @@
+/* global describe, it, expect, beforeEach */
+/* jshint expr: true */
 define(function(require) {
 	'use strict';
 
@@ -62,11 +64,17 @@ define(function(require) {
 					{ type: 'text', related_key: 'bar' },
 					{ type: 'text', value: 'unchanged value' },
 				];
+				this.related_model = new Backbone.Model({
+					foo: 'related_foo_value',
+					bar: 'related_bar_value'
+				});
+				this.new_related_model = new Backbone.Model({
+					foo: 'new_related_foo_value',
+					bar: 'new_related_bar_value'
+				});
+
 				this.options = {
-					related_model: new Backbone.Model({
-						foo: 'related_foo_value',
-						bar: 'related_bar_value'
-					})
+					related_model: this.related_model
 				};
 				try {
 					this.element_list = new ElementList(this.elements, this.options);
@@ -87,6 +95,52 @@ define(function(require) {
 				expect(this.element_list.at(0).get('value')).to.equal('related_foo_value');
 				expect(this.element_list.at(1).get('value')).to.equal('related_bar_value');
 				expect(this.element_list.at(2).get('value')).to.equal('unchanged value');
+			});
+
+			describe('when related model changes', function() {
+				it('models should update their values', function() {
+					expect(this.element_list.at(0).get('value')).to.equal('related_foo_value');
+					expect(this.element_list.at(1).get('value')).to.equal('related_bar_value');
+					expect(this.element_list.at(2).get('value')).to.equal('unchanged value');
+					this.element_list.setRelatedModel(this.new_related_model);
+					expect(this.element_list.at(0).get('value')).to.equal('new_related_foo_value');
+					expect(this.element_list.at(1).get('value')).to.equal('new_related_bar_value');
+					expect(this.element_list.at(2).get('value')).to.equal('unchanged value');
+				});
+				it('models should stop listening to the old related model', function() {
+					this.element_list.setRelatedModel(this.new_related_model);
+					this.related_model.set({
+						'foo': 'updated_old_foo_value',
+						'bar': 'updated_old_bar_value',
+					});
+					expect(this.element_list.at(0).get('value')).to.equal('new_related_foo_value');
+					expect(this.element_list.at(1).get('value')).to.equal('new_related_bar_value');
+					expect(this.element_list.at(2).get('value')).to.equal('unchanged value');
+				});
+			});
+
+		});
+
+		describe('setRelatedModel', function() {
+			beforeEach(function() {
+				this.element_list = new ElementList(elements.objects);
+			});
+
+			it('should exist', function() {
+				expect(this.element_list.setRelatedModel).to.exist;
+			});
+			it('should be a function', function() {
+				expect(_.isFunction(this.element_list.setRelatedModel)).to.be.true;
+			});
+			it('should set element_list.related_model to a model if given a model', function() {
+				var model = new Backbone.Model();
+				this.element_list.setRelatedModel(model);
+				expect(this.element_list.related_model).to.equal(model);
+			});
+			it('should set element_list.related_model to undefined if given undefined', function() {
+				var model;
+				this.element_list.setRelatedModel(model);
+				expect(this.element_list.related_model).to.not.exist;
 			});
 
 		});

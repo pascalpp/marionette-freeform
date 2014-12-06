@@ -21,6 +21,11 @@ define(function(require) {
 	var begin = new RegExp('[^•]+\/\\* begin example \\*\/\n', 'gim');
 	var end = new RegExp('\\s+\/\\* end example \\*\/[^•]+', 'gim');
 
+	var view_model = new Backbone.Model({
+		example: 'related_model',
+		theme: 'inline'
+	});
+
 	var examples = {
 		'basic': {
 			label: 'Basic form',
@@ -44,11 +49,6 @@ define(function(require) {
 			template: ButtonFieldTemplate
 		},
 	};
-
-	var view_model = new Backbone.Model({
-		example: 'basic',
-		theme: 'inline'
-	});
 
 	var ExampleViewer = Marionette.LayoutView.extend({
 		template: 'script.example',

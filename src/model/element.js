@@ -73,6 +73,10 @@ define(function(require) {
 			};
 		},
 
+		elementEvents: {
+			'change:value': 'onChangeValue'
+		},
+
 		constructor: function(attrs, options) {
 			attrs = attrs || {};
 
@@ -85,11 +89,18 @@ define(function(require) {
 
 			Backbone.Model.apply(this, [attrs, options]);
 
-			if (! this.isValid()) {
+			if (! this.isValid({ initializing: true })) {
 				throw new Error(this.validationError);
 			}
 
 			this.setupRelatedModel();
+			this.listenTo(this, 'change:related_model change:related_key', this.setupRelatedModel);
+
+			this.listenTo(this, 'change:value', this.onChangeValue);
+
+			if (this.collection) {
+				this.listenTo(this.collection, 'change:related_model', this.setupRelatedModel);
+			}
 		},
 
 		setupButtonfieldAttributes: function(attrs) {
@@ -103,20 +114,55 @@ define(function(require) {
 		},
 
 		setupRelatedModel: function() {
-			this.getInitialValueFromRelatedModel();
-		},
+			// check for a related model
+			var related = this.getRelated();
+			if (! related) return;
 
-		getInitialValueFromRelatedModel: function() {
-			var related_model = this.getRelatedModel();
-			var related_key = this.get('related_key');
-			if (! related_model || ! related_key) return;
-			var value = related_model.get(related_key);
+			// stop listening to the previous related model
+			if (this.related_model) {
+				this.stopListening(this.related_model);
+			}
+
+			// assume the related model's value as our own
+			var value = related.model.get(related.key);
 			this.set('value', value);
+
+			// listen for value changes on the related model
+			this.listenTo(related.model, 'change:'+related.key, this.onRelatedModelChange);
+
+			// save a reference so we can stopListening if a new related_model is provided
+			this.related_model = related.model;
 		},
 
-		getRelatedModel: function() {
+		onChangeValue: function(model, value, options) {
+			if (options.from === 'related') return;
+			var invalid = this.validateAttribute('value', value);
+			this.set('error', invalid);
+
+			if (! invalid) {
+				var related = this.getRelated();
+				if (related) {
+					related.model.set(related.key, value);
+				}
+			}
+		},
+
+		onRelatedModelChange: function(model, value, options) {
+			this.set('value', value, { from: 'related' });
+		},
+
+		getRelated: function() {
 			var related_model = this.get('related_model') || this.collection && this.collection.related_model;
-			return related_model;
+			var related_key = this.get('related_key');
+
+			if (related_model && related_key) {
+				return {
+					model: related_model,
+					key: related_key
+				};
+			} else {
+				return false;
+			}
 		},
 
 		validators: {
@@ -136,10 +182,31 @@ define(function(require) {
 				if (! (related_model instanceof Backbone.Model)) {
 					return 'Related model must be a model.';
 				}
+			},
+			'value': function(value, options) {
+				if (options.initializing) return;
+				var error;
+
+				// validate against the related model first, if defined
+				var related = this.getRelated();
+				if (related) {
+					error = related.model.validateAttribute(related.key, value);
+					if (error) return error;
+				}
+
+				// validate with model validator
+				var validator = this.get('validator');
+				if (_.isFunction(validator)) {
+					error = validator.call(this, value);
+				}
+				return error;
+
 			}
 		}
 
 	});
+
+	Element.prototype.bindEntityEvents = Marionette.bindEntityEvents;
 
 	return Element;
 
