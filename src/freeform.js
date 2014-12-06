@@ -2,9 +2,10 @@ define(function(require) {
 	'use strict';
 
 	var
-	Form					= require('src/model/form'),
+	Model					= require('src/model/model'),
 	Element					= require('src/model/element'),
 	ElementList				= require('src/model/element_list'),
+	Form					= require('src/model/form'),
 	FormView				= require('src/view/form_view'),
 	ElementView				= require('src/view/element_view'),
 	InputViews				= require('src/view/input_view_types'),
@@ -12,9 +13,10 @@ define(function(require) {
 	log						= require('src/lib/log');
 
 	var FreeForm = {
-		Form: Form,
+		Model: Model,
 		Element: Element,
 		ElementList: ElementList,
+		Form: Form,
 		FormView: FormView,
 		ElementView: ElementView,
 		InputViews: InputViews,

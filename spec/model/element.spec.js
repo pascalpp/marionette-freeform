@@ -4,6 +4,10 @@ define(function(require) {
 	'use strict';
 
 	var Element = require('src/model/element');
+	var Model = require('src/model/model');
+
+	// apply per-attribute model validation
+	Model.mixin(Backbone.Model);
 
 	describe('Element', function() {
 
@@ -316,7 +320,9 @@ define(function(require) {
 			});
 			it('related value should get not updated when the element value is invalid', function() {
 				// add a validator that always returns an error message
-				this.related_model.validators.foo = function() { return 'invalid' };
+				this.related_model.validators = {
+					'foo': function() { return 'invalid'; }
+				};
 				this.element.set('value','element_changed_value');
 				expect(this.related_model.get('foo')).to.equal('related_value');
 			});
