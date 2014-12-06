@@ -314,6 +314,12 @@ define(function(require) {
 				this.element.set('value','element_changed_value');
 				expect(this.related_model.get('foo')).to.equal('element_changed_value');
 			});
+			it('related value should get not updated when the element value is invalid', function() {
+				// add a validator that always returns an error message
+				this.related_model.validators.foo = function() { return 'invalid' };
+				this.element.set('value','element_changed_value');
+				expect(this.related_model.get('foo')).to.equal('related_value');
+			});
 			it('should not throw an error if initial value is invalid', function() {
 				var element;
 				var error;
