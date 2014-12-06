@@ -1,11 +1,13 @@
 define(function(require) {
 	'use strict';
 
-	var Form = require('src/model/form'),
+	var Model = require('src/model/model'),
+		Form = require('src/model/form'),
 		FormView = require('src/view/form_view'),
 		Template = require('text!./template/button_field.html'),
 		log = require('src/lib/log'); /* jshint ignore: line */
-	require('src/model/validation');
+
+	Model.mixin(Backbone.Model);
 
 	/* begin example */
 	// a regex for email validation

@@ -1,10 +1,10 @@
 define(function(require) {
 	'use strict';
 
+	var Model = require('./model');
 	var ElementList = require('./element_list');
-	require('./validation');
 
-	var Form = Backbone.Model.extend({
+	var Form = Model.extend({
 
 		constructor: function(attrs, options) {
 			attrs = attrs || {};

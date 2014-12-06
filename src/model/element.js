@@ -1,7 +1,7 @@
 define(function(require) {
 	'use strict';
 
-	require('./validation');
+	var Model = require('./model');
 
 	var default_options = {
 		text: {
@@ -47,7 +47,7 @@ define(function(require) {
 		}
 	};
 
-	var Element = Backbone.Model.extend({
+	var Element = Model.extend({
 		defaults: function() {
 			return {
 				type: null,
@@ -189,7 +189,7 @@ define(function(require) {
 
 				// validate against the related model first, if defined
 				var related = this.getRelated();
-				if (related) {
+				if (related && related.model.validateAttribute) {
 					error = related.model.validateAttribute(related.key, value);
 					if (error) return error;
 				}
