@@ -2,7 +2,7 @@ marionette-freeform TODO
 ==========
 
 - [x] button elements (submit, reset, generic?)
-- [ ] TESTS
+- [x] setup test framework
 - [ ] radio button elements
 - [ ] validator options
     - e.g. options.strict
