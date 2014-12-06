@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+var unwrap = require("../unwrap.js")
+
+unwrap(process.argv[2], function(e, unwrapped) {
+  if (e) {
+    console.log(e);
+    process.exit(1);
+  }
+
+  console.log(unwrapped);
+  process.exit(0);
+});

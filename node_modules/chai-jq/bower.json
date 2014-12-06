@@ -1,0 +1,36 @@
+{
+  "name": "chai-jq",
+  "version": "0.0.8",
+  "homepage": "https://github.com/FormidableLabs/chai-jq",
+  "authors": [
+    "Ryan Roemer <ryan.roemer@formidablelabs.com>"
+  ],
+  "description": "An alternate jQuery assertion library for Chai.",
+  "main": "chai-jq.js",
+  "keywords": [
+    "test",
+    "assertion",
+    "assert",
+    "chai",
+    "jquery"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "*.html",
+    "gulpfile.js",
+    "package.json",
+    "node_modules",
+    "bower_components",
+    "test",
+    "_templates"
+  ],
+  "devDependencies": {
+    "mocha": "1.13.0",
+    "sinon": "http://sinonjs.org/releases/sinon-1.7.3.js",
+    "chai": "1.8.1",
+    "jquery": "2.1.1",
+    "requirejs": "2.1.9",
+    "pure": "0.3.0"
+  }
+}
