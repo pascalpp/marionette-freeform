@@ -8,6 +8,10 @@ define(function(require) {
 			value: '',
 			show_label_before: true
 		},
+		password: {
+			value: '',
+			show_label_before: true
+		},
 		textarea: {
 			value: '',
 			show_label_before: true
@@ -25,6 +29,18 @@ define(function(require) {
 			show_label_before: true
 		},
 		submit: {
+			label: 'Submit',
+			show_label_before: false,
+			show_label_after: false,
+			show_error: false
+		},
+		reset: {
+			label: 'Reset',
+			show_label_before: false,
+			show_label_after: false,
+			show_error: false
+		},
+		button: {
 			show_label_before: false,
 			show_label_after: false,
 			show_error: false
@@ -59,11 +75,44 @@ define(function(require) {
 
 		constructor: function(attrs, options) {
 			attrs = attrs || {};
-			if (! attrs.type) throw new Error('Element requires a type.');
 
 			var defaults = default_options[attrs.type] || {};
 			_.defaults(attrs, defaults);
+
+			if (attrs.type === 'buttonfield') {
+				attrs = this.setupButtonfieldAttributes(attrs);
+			}
+
 			Backbone.Model.apply(this, [attrs, options]);
+
+			if (! this.isValid()) {
+				throw new Error(this.validationError);
+			}
+		},
+
+		setupButtonfieldAttributes: function(attrs) {
+			if (! (attrs.input instanceof Element)) {
+				attrs.input = new Element(attrs.input);
+			}
+			if (! (attrs.button instanceof Element)) {
+				attrs.button = new Element(attrs.button);
+			}
+			return attrs;
+		},
+
+		validators: {
+			'type': function(type) {
+				if (! type) throw new Error('Element requires a type.');
+
+				if (type === 'buttonfield') {
+					var input = this.get('input');
+					var button = this.get('button');
+					if (! input || ! button) {
+						return 'Buttonfield element requires an input and a button.'
+					}
+				}
+
+			}
 		}
 
 	});

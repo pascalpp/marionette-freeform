@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>marionette-freeform spec runner</title>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+
+    <div id="mocha"></div>
+    <div id="fixtures" hidden></div>
+
+
+<script src="../bower_components/requirejs/require.js"></script>
+<script>window.baseUrl = '../';</script>
+<script src="../requirejs-config.js"></script>
+
+<script>
+require(['spec/setup/browser'], function() {
+	var tests = [
+		'spec/model.element.spec',
+	];
+	require(tests, function() {
+		mocha.loaded();
+	});
+});
+
+</script>
+
+
+</body>
+</html>

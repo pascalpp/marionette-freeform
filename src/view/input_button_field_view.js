@@ -24,17 +24,7 @@ define(function(require) {
 			InputViews = require('./input_view_types');
 
 			var input = this.model.get('input');
-			if (! (input instanceof Element)) {
-				input = new Element(input);
-				this.model.set('input', input);
-			}
 			this.listenTo(input, 'change:value', this.onChangeInputValue);
-
-			var button = this.model.get('button');
-			if (! (button instanceof Element)) {
-				button = new Element(button);
-				this.model.set('button', button);
-			}
 		},
 
 		onRender: function() {

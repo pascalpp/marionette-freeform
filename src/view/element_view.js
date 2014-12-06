@@ -61,7 +61,6 @@ define(function(require) {
 				// get value from the related model
 				model.set('value', related_model.get(related_key));
 			}
-
 		},
 
 
