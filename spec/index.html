@@ -20,7 +20,9 @@
 <script>
 require(['spec/setup/browser'], function() {
 	var tests = [
-		'spec/model.element.spec',
+		'spec/model/element.spec',
+		'spec/model/element_list.spec',
+		'spec/model/form.spec',
 	];
 	require(tests, function() {
 		mocha.loaded();

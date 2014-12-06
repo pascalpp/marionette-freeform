@@ -57,6 +57,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: [
+          'demo/**/*.js',
           'src/**/*.js',
           // Exclude the following
           '!foo/**/*',

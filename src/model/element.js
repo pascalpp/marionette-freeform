@@ -88,6 +88,8 @@ define(function(require) {
 			if (! this.isValid()) {
 				throw new Error(this.validationError);
 			}
+
+			this.setupRelatedModel();
 		},
 
 		setupButtonfieldAttributes: function(attrs) {
@@ -100,6 +102,23 @@ define(function(require) {
 			return attrs;
 		},
 
+		setupRelatedModel: function() {
+			this.getInitialValueFromRelatedModel();
+		},
+
+		getInitialValueFromRelatedModel: function() {
+			var related_model = this.getRelatedModel();
+			var related_key = this.get('related_key');
+			if (! related_model || ! related_key) return;
+			var value = related_model.get(related_key);
+			this.set('value', value);
+		},
+
+		getRelatedModel: function() {
+			var related_model = this.get('related_model') || this.collection && this.collection.related_model;
+			return related_model;
+		},
+
 		validators: {
 			'type': function(type) {
 				if (! type) throw new Error('Element requires a type.');
@@ -108,10 +127,15 @@ define(function(require) {
 					var input = this.get('input');
 					var button = this.get('button');
 					if (! input || ! button) {
-						return 'Buttonfield element requires an input and a button.'
+						return 'Buttonfield element requires an input and a button.';
 					}
 				}
-
+			},
+			'related_model': function(related_model) {
+				if (! related_model) return;
+				if (! (related_model instanceof Backbone.Model)) {
+					return 'Related model must be a model.';
+				}
 			}
 		}
 
