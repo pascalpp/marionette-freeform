@@ -1,6 +1,4 @@
-.freeform-inline,
-.freeform-mixed,
-.freeform-stacked {
+.freeform {
 
 	.element  {
 		display: block;
@@ -83,40 +81,6 @@
 		textarea {
 			border: 1px solid rgba(153,0,0,0.5);
 		}
-	}
-
-	.element.type-text,
-	.element.type-textarea,
-	.element.type-select {
-		.input-region {
-			width: 280px;
-		}
-		label.label {
-			width: 140px;
-			text-align: right;
-			padding-right: 5px;
-		}
-	}
-
-	.element.type-textarea {
-		> * {
-			vertical-align: top;
-		}
-		label {
-			margin-top: 5px;
-		}
-	}
-
-	.element.type-checkbox {
-		padding-left: 146px;
-		input {
-			margin-right: 0.3em;
-		}
-	}
-
-	.element.type-button,
-	.element.type-buttonset {
-		padding-left: 146px;
 	}
 
 	.element.type-buttonset {

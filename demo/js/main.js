@@ -22,7 +22,7 @@ define(function(require) {
 	var end = new RegExp('\\s+\/\\* end example \\*\/[^•]+', 'gim');
 
 	var view_model = new Backbone.Model({
-		example: 'related_model',
+		example: 'basic',
 		theme: 'inline'
 	});
 
@@ -79,6 +79,11 @@ define(function(require) {
 		},
 		setTheme: function() {
 			var theme = view_model.get('theme');
+			if (theme === 'unstyled') {
+				this.ui.form.removeClass('freeform');
+			} else {
+				this.ui.form.addClass('freeform');
+			}
 			this.ui.form.setPrefixedClassname('freeform', theme);
 		},
 		showDescription: function() {
@@ -158,6 +163,7 @@ define(function(require) {
 							{ value: 'inline', label: 'Inline' },
 							{ value: 'stacked', label: 'Stacked' },
 							{ value: 'mixed', label: 'Mixed' },
+							{ value: 'unstyled', label: 'Unstyled' },
 						]
 					}
 				],

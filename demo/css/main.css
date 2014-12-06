@@ -1,4 +1,8 @@
 @import url(highlight/github.css);
+@import url(theme/freeform-common.css);
+@import url(theme/freeform-inline.css);
+@import url(theme/freeform-mixed.css);
+@import url(theme/freeform-stacked.css);
 
 body {
 	border: 0;
@@ -50,7 +54,7 @@ article code {
 	max-width: 400px;
 }
 
-.head aside em {
+.head em {
 	font-size: 14px;
 	color: #666;
 }
