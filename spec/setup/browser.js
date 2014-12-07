@@ -1,4 +1,4 @@
-/* global mocha, chai, sinon, before, beforeEach, afterEach */
+/* global mocha, chai, sinon, before, beforeEach, afterEach, after */
 define(function(require) {
 	'use strict';
 
@@ -41,6 +41,18 @@ define(function(require) {
 			window.location.hash = originalHash;
 			Backbone.history.stop();
 			Backbone.history.handlers.length = 0;
+		});
+
+		after(function() {
+			var stats = $('#mocha-stats');
+			var count = + stats.find('.failures em').text();
+			if (count > 0) stats.addClass('failed');
+			stats.find('.progress').on('click', function() {
+				window.location = '/spec/';
+			});
+
+			stats.show();
+
 		});
 	};
 

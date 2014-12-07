@@ -12,6 +12,7 @@ define(function(require) {
 
 	var ElementView = Marionette.LayoutView.extend({
 		tagName: 'fieldset',
+		className: 'element',
 		template: _.template(Template),
 
 		regions: {
@@ -43,21 +44,18 @@ define(function(require) {
 			this.bindEntityEvents(this, this.elementViewEvents);
 			this.bindEntityEvents(model, this.elementModelEvents);
 
-			window['el_'+this.type] = this; // DNR
-
 		},
 
 		onAll: function(event_name) {
 			//log(event_name, arguments);
 		},
-		onRelatedModelChange: function(model, value, options) {
-			this.model.set('value', value);
-		},
 		onBeforeElementRender: function() {
 
 		},
 		onElementRender: function() {
-			this.$el.addClass('element').setPrefixedClassname('type', this.type);
+			var className = _.result(this, 'className');
+			if (className) this.$el.addClass(className);
+			this.$el.setPrefixedClassname('type', this.type);
 			if (_(['submit', 'reset']).contains(this.type)) {
 				this.$el.addClass('type-button');
 			}
@@ -77,16 +75,20 @@ define(function(require) {
 		},
 
 		onChangeError: function(model, error, options) {
+			var class_prefix = _.result(this, 'className');
+			var error_class = class_prefix + '-' + this.model.get('error_class');
+
 			if (error) {
 				var error_view = new ErrorView({
 					for: this.model.get('id'),
-					error: error
+					error: error,
+					className: this.model.get('error_class')
 				});
 				this.error_region.show(error_view);
-				this.$el.addClass('element-'+this.model.get('error_class'));
+				this.$el.addClass(error_class);
 			} else {
 				this.error_region.empty();
-				this.$el.removeClass('element-'+this.model.get('error_class'));
+				this.$el.removeClass(error_class);
 			}
 		}
 
