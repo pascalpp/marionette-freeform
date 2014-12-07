@@ -3,6 +3,7 @@ define(function(require) {
 	'use strict';
 
 	var
+	Marionette				= require('marionette'),
 	Form					= require('src/model/form'),
 	FormView				= require('src/view/form_view'),
 	BasicExample			= require('./examples/basic'),
