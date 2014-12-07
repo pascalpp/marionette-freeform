@@ -2,6 +2,7 @@ define(function(require) {
 	'use strict';
 
 	var Marionette = require('marionette');
+	var Element = require('src/model/element');
 	var InputButtonView = require('./input_button_view');
 
 
@@ -13,7 +14,10 @@ define(function(require) {
 		constructor: function(options) {
 			Marionette.CollectionView.call(this, options);
 
-			// convert model's `buttons` attribute to a collection
+			// validate model
+			if (! (this.model instanceof Element)) throw new Error('InputView requires an Element model.');
+
+			// use model's buttons as this.collection
 			this.collection = this.model.get('buttons');
 
 			// listen for external changes to the model

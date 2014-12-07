@@ -439,7 +439,6 @@ define(function(require) {
 				var related_model = new RelatedModel({
 					foo: 'bar',
 				});
-				this.validatorSpy = this.sinon.spy(related_model.validators, 'foo');
 				var options = {
 					type: 'text',
 					related_key: 'foo',
@@ -468,6 +467,7 @@ define(function(require) {
 				var related_model = new RelatedModel({
 					foo: 'bar',
 				});
+				this.validator_spy = this.sinon.spy(related_model.validators, 'foo');
 				var options = {
 					type: 'text',
 					related_key: 'foo',
@@ -479,7 +479,8 @@ define(function(require) {
 					error = e;
 				}
 
-				element.set('value','foo');
+				element.set('value', 'foo');
+				expect(this.validator_spy).to.have.been.calledWith('foo');
 				expect(element.get('error')).to.equal('Error message from related model.');
 			});
 

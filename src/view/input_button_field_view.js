@@ -2,10 +2,9 @@ define(function(require) {
 	'use strict';
 
 	var Marionette = require('marionette');
+	var Element = require('src/model/element');
 	var log = require('src/lib/log'); /* jshint ignore: line */
 
-
-	var InputViewTypes;
 
 	var InputButtonFieldView = Marionette.ItemView.extend({
 
@@ -19,7 +18,8 @@ define(function(require) {
 		},
 
 		initialize: function() {
-			InputViewTypes = Marionette.FreeForm.InputViewTypes;
+			// validate model
+			if (! (this.model instanceof Element)) throw new Error('InputView requires an Element model.');
 
 			var input = this.model.get('input');
 			this.listenTo(input, 'change:value', this.onChangeInputValue);
@@ -27,7 +27,9 @@ define(function(require) {
 
 		onRender: function() {
 			var input = this.model.get('input');
+			var InputViewTypes = Marionette.FreeForm.InputViewTypes;
 			var InputView = InputViewTypes[input.get('type')];
+
 			this.input_view = new InputView({
 				el: this.ui.input,
 				model: input

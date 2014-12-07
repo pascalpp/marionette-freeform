@@ -24,9 +24,9 @@ define(function(require) {
 			case 'select':
 				extras = {
 					values: [
+						{ value: '', label: 'None' },
 						{ value: 'foo', label: 'Foo' },
 						{ value: 'bar', label: 'Bar' },
-						{ value: 'baz', label: 'Baz' },
 					]
 				};
 				break;

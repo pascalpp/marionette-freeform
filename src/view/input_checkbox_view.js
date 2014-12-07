@@ -20,6 +20,9 @@ define(function(require) {
 
 		getInputValue: function() {
 			return this.$el.is(':checked');
+		},
+		setInputValue: function(value) {
+			return this.$el.prop('checked', !! value);
 		}
 
 	});

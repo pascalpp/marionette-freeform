@@ -2,6 +2,7 @@ define(function(require) {
 	'use strict';
 
 	var Marionette = require('marionette');
+	var Element = require('src/model/element');
 	var InputAttributes = require('./input_attributes');
 
 
@@ -13,6 +14,9 @@ define(function(require) {
 
 		constructor: function() {
 			Marionette.ItemView.apply(this, arguments);
+
+			// validate model
+			if (! (this.model instanceof Element)) throw new Error('InputView requires an Element model.');
 
 			// listen for external changes to the model
 			this.listenTo(this.model, 'change:value', this.onModelChangeValue);
@@ -35,10 +39,13 @@ define(function(require) {
 		getInputValue: function() {
 			return this.$el.val();
 		},
+		setInputValue: function(value) {
+			this.$el.val(value);
+		},
 
 		onModelChangeValue: function(model, value, options) {
 			if (options.from !== this) {
-				this.$el.val(value);
+				this.setInputValue(value);
 			}
 		}
 	});

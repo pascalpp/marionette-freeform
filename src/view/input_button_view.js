@@ -2,6 +2,7 @@ define(function(require) {
 	'use strict';
 
 	var Marionette = require('marionette');
+	var Element = require('src/model/element');
 	var InputAttributes = require('./input_attributes');
 
 
@@ -15,6 +16,9 @@ define(function(require) {
 
 		constructor: function() {
 			Marionette.ItemView.apply(this, arguments);
+
+			// validate model
+			if (! (this.model instanceof Element)) throw new Error('InputView requires an Element model.');
 
 			// these steps allow the view to consume an existing dom element
 			this.listenTo(this, 'render', this.setAttributes);
