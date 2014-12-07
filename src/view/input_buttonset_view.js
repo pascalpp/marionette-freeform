@@ -16,12 +16,6 @@ define(function(require) {
 
 			// convert model's `buttons` attribute to a collection
 			this.collection = this.model.get('buttons');
-			if (_.isArray(this.collection)) {
-				this.collection = new ElementList(this.collection);
-			}
-			if (! (this.collection instanceof ElementList)) {
-				throw new Error('InputButtonsetView requires an array or ElementList of buttons.');
-			}
 
 			// listen for external changes to the model
 			this.listenTo(this.model, 'change:value', this.onModelChangeValue);
