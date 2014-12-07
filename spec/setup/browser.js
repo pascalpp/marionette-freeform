@@ -48,7 +48,8 @@ define(function(require) {
 			var count = + stats.find('.failures em').text();
 			if (count > 0) stats.addClass('failed');
 			stats.find('.progress').on('click', function() {
-				window.location = '/spec/';
+				var url = window.location.href.replace(/\/spec\/?.*/,'/spec');
+				window.location = url;
 			});
 
 			stats.show();
