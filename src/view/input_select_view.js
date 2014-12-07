@@ -2,6 +2,7 @@ define(function(require) {
 	'use strict';
 
 	var Marionette = require('marionette');
+	var Element = require('src/model/element');
 	var InputAttributes = require('./input_attributes');
 
 
@@ -38,6 +39,9 @@ define(function(require) {
 
 		constructor: function(options) {
 			Marionette.CollectionView.call(this, options);
+
+			// validate model
+			if (! (this.model instanceof Element)) throw new Error('InputView requires an Element model.');
 
 			// convert model's `values` attribute to a collection
 			this.collection = this.model.get('values');
@@ -79,6 +83,9 @@ define(function(require) {
 
 		getInputValue: function() {
 			return this.$el.val();
+		},
+		setInputValue: function(value) {
+			return this.$el.val(value);
 		},
 
 		onModelChangeValue: function(model, value, options) {
