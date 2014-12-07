@@ -18,7 +18,7 @@ module.exports = function(grunt) {
           mocha: require('mocha')
         },
         src: [
-          'spec/*.spec.js'
+          'spec/**/*.spec.js'
         ]
       }
     },
@@ -44,8 +44,36 @@ module.exports = function(grunt) {
           expand: true,
           src: [
             'src/**/*.js',
+            'spec/**/*.js',
+            'demo/**/*.js',
             // Exclude the following
-            '!foo/**/*',
+            '!demo/js/highlight/**/*',
+          ]
+        }]
+      },
+      src: {
+        files: [{
+          expand: true,
+          src: [
+            'src/**/*.js'
+          ]
+        }]
+      },
+      spec: {
+        files: [{
+          expand: true,
+          src: [
+            'spec/**/*.js'
+          ]
+        }]
+      },
+      demo: {
+        files: [{
+          expand: true,
+          src: [
+            'demo/**/*.js',
+            // Exclude the following
+            '!**/js/highlight/**/*',
           ]
         }]
       },
@@ -57,8 +85,9 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: [
-          'demo/**/*.js',
-          'src/**/*.js',
+		  'src/**/*.js',
+		  'spec/**/*.js',
+		  'demo/**/*.js',
           // Exclude the following
           '!foo/**/*',
         ],
