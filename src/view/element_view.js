@@ -75,16 +75,20 @@ define(function(require) {
 		},
 
 		onChangeError: function(model, error, options) {
+			var class_prefix = _.result(this, 'className');
+			var error_class = class_prefix + '-' + this.model.get('error_class');
+
 			if (error) {
 				var error_view = new ErrorView({
 					for: this.model.get('id'),
-					error: error
+					error: error,
+					className: this.model.get('error_class')
 				});
 				this.error_region.show(error_view);
-				this.$el.addClass('element-'+this.model.get('error_class'));
+				this.$el.addClass(error_class);
 			} else {
 				this.error_region.empty();
-				this.$el.removeClass('element-'+this.model.get('error_class'));
+				this.$el.removeClass(error_class);
 			}
 		}
 

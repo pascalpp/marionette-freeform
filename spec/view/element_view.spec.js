@@ -51,14 +51,26 @@ define(function(require) {
 				expect(this.error).to.be.null;
 			});
 			it('should set the default element className on itself', function() {
-				expect('TODO').to.not.exist;
+				var element = new Element({ type: 'text' });
+				var options = { model: element };
+				var element_view = new ElementView(options);
+				element_view.render();
+				expect(element_view.$el).to.exist;
+				expect(element_view.$el.hasClass('element')).to.be.true;
 			});
 			it('should set a custom className on itself', function() {
-				expect('TODO').to.not.exist;
+				var element = new Element({ type: 'text' });
+				var options = { model: element, className: 'foo' };
+				var element_view = new ElementView(options);
+				element_view.render();
+				expect(element_view.$el).to.exist;
+				expect(element_view.$el.hasClass('element')).to.be.false;
+				expect(element_view.$el.hasClass('foo')).to.be.true;
 			});
 			it('should set a classname on itself matching the element type', function() {
+				// this test is performed on every element type
 				_.each(elements.types, function(type) {
-					var element = new Element({ type: type });
+					var element = new Element(elements.index[type]);
 					var options = { model: element };
 					var element_view = new ElementView(options);
 					element_view.render();
@@ -66,26 +78,107 @@ define(function(require) {
 					expect(element_view.$el.hasClass('type-'+type)).to.be.true;
 				});
 			});
-			it('should set classname `type-button` on itself for a submit element', function() {
-				expect(this.element_view.$el.hasClass('type-button')).to.be.true;
+			it('should set classname ‘type-button’ on itself for a submit element', function() {
+				var element = new Element({ type: 'submit' });
+				var options = { model: element };
+				var element_view = new ElementView(options);
+				element_view.render();
+				expect(element_view.$el).to.exist;
+				expect(element_view.$el.hasClass('type-button')).to.be.true;
+			});
+			it('should set classname ‘type-button’ on itself for a reset element', function() {
+				var element = new Element({ type: 'reset' });
+				var options = { model: element };
+				var element_view = new ElementView(options);
+				element_view.render();
+				expect(element_view.$el).to.exist;
+				expect(element_view.$el.hasClass('type-button')).to.be.true;
 			});
 			it('should contain an html input matching its element type', function() {
-				expect('TODO').to.not.exist;
+				// this test is performed on every element type
+				_.each(elements.types, function(type) {
+					var element = new Element(elements.index[type]);
+					var options = { model: element };
+					var element_view = new ElementView(options);
+					element_view.render();
+					expect(element_view.$).to.exist;
+					expect(elements.selectors[type]).to.exist;
+					var $input = element_view.$(elements.selectors[type]);
+					expect($input).to.exist;
+					expect($input.length).to.equal(1);
+				});
 			});
 
 			describe('when the element has an error', function() {
-				it('should set an error class on itself', function() {
-					expect('TODO').to.not.exist;
+				beforeEach(function() {
+					this.element = new Element({
+						type: 'text',
+						validator: function(value) {
+							if (value === 'foo') return 'Invalid foo message.';
+						}
+					});
+					this.options = { model: this.element };
 				});
-				it('should show an error in the DOM', function() {
-					expect('TODO').to.not.exist;
+				it('should set the default error class on itself', function() {
+					var default_error_class = 'element-error';
+					var element_view = new ElementView(this.options);
+					element_view.render();
+					expect(element_view.$el.hasClass(default_error_class)).to.be.false;
+					this.element.set('value', 'foo');
+					expect(element_view.$el.hasClass(default_error_class)).to.be.true;
+				});
+				it('should set a custom error class on itself', function() {
+					var default_error_class = 'element-error';
+					var custom_error_class = 'myelement-myerror';
+					this.options.className = 'myelement';
+					this.element.set('error_class', 'myerror');
+					var element_view = new ElementView(this.options);
+					element_view.render();
+					expect(element_view.$el.hasClass(default_error_class)).to.be.false;
+					expect(element_view.$el.hasClass(custom_error_class)).to.be.false;
+					this.element.set('value', 'foo');
+					expect(element_view.$el.hasClass(default_error_class)).to.be.false;
+					expect(element_view.$el.hasClass(custom_error_class)).to.be.true;
+				});
+				it('should show the error message in a label with the default error class', function() {
+					var default_error_selector = 'label.error';
+					var element_view = new ElementView(this.options);
+					element_view.render();
+					expect(element_view.$(default_error_selector).length).to.equal(0);
+					this.element.set('value', 'foo');
+					expect(element_view.$(default_error_selector).length).to.equal(1);
+					expect(element_view.$(default_error_selector).text()).to.equal('Invalid foo message.');
+				});
+				it('should show the error message in a label with a custom error class', function() {
+					var default_error_selector = 'label.error';
+					var custom_error_selector = 'label.myerror';
+					this.element.set('error_class', 'myerror');
+					var element_view = new ElementView(this.options);
+					element_view.render();
+					expect(element_view.$(default_error_selector).length).to.equal(0);
+					expect(element_view.$(custom_error_selector).length).to.equal(0);
+					this.element.set('value', 'foo');
+					expect(element_view.$(default_error_selector).length).to.equal(0);
+					expect(element_view.$(custom_error_selector).length).to.equal(1);
+					expect(element_view.$(custom_error_selector).text()).to.equal('Invalid foo message.');
 				});
 				describe('when the element error is removed', function() {
-					it('should remove the error class from itself', function() {
-						expect('TODO').to.not.exist;
+					beforeEach(function() {
+						this.element_view = new ElementView(this.options);
+						this.element_view.render();
+						this.element.set('value', 'foo');
 					});
-					it('should remove the error from the DOM', function() {
-						expect('TODO').to.not.exist;
+					it('should remove the error class from itself', function() {
+						var default_error_class = 'element-error';
+						expect(this.element_view.$el.hasClass(default_error_class)).to.be.true;
+						this.element.set('value', 'bar');
+						expect(this.element_view.$el.hasClass(default_error_class)).to.be.false;
+					});
+					it('should remove the error label from the DOM', function() {
+						var default_error_selector = 'label.error';
+						expect(this.element_view.$(default_error_selector).length).to.equal(1);
+						this.element.set('value', 'bar');
+						expect(this.element_view.$(default_error_selector).length).to.equal(0);
 					});
 				});
 			});
