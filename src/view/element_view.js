@@ -12,6 +12,7 @@ define(function(require) {
 
 	var ElementView = Marionette.LayoutView.extend({
 		tagName: 'fieldset',
+		className: 'element',
 		template: _.template(Template),
 
 		regions: {
@@ -43,21 +44,18 @@ define(function(require) {
 			this.bindEntityEvents(this, this.elementViewEvents);
 			this.bindEntityEvents(model, this.elementModelEvents);
 
-			window['el_'+this.type] = this; // DNR
-
 		},
 
 		onAll: function(event_name) {
 			//log(event_name, arguments);
 		},
-		onRelatedModelChange: function(model, value, options) {
-			this.model.set('value', value);
-		},
 		onBeforeElementRender: function() {
 
 		},
 		onElementRender: function() {
-			this.$el.addClass('element').setPrefixedClassname('type', this.type);
+			var className = _.result(this, 'className');
+			if (className) this.$el.addClass(className);
+			this.$el.setPrefixedClassname('type', this.type);
 			if (_(['submit', 'reset']).contains(this.type)) {
 				this.$el.addClass('type-button');
 			}

@@ -1,22 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>marionette-freeform spec runner</title>
-    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
-    <style type="text/css">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>marionette-freeform spec runner</title>
+<link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+<style type="text/css">
 
-	#mocha-stats {
-		right: auto;
-		left: 15px;	
-	}
-	#mocha-stats .progress {
-		float: left;
-	}
+body {
+	margin: 0;
+	padding: 0;
+}
+#mocha {
+	margin: 75px 15px;
+}
+ul#mocha-stats {
+	right: auto;
+	left: 0px;
+	top: 0px;
+	font-size: 14px;
+	padding: 10px;
+	width: 100%;
+	display: none;
+	background-color: #fff;
+	box-shadow: 0 0 50px 20px #eee;
+}
+#mocha-stats em {
+	font-style: normal;
+}
+#mocha-stats li {
+	background-color: #eee;
+	padding: 0;
+	padding: 4px 10px;
+	border-radius: 3px;
+}
+#mocha-stats .progress {
+	float: left;
+	background-color: transparent;
+	margin-bottom: -20px;
+	margin-top: -6px;
+	cursor: pointer;
+}
+#mocha-stats.failed .progress {
+	opacity: 0.2;
+}
+#mocha-stats.failed .failures {
+	font-weight: bold;
+	background-color: #cc0000;
+	color: #ffffff;
+}
+#mocha-stats.failed .failures em {
+	color: #ffffff;
+}
 
-	</style>
+</style>
 
 </head>
 <body>

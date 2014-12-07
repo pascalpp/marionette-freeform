@@ -14,15 +14,27 @@ define(function(require) {
 	];
 
 	var generateElementOptions = function(type) {
-		if (type === 'buttonfield') {
-			return {
-				type: type,
-				input: { type: 'text' },
-				button: { type: 'submit' }
-			};
-		} else {
-			return { type: type };
+		var object = { type: type };
+		var extras = {};
+		switch(type) {
+			case 'buttonfield':
+				extras = {
+					input: { type: 'text' },
+					button: { type: 'submit' }
+				};
+				break;
+			case 'select':
+				extras = {
+					values: [
+						{ value: 'foo', label: 'Foo' },
+						{ value: 'bar', label: 'Bar' },
+						{ value: 'baz', label: 'Baz' },
+					]
+				};
+				break;
 		}
+		_.extend(object, extras);
+		return object;
 	};
 
 	var objects = _.map(types, generateElementOptions);

@@ -52,6 +52,62 @@ define(function(require) {
 		}
 	};
 
+	// external object for validating Element attributes during construction
+	var Attributes = {
+
+		validate: function(attrs) {
+			attrs = attrs || {};
+			if (! attrs.type) throw new Error('Element requires a type.');
+
+			var defaults = default_options[attrs.type] || {};
+			_.defaults(attrs, defaults);
+
+			attrs = this.validateButtonfieldAttributes(attrs);
+			attrs = this.validateSelectAttributes(attrs);
+			attrs = this.validateRelatedModelAttribute(attrs);
+
+			return attrs;
+		},
+
+		validateButtonfieldAttributes: function(attrs) {
+			if (attrs.type !== 'buttonfield') return attrs;
+			if (! attrs.input || ! attrs.button) {
+				throw new Error('Buttonfield Element requires an input and a button.');
+			}
+
+			// ensure that `input` and `button` are Element models
+			if (! (attrs.input instanceof Element)) {
+				attrs.input = new Element(attrs.input);
+			}
+			if (! (attrs.button instanceof Element)) {
+				attrs.button = new Element(attrs.button);
+			}
+			return attrs;
+		},
+
+		validateSelectAttributes: function(attrs) {
+			if (attrs.type !== 'select') return attrs;
+			if (! attrs.values) throw new Error('Select Element requires a list of values.')
+
+			// ensure that `values` is a collection
+			if (_.isArray(attrs.values)) {
+				attrs.values = new Backbone.Collection(attrs.values);
+			}
+			if (! (attrs.values instanceof Backbone.Collection)) {
+				throw new Error('Select Element requires a list of values.');
+			}
+			return attrs;
+		},
+
+		validateRelatedModelAttribute: function(attrs) {
+			if (! attrs.related_model) return attrs;
+			if (! (attrs.related_model instanceof Backbone.Model)) {
+				throw new Error('Related model must be a model.');
+			}
+			return attrs;
+		}
+	}
+
 	var Element = Model.extend({
 		defaults: function() {
 			return {
@@ -83,39 +139,17 @@ define(function(require) {
 		},
 
 		constructor: function(attrs, options) {
-			attrs = attrs || {};
-
-			var defaults = default_options[attrs.type] || {};
-			_.defaults(attrs, defaults);
-
-			if (attrs.type === 'buttonfield') {
-				attrs = this.setupButtonfieldAttributes(attrs);
-			}
+			attrs = Attributes.validate(attrs);
 
 			Backbone.Model.apply(this, [attrs, options]);
 
-			if (! this.isValid({ initializing: true })) {
-				throw new Error(this.validationError);
-			}
-
 			this.setupRelatedModel();
 			this.listenTo(this, 'change:related_model change:related_key', this.setupRelatedModel);
-
 			this.listenTo(this, 'change:value', this.onChangeValue);
 
 			if (this.collection) {
 				this.listenTo(this.collection, 'change:related_model', this.setupRelatedModel);
 			}
-		},
-
-		setupButtonfieldAttributes: function(attrs) {
-			if (! (attrs.input instanceof Element)) {
-				attrs.input = new Element(attrs.input);
-			}
-			if (! (attrs.button instanceof Element)) {
-				attrs.button = new Element(attrs.button);
-			}
-			return attrs;
 		},
 
 		setupRelatedModel: function() {
@@ -178,25 +212,7 @@ define(function(require) {
 		},
 
 		validators: {
-			'type': function(type) {
-				if (! type) throw new Error('Element requires a type.');
-
-				if (type === 'buttonfield') {
-					var input = this.get('input');
-					var button = this.get('button');
-					if (! input || ! button) {
-						return 'Buttonfield element requires an input and a button.';
-					}
-				}
-			},
-			'related_model': function(related_model) {
-				if (! related_model) return;
-				if (! (related_model instanceof Backbone.Model)) {
-					return 'Related model must be a model.';
-				}
-			},
 			'value': function(value, options) {
-				if (options.initializing) return;
 				var error;
 
 				// validate against the related model first, if defined
@@ -212,7 +228,6 @@ define(function(require) {
 					error = validator.call(this, value);
 				}
 				return error;
-
 			}
 		}
 

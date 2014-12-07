@@ -81,19 +81,121 @@ define(function(require) {
 		});
 
 		describe('with type select', function() {
-			beforeEach(function() {
-				this.options = { type: 'select' };
-				this.element = new Element(this.options);
-			});
+			describe('with no values', function() {
+				beforeEach(function() {
+					this.error = null;
+					this.options = {
+						type: 'select',
+					};
+					try {
+						this.element = new Element(this.options);
+					} catch(e) {
+						this.error = e;
+					}
+				});
 
-			it('should be valid', function() {
-				expect(this.element.isValid()).to.be.true;
+				it('should not exist', function() {
+					expect(this.element).to.not.exist;
+				});
+				it('should throw an error', function() {
+					expect(this.error).to.exist;
+					expect(this.error.message).to.equal('Select Element requires a list of values.');
+				});
 			});
-			it('should have a default value of ""', function() {
-				expect(this.element.get('value')).to.equal('');
+			describe('with an empty values array - what should we do? this is allowed now, but not sure if it should be', function() {
+				beforeEach(function() {
+					this.error = null;
+					this.options = {
+						type: 'select',
+						values: []
+					};
+					try {
+						this.element = new Element(this.options);
+					} catch(e) {
+						this.error = e;
+					}
+				});
+
+				it('should exist', function() {
+					expect(this.element).to.exist;
+				});
+				it('should not throw an error', function() {
+					expect(this.error).to.not.exist;
+				});
+				it('should be valid', function() {
+					expect(this.element.isValid()).to.be.true;
+				});
+				it('should have a default value of ""', function() {
+					expect(this.element.get('value')).to.equal('');
+				});
+				it('should have show_label_before set to true', function() {
+					expect(this.element.get('show_label_before')).to.be.true;
+				});			});
+			describe('with a values array', function() {
+				beforeEach(function() {
+					this.error = null;
+					this.options = {
+						type: 'select',
+						values: [
+							{ value: 'foo', label: 'Foo' },
+							{ value: 'foo', label: 'Foo' },
+						]
+					};
+					try {
+						this.element = new Element(this.options);
+					} catch(e) {
+						this.error = e;
+					}
+				});
+
+				it('should exist', function() {
+					expect(this.element).to.exist;
+				});
+				it('should not throw an error', function() {
+					expect(this.error).to.not.exist;
+				});
+				it('should be valid', function() {
+					expect(this.element.isValid()).to.be.true;
+				});
+				it('should have a default value of ""', function() {
+					expect(this.element.get('value')).to.equal('');
+				});
+				it('should have show_label_before set to true', function() {
+					expect(this.element.get('show_label_before')).to.be.true;
+				});
 			});
-			it('should have show_label_before set to true', function() {
-				expect(this.element.get('show_label_before')).to.be.true;
+			describe('with a values collection', function() {
+				beforeEach(function() {
+					this.error = null;
+					this.options = {
+						type: 'select',
+						values: new Backbone.Collection([
+							{ value: 'foo', label: 'Foo' },
+							{ value: 'foo', label: 'Foo' },
+						])
+					};
+					try {
+						this.element = new Element(this.options);
+					} catch(e) {
+						this.error = e;
+					}
+				});
+
+				it('should exist', function() {
+					expect(this.element).to.exist;
+				});
+				it('should not throw an error', function() {
+					expect(this.error).to.not.exist;
+				});
+				it('should be valid', function() {
+					expect(this.element.isValid()).to.be.true;
+				});
+				it('should have a default value of ""', function() {
+					expect(this.element.get('value')).to.equal('');
+				});
+				it('should have show_label_before set to true', function() {
+					expect(this.element.get('show_label_before')).to.be.true;
+				});
 			});
 
 		});
@@ -141,7 +243,7 @@ define(function(require) {
 				});
 				it('should throw an error', function() {
 					expect(this.error).to.exist;
-					expect(this.error.message).to.equal('Element requires a type.');
+					expect(this.error.message).to.equal('Buttonfield Element requires an input and a button.');
 				});
 			});
 			describe('with no button', function() {
@@ -165,7 +267,7 @@ define(function(require) {
 				});
 				it('should throw an error', function() {
 					expect(this.error).to.exist;
-					expect(this.error.message).to.equal('Element requires a type.');
+					expect(this.error.message).to.equal('Buttonfield Element requires an input and a button.');
 				});
 			});
 			describe('with input and button', function() {
