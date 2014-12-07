@@ -3,6 +3,7 @@ define(function(require) {
 
 	var InputView = require('./input_view');
 
+
 	var InputTextareaView = InputView.extend({
 
 		tagName: 'textarea',

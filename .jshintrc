@@ -4,7 +4,6 @@
 		"_": true,
 		"jQuery": true,
 		"Backbone": true,
-		"Marionette": true,
 		"define": true,
 		"require": true,
 		"window": true,

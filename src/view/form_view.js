@@ -2,6 +2,7 @@ define(function(require) {
 	'use strict';
 
 	var
+	Marionette			= require('marionette'),
 	Form				= require('src/model/form'),
 	ElementView			= require('./element_view'),
 	InputViews			= require('./input_view_types'),

@@ -3,6 +3,7 @@ define(function(require) {
 
 	var InputView = require('./input_view');
 
+
 	var InputTextView = InputView.extend({
 
 		attribute_keys: ['type', 'id', 'name', 'value', 'size', 'placeholder', 'maxlength', 'disabled'],

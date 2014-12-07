@@ -2,8 +2,9 @@ define(function(require) {
 	'use strict';
 
 	var
+	Marionette			= require('marionette'),
 	Element				= require('src/model/element'),
-	InputViews			= require('./input_view_types'),
+	InputViewTypes		= require('./input_view_types'),
 	ErrorView			= require('./error_view'),
 	Template			= require('text!src/template/element.html'),
 	log					= require('src/lib/log'); /* jshint ignore: line */
@@ -69,7 +70,7 @@ define(function(require) {
 			this.input_region.show(this.input_view);
 		},
 		getInputView: function() {
-			var InputView = this.inputView || InputViews[this.type];
+			var InputView = this.inputView || InputViewTypes[this.type];
 			if (! InputView) throw new Error('No InputView defined for type ' + this.type);
 			return InputView;
 		},

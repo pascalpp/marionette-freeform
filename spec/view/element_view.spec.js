@@ -97,6 +97,8 @@ define(function(require) {
 			it('should contain an html input matching its element type', function() {
 				// this test is performed on every element type
 				_.each(elements.types, function(type) {
+					var count = 1;
+					if (type === 'buttonset') count = 3; // test data for buttonset has 3 buttons
 					var element = new Element(elements.index[type]);
 					var options = { model: element };
 					var element_view = new ElementView(options);
@@ -105,7 +107,7 @@ define(function(require) {
 					expect(elements.selectors[type]).to.exist;
 					var $input = element_view.$(elements.selectors[type]);
 					expect($input).to.exist;
-					expect($input.length).to.equal(1);
+					expect($input.length).to.equal(count);
 				});
 			});
 
@@ -194,7 +196,7 @@ define(function(require) {
 						var options = {
 							model: element,
 							className: 'myelement'
-						}
+						};
 						var element_view = new ElementView(options);
 						element_view.render();
 						element.set('value', 'foo');
@@ -217,7 +219,7 @@ define(function(require) {
 						var options = {
 							model: element,
 							className: 'myelement'
-						}
+						};
 						var element_view = new ElementView(options);
 						element_view.render();
 						element.set('value', 'foo');

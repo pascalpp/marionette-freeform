@@ -1,8 +1,9 @@
 define(function(require) {
 	'use strict';
 
-	var InputButtonView = require('./input_button_view'),
-		ElementList	= require('src/model/element_list');
+	var Marionette = require('marionette');
+	var InputButtonView = require('./input_button_view');
+	var ElementList = require('src/model/element_list');
 
 
 	var InputButtonsetView = Marionette.CollectionView.extend({

@@ -1,6 +1,8 @@
 define(function(require) {
 	'use strict';
 
+	var Marionette = require('marionette');
+
 	var ErrorView = Marionette.ItemView.extend({
 
 		tagName: 'label',

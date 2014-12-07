@@ -1,6 +1,7 @@
 define(function(require) {
 	'use strict';
 
+	var Marionette = require('marionette');
 	var Model = require('./model');
 
 	if (! window.console) window.console = {
@@ -49,6 +50,11 @@ define(function(require) {
 			show_label_before: false,
 			show_label_after: false,
 			show_error: false
+		},
+		buttonset: {
+			show_label_before: false,
+			show_label_after: false,
+			show_error: false
 		}
 	};
 
@@ -63,6 +69,7 @@ define(function(require) {
 			_.defaults(attrs, defaults);
 
 			attrs = this.validateButtonfieldAttributes(attrs);
+			attrs = this.validateButtonsetAttributes(attrs);
 			attrs = this.validateSelectAttributes(attrs);
 			attrs = this.validateRelatedModelAttribute(attrs);
 
@@ -85,9 +92,24 @@ define(function(require) {
 			return attrs;
 		},
 
+		validateButtonsetAttributes: function(attrs) {
+			if (attrs.type !== 'buttonset') return attrs;
+			if (! attrs.buttons) throw new Error('Buttonset Element requires a list of buttons.');
+
+			// ensure that `buttons` is an ElementList
+			var ElementList = Marionette.FreeForm.ElementList;
+			if (_.isArray(attrs.buttons)) {
+				attrs.buttons = new ElementList(attrs.buttons);
+			}
+			if (! (attrs.buttons instanceof ElementList)) {
+				throw new Error('Buttonset Element requires a list of buttons.');
+			}
+			return attrs;
+		},
+
 		validateSelectAttributes: function(attrs) {
 			if (attrs.type !== 'select') return attrs;
-			if (! attrs.values) throw new Error('Select Element requires a list of values.')
+			if (! attrs.values) throw new Error('Select Element requires a list of values.');
 
 			// ensure that `values` is a collection
 			if (_.isArray(attrs.values)) {
@@ -106,7 +128,7 @@ define(function(require) {
 			}
 			return attrs;
 		}
-	}
+	};
 
 	var Element = Model.extend({
 		defaults: function() {
@@ -232,8 +254,6 @@ define(function(require) {
 		}
 
 	});
-
-	Element.prototype.bindEntityEvents = Marionette.bindEntityEvents;
 
 	return Element;
 
