@@ -2,15 +2,16 @@ define(function(require) {
 	'use strict';
 
 	var
+	Marionette				= require('marionette'),
 	Model					= require('src/model/model'),
 	Element					= require('src/model/element'),
 	ElementList				= require('src/model/element_list'),
 	Form					= require('src/model/form'),
 	FormView				= require('src/view/form_view'),
 	ElementView				= require('src/view/element_view'),
-	InputViews				= require('src/view/input_view_types'),
+	InputViewTypes			= require('src/view/input_view_types'),
 	ErrorView				= require('src/view/error_view'),
-	log						= require('src/lib/log');
+	log						= require('src/lib/log'); /* jshint ignore: line */
 
 	var FreeForm = {
 		Model: Model,
@@ -19,9 +20,11 @@ define(function(require) {
 		Form: Form,
 		FormView: FormView,
 		ElementView: ElementView,
-		InputViews: InputViews,
+		InputViewTypes: InputViewTypes,
 		ErrorView: ErrorView
 	};
+
+	Marionette.FreeForm = FreeForm;
 
 	return FreeForm;
 

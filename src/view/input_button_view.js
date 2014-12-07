@@ -1,7 +1,9 @@
 define(function(require) {
 	'use strict';
 
+	var Marionette = require('marionette');
 	var InputAttributes = require('./input_attributes');
+
 
 	var InputButtonView = Marionette.ItemView.extend({
 

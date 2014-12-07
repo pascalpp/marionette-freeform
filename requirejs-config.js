@@ -10,6 +10,11 @@
 			'marionette': 'bower_components/marionette/lib/backbone.marionette',
 			'underscore': 'bower_components/underscore/underscore',
 			'text': 'bower_components/requirejs-text/text',
+		},
+		shim: {
+			'src/lib/setPrefixedClassname': {
+				deps: ['jquery']
+			}
 		}
 	};
 

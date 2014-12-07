@@ -97,6 +97,8 @@ define(function(require) {
 			it('should contain an html input matching its element type', function() {
 				// this test is performed on every element type
 				_.each(elements.types, function(type) {
+					var count = 1;
+					if (type === 'buttonset') count = 3; // test data for buttonset has 3 buttons
 					var element = new Element(elements.index[type]);
 					var options = { model: element };
 					var element_view = new ElementView(options);
@@ -105,7 +107,7 @@ define(function(require) {
 					expect(elements.selectors[type]).to.exist;
 					var $input = element_view.$(elements.selectors[type]);
 					expect($input).to.exist;
-					expect($input.length).to.equal(1);
+					expect($input.length).to.equal(count);
 				});
 			});
 
@@ -162,24 +164,72 @@ define(function(require) {
 					expect(element_view.$(custom_error_selector).length).to.equal(1);
 					expect(element_view.$(custom_error_selector).text()).to.equal('Invalid foo message.');
 				});
-				describe('when the element error is removed', function() {
+				describe('when the element is valid again', function() {
 					beforeEach(function() {
 						this.element_view = new ElementView(this.options);
 						this.element_view.render();
 						this.element.set('value', 'foo');
 					});
-					it('should remove the error class from itself', function() {
+					it('should remove the default error class from itself', function() {
 						var default_error_class = 'element-error';
 						expect(this.element_view.$el.hasClass(default_error_class)).to.be.true;
 						this.element.set('value', 'bar');
 						expect(this.element_view.$el.hasClass(default_error_class)).to.be.false;
 					});
-					it('should remove the error label from the DOM', function() {
+					it('should remove the default error label from the DOM', function() {
 						var default_error_selector = 'label.error';
 						expect(this.element_view.$(default_error_selector).length).to.equal(1);
 						this.element.set('value', 'bar');
 						expect(this.element_view.$(default_error_selector).length).to.equal(0);
 					});
+
+					it('should remove a custom error class from itself', function() {
+						var default_error_class = 'element-error';
+						var custom_error_class = 'myelement-myerror';
+						var element = new Element({
+							type: 'text',
+							error_class: 'myerror',
+							validator: function(value) {
+								if (value === 'foo') return 'Invalid foo message.';
+							}
+						});
+						var options = {
+							model: element,
+							className: 'myelement'
+						};
+						var element_view = new ElementView(options);
+						element_view.render();
+						element.set('value', 'foo');
+						expect(element_view.$el.hasClass(default_error_class)).to.be.false;
+						expect(element_view.$el.hasClass(custom_error_class)).to.be.true;
+						element.set('value', 'bar');
+						expect(element_view.$el.hasClass(default_error_class)).to.be.false;
+						expect(element_view.$el.hasClass(custom_error_class)).to.be.false;
+					});
+					it('should remove a custom error label from the DOM', function() {
+						var default_error_selector = 'label.error';
+						var custom_error_selector = 'label.myerror';
+						var element = new Element({
+							type: 'text',
+							error_class: 'myerror',
+							validator: function(value) {
+								if (value === 'foo') return 'Invalid foo message.';
+							}
+						});
+						var options = {
+							model: element,
+							className: 'myelement'
+						};
+						var element_view = new ElementView(options);
+						element_view.render();
+						element.set('value', 'foo');
+						expect(element_view.$(default_error_selector).length).to.equal(0);
+						expect(element_view.$(custom_error_selector).length).to.equal(1);
+						element.set('value', 'bar');
+						expect(element_view.$(default_error_selector).length).to.equal(0);
+						expect(element_view.$(custom_error_selector).length).to.equal(0);
+					});
+
 				});
 			});
 

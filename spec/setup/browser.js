@@ -2,7 +2,7 @@
 define(function(require) {
 	'use strict';
 
-	require('marionette');
+	require('src/freeform');
 
 	window.expect = chai.expect;
 

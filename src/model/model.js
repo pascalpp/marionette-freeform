@@ -1,6 +1,8 @@
 define(function(require) {
 	'use strict';
 
+	var Backbone = require('backbone');
+
 	/* base model with per-attribute validation */
 
 	var validation_methods = {

@@ -12,6 +12,15 @@ define(function(require) {
 					button: { type: 'submit' }
 				};
 				break;
+			case 'buttonset':
+				extras = {
+					buttons: [
+						{ type: 'submit', label: 'Submit' },
+						{ type: 'reset', label: 'Reset' },
+						{ type: 'button', label: 'Button' },
+					]
+				};
+				break;
 			case 'select':
 				extras = {
 					values: [
@@ -28,6 +37,7 @@ define(function(require) {
 
 	// this helper returns a jquery selector matching the html input for a given element type
 	var generateHtmlInputSelector = function(type) {
+		/* jshint maxcomplexity: 9 */
 		var sel;
 		switch(type) {
 			case 'select':
@@ -38,6 +48,10 @@ define(function(require) {
 			case 'reset':
 			case 'button':
 				sel = 'button[type='+type+']';
+				break;
+			case 'buttonset':
+				// don't know what types of buttons are in a buttonset
+				sel = 'button';
 				break;
 			case 'buttonfield':
 				sel = 'input[type=text]';
@@ -59,7 +73,8 @@ define(function(require) {
 		'buttonfield',
 		'submit',
 		'reset',
-		'button'
+		'button',
+		'buttonset'
 	];
 
 	// a list of valid options objects for each type

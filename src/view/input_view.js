@@ -1,7 +1,9 @@
 define(function(require) {
 	'use strict';
 
+	var Marionette = require('marionette');
 	var InputAttributes = require('./input_attributes');
+
 
 	/* parent input view, meant to be subclassed for specific input types */
 

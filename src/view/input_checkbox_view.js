@@ -3,6 +3,7 @@ define(function(require) {
 
 	var InputView = require('./input_view');
 
+
 	var InputCheckboxView = InputView.extend({
 
 		attribute_keys: ['type', 'id', 'name', 'disabled'],

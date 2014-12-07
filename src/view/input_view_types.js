@@ -11,7 +11,7 @@ define(function(require) {
 	InputButtonFieldView	= require('./input_button_field_view');
 
 
-	var InputViews = {
+	var InputViewTypes = {
 		text: InputTextView,
 		password: InputTextView,
 		textarea: InputTextareaView,
@@ -24,6 +24,6 @@ define(function(require) {
 		buttonfield: InputButtonFieldView
 	};
 
-	return InputViews;
+	return InputViewTypes;
 
 });
