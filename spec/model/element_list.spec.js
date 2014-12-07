@@ -3,6 +3,7 @@
 define(function(require) {
 	'use strict';
 
+	var Model = require('src/model/model');
 	var Element = require('src/model/element');
 	var ElementList = require('src/model/element_list');
 	var elements = require('spec/helpers/element_types');
@@ -64,11 +65,11 @@ define(function(require) {
 					{ type: 'text', related_key: 'bar' },
 					{ type: 'text', value: 'unchanged value' },
 				];
-				this.related_model = new Backbone.Model({
+				this.related_model = new Model({
 					foo: 'related_foo_value',
 					bar: 'related_bar_value'
 				});
-				this.new_related_model = new Backbone.Model({
+				this.new_related_model = new Model({
 					foo: 'new_related_foo_value',
 					bar: 'new_related_bar_value'
 				});
@@ -133,7 +134,7 @@ define(function(require) {
 				expect(_.isFunction(this.element_list.setRelatedModel)).to.be.true;
 			});
 			it('should set element_list.related_model to a model if given a model', function() {
-				var model = new Backbone.Model();
+				var model = new Model();
 				this.element_list.setRelatedModel(model);
 				expect(this.element_list.related_model).to.equal(model);
 			});

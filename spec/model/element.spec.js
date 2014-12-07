@@ -3,11 +3,8 @@
 define(function(require) {
 	'use strict';
 
-	var Element = require('src/model/element');
 	var Model = require('src/model/model');
-
-	// apply per-attribute model validation
-	Model.mixin(Backbone.Model);
+	var Element = require('src/model/element');
 
 	describe('Element', function() {
 
@@ -287,8 +284,8 @@ define(function(require) {
 
 			beforeEach(function() {
 				this.error = null;
-				this.related_model = new Backbone.Model({ foo: 'related_value' });
-				this.new_related_model = new Backbone.Model({ foo: 'new_related_value' });
+				this.related_model = new Model({ foo: 'related_value' });
+				this.new_related_model = new Model({ foo: 'new_related_value' });
 				this.options = {
 					type: 'text',
 					related_key: 'foo',
@@ -329,7 +326,7 @@ define(function(require) {
 			it('should not throw an error if initial value is invalid', function() {
 				var element;
 				var error;
-				var RelatedModel = Backbone.Model.extend({
+				var RelatedModel = Model.extend({
 					validators: {
 						'foo': function(foo) {
 							// this validator always fails, to prove the test
@@ -358,7 +355,7 @@ define(function(require) {
 			it('should set element.error to related_model.validationError', function() {
 				var element;
 				var error;
-				var RelatedModel = Backbone.Model.extend({
+				var RelatedModel = Model.extend({
 					validators: {
 						'foo': function(foo) {
 							// this validator always fails, to prove the test
@@ -384,6 +381,24 @@ define(function(require) {
 				expect(element.get('error')).to.equal('Error message from related model.');
 			});
 
+			describe('when related model doesn’t have per-attribute validation', function() {
+				beforeEach(function() {
+					this.console_spy = this.sinon.spy(window.console, 'error');
+					this.related_model = new Backbone.Model({ foo: 'related_value' });
+					this.options = {
+						type: 'text',
+						related_key: 'foo',
+						related_model: this.related_model
+					};
+					this.element = new Element(this.options);
+				});
+
+				it('should log an error to console', function() {
+					expect(this.console_spy).to.have.been.calledWith('Related model doesn’t have a validateAttribute method.');
+				});
+			});
+
+
 			describe('when related model changes', function() {
 				it('should update its values', function() {
 					expect(this.element.get('value')).to.equal('related_value');
@@ -397,6 +412,23 @@ define(function(require) {
 					this.related_model.set('foo', 'bar');
 					expect(this.element.get('value')).to.equal('new_related_value');
 				});
+				describe('when new related model doesn’t have per-attribute validation', function() {
+					beforeEach(function() {
+						this.console_spy = this.sinon.spy(window.console, 'error');
+						this.related_model = new Model({ foo: 'related_value' });
+						this.options = {
+							type: 'text',
+							related_key: 'foo',
+							related_model: this.related_model
+						};
+						this.element = new Element(this.options);
+					});
+					it('should log an error to console', function() {
+						this.element.set('related_model', new Backbone.Model());
+						expect(this.console_spy).to.have.been.calledWith('Related model doesn’t have a validateAttribute method.');
+					});
+				});
+
 			});
 
 		});
@@ -404,7 +436,7 @@ define(function(require) {
 		describe('with a related model but no related key', function() {
 			beforeEach(function() {
 				this.error = null;
-				this.related_model = new Backbone.Model({ foo: 'related_value' });
+				this.related_model = new Model({ foo: 'related_value' });
 				this.options = {
 					type: 'text',
 					value: 'element_value',

@@ -3,6 +3,11 @@ define(function(require) {
 
 	var Model = require('./model');
 
+	if (! window.console) window.console = {
+		log: function() {},
+		error: function() {}
+	};
+
 	var default_options = {
 		text: {
 			value: '',
@@ -114,13 +119,20 @@ define(function(require) {
 		},
 
 		setupRelatedModel: function() {
-			// check for a related model
+			// check for a related model and related key
 			var related = this.getRelated();
 			if (! related) return;
 
 			// stop listening to the previous related model
 			if (this.related_model) {
 				this.stopListening(this.related_model);
+			}
+
+			// verify that the related model has per-attribute validation
+			// if it doesn't, log an error to the console
+			if (! _.isFunction(related.model.validateAttribute)) {
+				console.error('Related model doesn’t have a validateAttribute method.');
+				console.error('See https://github.com/pascalpp/marionette-freeform/issues/2#issuecomment-65912944');
 			}
 
 			// assume the related model's value as our own

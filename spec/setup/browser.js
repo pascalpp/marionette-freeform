@@ -1,14 +1,12 @@
+/* global mocha, chai, sinon, before, beforeEach, afterEach */
 define(function(require) {
+	'use strict';
 
 	require('marionette');
-	require('mocha');
-	var chai = require('chai');
-	var sinon = require('sinon');
-
-	mocha.setup('bdd');
 
 	window.expect = chai.expect;
-	window.sinon = sinon;
+
+	mocha.setup('bdd');
 
 	mocha.loaded = function() {
 		mocha.checkLeaks();

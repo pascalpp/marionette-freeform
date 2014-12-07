@@ -6,12 +6,30 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>marionette-freeform spec runner</title>
     <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <style type="text/css">
+
+	#mocha-stats {
+		right: auto;
+		left: 15px;	
+	}
+	#mocha-stats .progress {
+		float: left;
+	}
+
+	</style>
+
 </head>
 <body>
 
     <div id="mocha"></div>
     <div id="fixtures" hidden></div>
 
+
+<script src="../node_modules/mocha/mocha.js"></script>
+<script src="../node_modules/chai/chai.js"></script>
+<script src="../node_modules/sinon/pkg/sinon.js"></script>
+<script src="../node_modules/sinon-chai/lib/sinon-chai.js"></script>
+<script src="../node_modules/chai-jq/chai-jq.js"></script>
 
 <script src="../bower_components/requirejs/require.js"></script>
 <script>window.baseUrl = '../';</script>

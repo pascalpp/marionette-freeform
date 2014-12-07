@@ -3,6 +3,7 @@
 define(function(require) {
 	'use strict';
 
+	var Model = require('src/model/model');
 	var Form = require('src/model/form');
 	var ElementList = require('src/model/element_list');
 	var elements = require('spec/helpers/element_types');
@@ -53,7 +54,7 @@ define(function(require) {
 						{ type: 'text', related_key: 'bar' },
 						{ type: 'text', value: 'unchanged value' },
 					];
-					this.related_model = new Backbone.Model({
+					this.related_model = new Model({
 						foo: 'related_foo_value',
 						bar: 'related_bar_value'
 					});
@@ -109,11 +110,11 @@ define(function(require) {
 						{ type: 'text', related_key: 'bar' },
 						{ type: 'text', value: 'unchanged value' },
 					]);
-					this.related_model = new Backbone.Model({
+					this.related_model = new Model({
 						foo: 'related_foo_value',
 						bar: 'related_bar_value'
 					});
-					this.new_related_model = new Backbone.Model({
+					this.new_related_model = new Model({
 						foo: 'new_related_foo_value',
 						bar: 'new_related_bar_value'
 					});
