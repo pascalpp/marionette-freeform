@@ -19,9 +19,33 @@ define(function(require) {
 				}
 			});
 
+			it('should not exist', function() {
+				expect(this.element).to.not.exist;
+			});
 			it('should throw an error', function() {
 				expect(this.error).to.exist;
 				expect(this.error.message).to.equal('Element requires a type.');
+			});
+
+		});
+
+		describe('with an invalid type', function() {
+			beforeEach(function() {
+				this.error = null;
+				this.options = { type: 'foo' };
+				try {
+					this.element = new Element(this.options);
+				} catch(e) {
+					this.error = e;
+				}
+			});
+
+			it('should not exist', function() {
+				expect(this.element).to.not.exist;
+			});
+			it('should throw an error', function() {
+				expect(this.error).to.exist;
+				expect(this.error.message).to.equal('Element type "foo" is not valid.');
 			});
 
 		});

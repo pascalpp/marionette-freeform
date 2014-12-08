@@ -13,6 +13,7 @@ define(function(require) {
 		mocha.run();
 
 		var $fixtures = $('#fixtures');
+		var $stats = $('#mocha-stats');
 
 		var setFixtures = function () {
 			_.each(arguments, function (content) {
@@ -22,6 +23,11 @@ define(function(require) {
 
 		var clearFixtures = function () {
 			$fixtures.empty();
+		};
+
+		var markFailed = function() {
+			var count = + $stats.find('.failures em').text();
+			if (count > 0) $stats.addClass('failed');
 		};
 
 		var originalHash = window.location.hash;
@@ -41,19 +47,14 @@ define(function(require) {
 			window.location.hash = originalHash;
 			Backbone.history.stop();
 			Backbone.history.handlers.length = 0;
+			markFailed();
 		});
 
 		after(function() {
-			var stats = $('#mocha-stats');
-			var count = + stats.find('.failures em').text();
-			if (count > 0) stats.addClass('failed');
-			stats.find('.progress').on('click', function() {
+			$stats.find('.progress').on('click', function() {
 				var url = window.location.href.replace(/\/spec\/?.*/,'/spec');
 				window.location = url;
 			});
-
-			stats.show();
-
 		});
 	};
 
