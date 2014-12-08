@@ -9,6 +9,7 @@ define(function(require) {
 		error: function() {}
 	};
 
+	// every valid type should have default options defined here
 	var default_options = {
 		text: {
 			value: '',
@@ -65,7 +66,8 @@ define(function(require) {
 			attrs = attrs || {};
 			if (! attrs.type) throw new Error('Element requires a type.');
 
-			var defaults = default_options[attrs.type] || {};
+			var defaults = default_options[attrs.type];
+			if (! defaults) throw new Error('Element type "'+attrs.type+'" is not valid.');
 			_.defaults(attrs, defaults);
 
 			attrs = this.validateButtonfieldAttributes(attrs);

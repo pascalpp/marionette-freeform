@@ -8,7 +8,7 @@ define(function(require) {
 		tagName: 'label',
 
 		className: function() {
-			return this.options.className || 'error';
+			return this.options.className;
 		},
 
 		template: _.template('<%- error %>'),

@@ -67,47 +67,46 @@ define(function(require) {
 				expect(element_view.$el.hasClass('element')).to.be.false;
 				expect(element_view.$el.hasClass('foo')).to.be.true;
 			});
-			it('should set a classname on itself matching the element type', function() {
-				// this test is performed on every element type
-				_.each(elements.types, function(type) {
-					var element = new Element(elements.index[type]);
-					var options = { model: element };
-					var element_view = new ElementView(options);
-					element_view.render();
-					expect(element_view.$el).to.exist;
-					expect(element_view.$el.hasClass('type-'+type)).to.be.true;
-				});
-			});
-			it('should set classname ‘type-button’ on itself for a submit element', function() {
-				var element = new Element({ type: 'submit' });
-				var options = { model: element };
-				var element_view = new ElementView(options);
-				element_view.render();
-				expect(element_view.$el).to.exist;
-				expect(element_view.$el.hasClass('type-button')).to.be.true;
-			});
-			it('should set classname ‘type-button’ on itself for a reset element', function() {
-				var element = new Element({ type: 'reset' });
-				var options = { model: element };
-				var element_view = new ElementView(options);
-				element_view.render();
-				expect(element_view.$el).to.exist;
-				expect(element_view.$el.hasClass('type-button')).to.be.true;
-			});
-			it('should contain an html input matching its element type', function() {
-				// this test is performed on every element type
-				_.each(elements.types, function(type) {
-					var count = 1;
-					if (type === 'buttonset') count = 3; // test data for buttonset has 3 buttons
-					var element = new Element(elements.index[type]);
-					var options = { model: element };
-					var element_view = new ElementView(options);
-					element_view.render();
-					expect(element_view.$).to.exist;
-					expect(elements.selectors[type]).to.exist;
-					var $input = element_view.$(elements.selectors[type]);
-					expect($input).to.exist;
-					expect($input.length).to.equal(count);
+
+			_.each(elements.types, function(type) {
+				describe('with type ' + type, function() {
+					var selector = elements.selectors[type];
+
+					beforeEach(function() {
+						this.element = new Element(elements.index[type]);
+						this.options = { model: this.element };
+						this.element_view = new ElementView(this.options);
+						this.element_view.render();
+					});
+
+					it('should exist', function() {
+						expect(this.element_view).to.exist;
+					});
+
+					it('should have classname "type-'+type+'"', function() {
+						expect(this.element_view.$el).to.exist;
+						expect(this.element_view.$el.hasClass('type-'+type)).to.be.true;
+					});
+
+					if (_.contains(['submit','reset'], type)) {
+						it('should have classname "type-button"',function() {
+							expect(this.element_view.$el.hasClass('type-button')).to.be.true;
+						});
+					}
+
+					it('shoud have a selector in test data', function() {
+						expect(selector).to.exist;
+					});
+
+					it('should contain a node matching "'+selector+'"', function() {
+						var count = 1;
+						if (type === 'buttonset') count = 3; // test data for buttonset has 3 buttons
+						expect(this.element_view.$).to.exist;
+						var $input = this.element_view.$(selector);
+						expect($input).to.exist;
+						expect($input.length).to.equal(count);
+					});
+
 				});
 			});
 
