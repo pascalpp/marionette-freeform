@@ -82,7 +82,24 @@ define(function(require) {
 						});
 					});
 					it('should ignore unsupported attributes', function() {
-						expect('TODO').to.not.exist;
+						var supported_attributes = elements.supported_attributes[type];
+						expect(supported_attributes).to.exist;
+						expect(_.isArray(supported_attributes)).to.be.true;
+						_.each(supported_attributes, function(key) {
+							this.options[key] = elements.getValidAttributeValue(key, type);
+						}, this);
+						this.options['foo_unsupported'] = 'bar_unsupported';
+						this.element = new Element(this.options);
+						// verify that element has our weird value
+						expect(this.element.get('foo_unsupported')).to.equal('bar_unsupported');
+						this.view = new this.View({ model: this.element });
+						this.view.render();
+						// checking this three different ways : )
+						expect(this.view.$el.attr('foo_unsupported')).to.not.exist;
+						expect(this.view.$el.prop('foo_unsupported')).to.not.exist;
+						var attrs = _.keys(this.view.$el.attr());
+						expect(_.contains(attrs, 'foo_unsupported')).to.be.false;
+
 					});
 					if (! _.contains(button_elements, type)) {
 						it('should have a getInputValue method', function() {
