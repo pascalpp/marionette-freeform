@@ -4,6 +4,9 @@ marionette-freeform TODO
 - [x] button elements (submit, reset, generic?)
 - [x] setup test framework
 - [ ] radio button elements
+- [ ] select multiple elements
+    - does it make sense to code for this? kinda complex since it shares a type with a very different entity
+    - better to use a list of checkboxes in most cases
 - [ ] validator options
     - e.g. options.strict
     - set to true when validating on submission, would allow validators to enforce required fields only on submission
