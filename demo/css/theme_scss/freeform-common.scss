@@ -79,7 +79,8 @@
 		select,
 		button[type=submit],
 		textarea {
-			border: 1px solid rgba(153,0,0,0.5);
+			border-color: rgba(153,0,0,0.5);
+			outline-color: rgba(153,0,0,0.5);
 		}
 	}
 
@@ -111,12 +112,22 @@
 		}
 		
 		button {
-			height: 2.2em;
+			height: calc(2.2em - 2px);
+			margin: 1px 2px;
 			position: absolute;
 			top: 0;
 			right: 0;
 			border-top-left-radius: 0;
 			border-bottom-left-radius: 0;
+			border-top-width: 0;
+			border-bottom-width: 0;
+			border-right-width: 0;
+			border-color: rgba(0,0,0,0.3);
+		}
+		
+		input:focus + button {
+			height: calc(2.2em - 4px);
+			margin: 2px 2px;
 		}
 	}
 
