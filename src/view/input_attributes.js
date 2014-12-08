@@ -12,11 +12,7 @@ define(function(require) {
 		},
 
 		attributes: function() {
-			var attributes = {};
-			_.each(this.attribute_keys, function(key) {
-				attributes[key] = this.model.get(key);
-			}, this);
-			return attributes;
+			return this.model.pick(this.attribute_keys);
 		},
 	};
 

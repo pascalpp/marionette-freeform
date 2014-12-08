@@ -48,6 +48,8 @@ module.exports = function(grunt) {
             'demo/**/*.js',
             // Exclude the following
             '!demo/js/highlight/**/*',
+            '!spec/setup/node.js',
+            '!spec/setup/require_helper.js',
           ]
         }]
       },
@@ -63,7 +65,10 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           src: [
-            'spec/**/*.js'
+            'spec/**/*.js',
+            // Exclude the following
+            '!spec/setup/node.js',
+            '!spec/setup/require_helper.js',
           ]
         }]
       },
