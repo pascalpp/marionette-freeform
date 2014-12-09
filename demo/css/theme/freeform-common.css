@@ -61,7 +61,8 @@
 .freeform .element.element-error select,
 .freeform .element.element-error button[type=submit],
 .freeform .element.element-error textarea {
-  border: 1px solid rgba(153, 0, 0, 0.5); }
+  border-color: rgba(153, 0, 0, 0.5);
+  outline-color: rgba(153, 0, 0, 0.5); }
 .freeform .element.type-buttonset button {
   margin-right: 0.5em; }
 .freeform .element.type-buttonset button[type=submit] {
@@ -77,11 +78,19 @@
   height: 2.2em;
   border: 1px solid rgba(0, 0, 0, 0.3); }
 .freeform .element.type-buttonfield button {
-  height: 2.2em;
+  height: calc(2.2em - 2px);
+  margin: 1px 2px;
   position: absolute;
   top: 0;
   right: 0;
   border-top-left-radius: 0;
-  border-bottom-left-radius: 0; }
+  border-bottom-left-radius: 0;
+  border-top-width: 0;
+  border-bottom-width: 0;
+  border-right-width: 0;
+  border-color: rgba(0, 0, 0, 0.3); }
+.freeform .element.type-buttonfield input:focus + button {
+  height: calc(2.2em - 4px);
+  margin: 2px 2px; }
 
 /*# sourceMappingURL=freeform-common.css.map */

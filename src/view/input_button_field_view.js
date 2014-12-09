@@ -17,12 +17,19 @@ define(function(require) {
 			button: 'button',
 		},
 
-		initialize: function() {
+		constructor: function() {
+			Marionette.ItemView.apply(this, arguments);
+
 			// validate model
 			if (! (this.model instanceof Element)) throw new Error('InputView requires an Element model.');
 
 			var input = this.model.get('input');
 			this.listenTo(input, 'change:value', this.onChangeInputValue);
+
+			// these steps allow the view to consume an existing dom element
+			this.listenTo(this, 'render', this.setAttributes);
+			var className = this.model.get('className');
+			if (className) this.$el.addClass(className);
 		},
 
 		onRender: function() {

@@ -32,7 +32,6 @@ define(function(require) {
 				label: 'Subscribe',
 			}
 		}
-
 	];
 
 	// define a form model

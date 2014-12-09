@@ -3,27 +3,18 @@ define(function(require) {
 
 	var Marionette = require('marionette');
 	var Element = require('src/model/element');
-	var InputAttributes = require('./input_attributes');
 
 
-	var InputSelectOptionView = Marionette.ItemView.extend({
-		tagName: 'option',
-		template: _.template('<%- label %>'),
-		attribute_keys: ['value', 'disabled', 'selected']
-	});
+	var InputRadiosetView = Marionette.CollectionView.extend({
 
-	_.extend(InputSelectOptionView.prototype, InputAttributes);
+		_class: 'InputRadiosetView',
 
+		tagName: 'fieldset',
 
-	var InputSelectView = Marionette.CollectionView.extend({
-
-		tagName: 'select',
-
-		childView: InputSelectOptionView,
-		childViewOptions: function() {
-			return {
-				selected: this.model.get('value')
-			};
+		getChildView: function() {
+			// circular dependency
+			var ElementView = require('./element_view');
+			return ElementView;
 		},
 
 		constructor: function(options) {
@@ -34,15 +25,6 @@ define(function(require) {
 
 			this.collection = this.model.get('values');
 
-			// add placeholder option
-			if (this.model.get('placeholder')) {
-				this.collection.unshift({
-					value: '',
-					label: this.model.get('placeholder'),
-					disabled: true
-				});
-			}
-
 			// listen for external changes to the model
 			this.listenTo(this.model, 'change:value', this.onModelChangeValue);
 
@@ -50,15 +32,20 @@ define(function(require) {
 			this.listenTo(this, 'render', this.setAttributes);
 			var className = this.model.get('className');
 			if (className) this.$el.addClass(className);
+
 		},
 
-		attribute_keys: ['id', 'name', 'disabled'],
+		xtriggers: {},
 
-		triggers: {
-			'change': 'input:change',
+		xchildTriggers: {
+			'change': 'child:change'
 		},
 
-		onInputChange: function() {
+		xonChildChange: function() {
+			// debugger;
+		},
+
+		xonInputChange: function() {
 			var value = this.getInputValue();
 			this.model.set('value', value, { from: this });
 		},
@@ -70,16 +57,13 @@ define(function(require) {
 			return this.$el.val(value);
 		},
 
-		onModelChangeValue: function(model, value, options) {
+		xonModelChangeValue: function(model, value, options) {
 			if (options.from !== this) {
 				this.$el.val(value);
 			}
 		}
 	});
 
-	// apply methods from InputAttributes mixin
-	_.extend(InputSelectView.prototype, InputAttributes);
-
-	return InputSelectView;
+	return InputRadiosetView;
 
 });

@@ -24,8 +24,17 @@ define(function(require) {
 			show_label_before: true
 		},
 		checkbox: {
-			value: false,
-			show_label_after: true
+			value: '',
+			show_label_after: true,
+			checked: false
+		},
+		radio: {
+			show_label_after: true,
+			checked: false
+		},
+		radioset: {
+			value: '',
+			show_label_before: true
 		},
 		select: {
 			value: '',
@@ -66,14 +75,58 @@ define(function(require) {
 			attrs = attrs || {};
 			if (! attrs.type) throw new Error('Element requires a type.');
 
-			var defaults = default_options[attrs.type];
-			if (! defaults) throw new Error('Element type "'+attrs.type+'" is not valid.');
-			_.defaults(attrs, defaults);
-
+			attrs = this.validateRadioAttributes(attrs);
+			attrs = this.validateRadiosetAttributes(attrs);
 			attrs = this.validateButtonfieldAttributes(attrs);
 			attrs = this.validateButtonsetAttributes(attrs);
 			attrs = this.validateSelectAttributes(attrs);
 			attrs = this.validateRelatedModelAttribute(attrs);
+
+			var defaults = default_options[attrs.type];
+			if (! defaults) throw new Error('Element type "'+attrs.type+'" is not valid.');
+			_.defaults(attrs, defaults);
+
+			return attrs;
+		},
+
+		validateRadioAttributes: function(attrs) {
+			if (attrs.type !== 'radio') return attrs;
+			if (_.isUndefined(attrs.value)) {
+				throw new Error('Radio Element requires a value.');
+			}
+
+			return attrs;
+		},
+
+		validateRadiosetAttributes: function(attrs) {
+			/* jshint maxcomplexity: 7 */
+			if (attrs.type !== 'radioset') return attrs;
+			if (! attrs.values) throw new Error('Radioset Element requires a list of values.');
+
+			// ensure that `values` is a ElementList
+			var ElementList = Marionette.FreeForm.ElementList;
+			if (attrs.values instanceof ElementList) return attrs;
+
+			// attempt to convert a Backbone.Collection or array to an ElementList
+			if (attrs.values instanceof Backbone.Collection) {
+				// convert Backbone.Collection to an array
+				attrs.values = attrs.values.toJSON();
+				// let next step convert it from an array to an ElementList
+			}
+
+			if (_.isArray(attrs.values)) {
+				// have to set type to radio before converting to an ElementList
+				// or Element creation will fail
+				_.each(attrs.values, function(item) {
+					item.type = 'radio';
+				});
+				attrs.values = new ElementList(attrs.values);
+			}
+
+			// if still not an ElementList, conversion failed, throw an error
+			if (! (attrs.values instanceof ElementList)) {
+				throw new Error('Select Element requires a list of values.');
+			}
 
 			return attrs;
 		},
@@ -159,21 +212,60 @@ define(function(require) {
 		},
 
 		elementEvents: {
-			'change:value': 'onChangeValue'
+			'change:value': 'onChangeValue',
+			'change:related_model': 'setupRelatedModel',
+			'change:related_key': 'setupRelatedModel',
 		},
+
+		collectionEvents: {
+			'change:related_model': 'setupRelatedModel',
+		},
+
+		bindEntityEvents: Marionette.proxyBindEntityEvents,
 
 		constructor: function(attrs, options) {
 			attrs = Attributes.validate(attrs);
 
 			Backbone.Model.apply(this, [attrs, options]);
 
+			this.setupRadioset();
+			this.setupSelect();
 			this.setupRelatedModel();
-			this.listenTo(this, 'change:related_model change:related_key', this.setupRelatedModel);
-			this.listenTo(this, 'change:value', this.onChangeValue);
+
+			this.bindEntityEvents(this, this.elementEvents);
 
 			if (this.collection) {
-				this.listenTo(this.collection, 'change:related_model', this.setupRelatedModel);
+				this.bindEntityEvents(this.collection, this.collectionEvents);
 			}
+		},
+
+		setupRadioset: function() {
+			if (this.get('type') !== 'radioset') return;
+			// make sure every radio element has a reference to the radioset
+			this.get('values').each(function(value) {
+				value.set({
+					name: this.cid,
+					radioset: this
+				});
+			}, this);
+			// set checked to true on first radio with same value
+			var same_value = this.get('values').findWhere({ value: this.get('value') });
+			if (same_value) same_value.set('checked', true);
+		},
+
+		setupSelect: function() {
+			if (this.get('type') !== 'select') return;
+			this.selectSetSelectedOption();
+			this.on('change:value', this.selectSetSelectedOption);
+		},
+		selectSetSelectedOption: function() {
+			// set selected to true on first options with same value
+			var values = this.get('values');
+			values.each(function(value) {
+				value.unset('selected');
+			});
+			var same_value = values.findWhere({ value: this.get('value') });
+			if (same_value) same_value.set('selected', true);
 		},
 
 		setupRelatedModel: function() {

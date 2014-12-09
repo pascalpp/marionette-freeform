@@ -7,8 +7,9 @@ define(function(require) {
 	var Form = require('src/model/form');
 	var ElementList = require('src/model/element_list');
 	var elements = require('spec/helpers/element_types');
+	var clone = require('spec/helpers/clone');
 
-	describe('Form', function() {
+	describe('FormModel', function() {
 
 		describe('with no elements', function() {
 			beforeEach(function() {
@@ -33,7 +34,7 @@ define(function(require) {
 			beforeEach(function() {
 				this.error = null;
 				try {
-					this.form = new Form({ elements: elements.objects });
+					this.form = new Form({ elements: clone(elements.objects) });
 				} catch(e) {
 					this.error = e;
 				}
@@ -87,7 +88,7 @@ define(function(require) {
 		describe('with elements as ElementsList', function() {
 			beforeEach(function() {
 				this.error = null;
-				this.element_list = new ElementList(elements.objects);
+				this.element_list = new ElementList(clone(elements.objects));
 				try {
 					this.form = new Form({ elements: this.element_list });
 				} catch(e) {
