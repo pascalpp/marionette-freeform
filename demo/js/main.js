@@ -15,6 +15,9 @@ define(function(require) {
 	ButtonFieldExample		= require('./examples/button_field'),
 	ButtonFieldCode			= require('text!./examples/button_field.js'),
 	ButtonFieldTemplate		= require('text!./examples/template/button_field.html'),
+	RadiosetExample			= require('./examples/radioset'),
+	RadiosetCode			= require('text!./examples/radioset.js'),
+	RadiosetTemplate		= require('text!./examples/template/single.html'),
 	log						= require('src/lib/log'); /* jshint ignore: line */
 	require('src/lib/setPrefixedClassname');
 
@@ -23,7 +26,7 @@ define(function(require) {
 	var end = new RegExp('\\s+\/\\* end example \\*\/[^•]+', 'gim');
 
 	var view_model = new Backbone.Model({
-		example: 'basic',
+		example: 'radioset',
 		theme: 'inline'
 	});
 
@@ -48,6 +51,13 @@ define(function(require) {
 			view: ButtonFieldExample,
 			code: ButtonFieldCode,
 			template: ButtonFieldTemplate
+		},
+		'radioset': {
+			label: 'Radio Set',
+			description: 'A set of radio buttons.',
+			view: RadiosetExample,
+			code: RadiosetCode,
+			template: RadiosetTemplate
 		},
 	};
 

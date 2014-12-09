@@ -8,6 +8,7 @@ marionette-freeform TODO
     - e.g. options.strict
     - set to true when validating on submission, would allow validators to enforce required fields only on submission
 - [ ] asynchronous validation
+- [ ] autofocus attribute http://davidwalsh.name/autofocus
 - [ ] input[type=hidden]
 	- is there a need for this? 'hidden' values could just be defined in the form model and included in the serialized data
 - [ ] form data serialization

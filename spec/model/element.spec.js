@@ -5,6 +5,7 @@ define(function(require) {
 
 	var Model = require('src/model/model');
 	var Element = require('src/model/element');
+	var ElementList = require('src/model/element_list');
 
 	describe('Element', function() {
 
@@ -12,6 +13,48 @@ define(function(require) {
 			beforeEach(function() {
 				this.error = null;
 				this.options = { foo: 'bar' };
+				try {
+					this.element = new Element(this.options);
+				} catch(e) {
+					this.error = e;
+				}
+			});
+
+			it('should not exist', function() {
+				expect(this.element).to.not.exist;
+			});
+			it('should throw an error', function() {
+				expect(this.error).to.exist;
+				expect(this.error.message).to.equal('Element requires a type.');
+			});
+
+		});
+
+		describe('with a null type', function() {
+			beforeEach(function() {
+				this.error = null;
+				this.options = { type: null };
+				try {
+					this.element = new Element(this.options);
+				} catch(e) {
+					this.error = e;
+				}
+			});
+
+			it('should not exist', function() {
+				expect(this.element).to.not.exist;
+			});
+			it('should throw an error', function() {
+				expect(this.error).to.exist;
+				expect(this.error.message).to.equal('Element requires a type.');
+			});
+
+		});
+
+		describe('with type as an empty string', function() {
+			beforeEach(function() {
+				this.error = null;
+				this.options = { type: '' };
 				try {
 					this.element = new Element(this.options);
 				} catch(e) {
@@ -181,6 +224,9 @@ define(function(require) {
 				it('should be valid', function() {
 					expect(this.element.isValid()).to.be.true;
 				});
+				it('should convert values array to a Collection', function() {
+					expect(this.element.get('values') instanceof Backbone.Collection).to.be.true;
+				});
 				it('should have a default value of ""', function() {
 					expect(this.element.get('value')).to.equal('');
 				});
@@ -243,6 +289,244 @@ define(function(require) {
 				expect(this.element.get('show_label_after')).to.be.true;
 			});
 
+		});
+
+		describe('with type radio', function() {
+			describe('with no value defined', function() {
+				beforeEach(function() {
+					this.error;
+					this.options = { type: 'radio' };
+					try {
+						this.element = new Element(this.options);
+					} catch(e) {
+						this.error = e;
+					}
+				});
+
+				it('should not exist', function() {
+					expect(this.element).to.not.exist;
+				});
+				it('should throw an error', function() {
+					expect(this.error).to.exist;
+					expect(this.error.message).to.equal('Radio Element requires a value.');
+				});
+			});
+			describe('with a value defined', function() {
+				beforeEach(function() {
+					this.options = { type: 'radio', value: '' };
+					this.element = new Element(this.options);
+				});
+
+				it('should be valid', function() {
+					expect(this.element.isValid()).to.be.true;
+				});
+				it('should have "selected" set to false by default', function() {
+					expect(this.element.get('selected')).to.be.false;
+				});
+				it('should have show_label_before set to null', function() {
+					expect(this.element.get('show_label_before')).to.be.null;
+				});
+				it('should have show_label_after set to true', function() {
+					expect(this.element.get('show_label_after')).to.be.true;
+				});
+			});
+
+		});
+
+		describe('with type radioset', function() {
+			describe('with no values', function() {
+				beforeEach(function() {
+					this.error = null;
+					this.options = {
+						type: 'radioset',
+					};
+					try {
+						this.element = new Element(this.options);
+					} catch(e) {
+						this.error = e;
+					}
+				});
+
+				it('should not exist', function() {
+					expect(this.element).to.not.exist;
+				});
+				it('should throw an error', function() {
+					expect(this.error).to.exist;
+					expect(this.error.message).to.equal('Radioset Element requires a list of values.');
+				});
+			});
+			describe('with a values array', function() {
+				beforeEach(function() {
+					this.error = null;
+					this.options = {
+						type: 'radioset',
+						values: [
+							{ value: '', label: 'None' },
+							{ value: 'foo', label: 'Foo' },
+							{ value: '', label: 'Bar' },
+						]
+					};
+					try {
+						this.element = new Element(this.options);
+					} catch(e) {
+						this.error = e;
+					}
+				});
+
+				it('should exist', function() {
+					expect(this.element).to.exist;
+				});
+				it('should not throw an error', function() {
+					expect(this.error).to.not.exist;
+				});
+				it('should be valid', function() {
+					expect(this.element.isValid()).to.be.true;
+				});
+				it('should have a default value of ""', function() {
+					expect(this.element.get('value')).to.equal('');
+				});
+				it('should have show_label_before set to true', function() {
+					expect(this.element.get('show_label_before')).to.be.true;
+				});
+				it('should convert values array to an ElementList', function() {
+					var values = this.element.get('values');
+					expect(values instanceof ElementList).to.be.true;
+				});
+				it('should set "type" of each child radio to "radio"', function() {
+					var values = this.element.get('values');
+					var types = values.pluck('type');
+					expect(_.isArray(types)).to.be.true;
+					_.each(types, function(type) {
+						expect(type).to.equal('radio');
+					});
+				});
+				it('should set "name" of each child radio to its cid', function() {
+					var values = this.element.get('values');
+					var names = values.pluck('name');
+					expect(_.isArray(names)).to.be.true;
+					_.each(names, function(name) {
+						expect(name).to.equal(this.element.cid);
+					}, this);
+				});
+				it('should set "selected" to true for first child radio with same value', function() {
+					var values = this.element.get('values');
+					var same_value = values.findWhere({value: this.element.get('value')});
+					// check that the test is setup correctly
+					// one of the test values defined in beforeEach above should have a matching value
+					expect(same_value).to.exist;
+					expect(same_value.get('selected')).to.be.true;
+				});
+				it('should not set "selected" to true for any other child radios but the first match', function() {
+					var values = this.element.get('values');
+					var same_value = values.findWhere({value: this.element.get('value')});
+					// check that the test is setup correctly
+					// one of the test values defined in beforeEach above should have a matching value
+					expect(same_value).to.exist;
+					var others = values.filter(function(value) {
+						return (value !== same_value);
+					});
+					expect(_.isArray(others)).to.be.true;
+					expect(others.length).to.equal(2); // test data validation
+					_.each(others, function(other) {
+						expect(other.get('selected')).to.be.false;
+					});
+				});
+				it('should set "radioset" of each value to itself', function() {
+					var values = this.element.get('values');
+					var radiosets = values.pluck('radioset');
+					expect(_.isArray(radiosets)).to.be.true;
+					_.each(radiosets, function(radioset) {
+						expect(radioset).to.equal(this.element);
+					}, this);
+				});
+				it('should set disabled on each child radio when disabled');
+			});
+			describe('with a values backbone.collection', function() {
+				beforeEach(function() {
+					this.error = null;
+					this.options = {
+						type: 'radioset',
+						values: new Backbone.Collection([
+							{ value: '', label: 'None' },
+							{ value: 'foo', label: 'Foo' },
+							{ value: 'bar', label: 'Bar' },
+						])
+					};
+					try {
+						this.element = new Element(this.options);
+					} catch(e) {
+						this.error = e;
+					}
+				});
+
+				it('should exist', function() {
+					expect(this.element).to.exist;
+				});
+				it('should not throw an error', function() {
+					expect(this.error).to.not.exist;
+				});
+				it('should be valid', function() {
+					expect(this.element.isValid()).to.be.true;
+				});
+				it('should have a default value of ""', function() {
+					expect(this.element.get('value')).to.equal('');
+				});
+				it('should have show_label_before set to true', function() {
+					expect(this.element.get('show_label_before')).to.be.true;
+				});
+				it('should convert values collection to an ElementList', function() {
+					var values = this.element.get('values');
+					expect(values instanceof ElementList).to.be.true;
+				});
+				it('should set "type" of each child radio to "radio"', function() {
+					var values = this.element.get('values');
+					var types = values.pluck('type');
+					expect(_.isArray(types)).to.be.true;
+					_.each(types, function(type) {
+						expect(type).to.equal('radio');
+					});
+				});
+				it('should set "name" of each child radio to its cid', function() {
+					var values = this.element.get('values');
+					var names = values.pluck('name');
+					expect(_.isArray(names)).to.be.true;
+					_.each(names, function(name) {
+						expect(name).to.equal(this.element.cid);
+					}, this);
+				});
+				it('should set "selected" to true for first child radio with same value', function() {
+					var values = this.element.get('values');
+					var same_value = values.findWhere({value: this.element.get('value')});
+					// check that the test is setup correctly
+					// one of the test values defined in beforeEach above should have a matching value
+					expect(same_value).to.exist;
+					expect(same_value.get('selected')).to.be.true;
+				});
+				it('should not set "selected" to true for any other child radios but the first match', function() {
+					var values = this.element.get('values');
+					var same_value = values.findWhere({value: this.element.get('value')});
+					// check that the test is setup correctly
+					// one of the test values defined in beforeEach above should have a matching value
+					expect(same_value).to.exist;
+					var others = values.filter(function(value) {
+						return (value !== same_value);
+					});
+					expect(_.isArray(others)).to.be.true;
+					expect(others.length).to.equal(2); // test data validation
+					_.each(others, function(other) {
+						expect(other.get('selected')).to.be.false;
+					});
+				});
+				it('should set "radioset" of each value to itself', function() {
+					var values = this.element.get('values');
+					var radiosets = values.pluck('radioset');
+					expect(_.isArray(radiosets)).to.be.true;
+					_.each(radiosets, function(radioset) {
+						expect(radioset).to.equal(this.element);
+					}, this);
+				});
+				it('should set disabled on each child radio when disabled');
+			});
 		});
 
 		describe('with type buttonfield', function() {

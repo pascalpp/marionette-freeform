@@ -7,6 +7,7 @@ define(function(require) {
 	var Element = require('src/model/element');
 	var ElementList = require('src/model/element_list');
 	var elements = require('spec/helpers/element_types');
+	var clone = require('spec/helpers/clone');
 
 	describe('ElementList', function() {
 
@@ -14,7 +15,7 @@ define(function(require) {
 			beforeEach(function() {
 				this.error = null;
 				try {
-					this.element_list = new ElementList(elements.objects);
+					this.element_list = new ElementList(clone(elements.objects));
 				} catch(e) {
 					this.error = e;
 				}
@@ -39,8 +40,9 @@ define(function(require) {
 		describe('with one bad apple', function() {
 			beforeEach(function() {
 				this.error = null;
+				this.models = clone(elements.objects).concat({ type: null });
 				try {
-					this.element_list = new ElementList(elements.objects.concat({ type: null }));
+					this.element_list = new ElementList(this.models);
 				} catch(e) {
 					this.error = e;
 				}
@@ -124,7 +126,7 @@ define(function(require) {
 
 		describe('setRelatedModel', function() {
 			beforeEach(function() {
-				this.element_list = new ElementList(elements.objects);
+				this.element_list = new ElementList(clone(elements.objects));
 			});
 
 			it('should exist', function() {

@@ -3,17 +3,17 @@ define(function(require) {
 
 	// this helper generates a valid options object for a given element type
 	var generateElementOptions = function(type) {
-		var object = { type: type };
-		var extras = {};
+		var base = { type: type };
+		var attrs = {};
 		switch(type) {
 			case 'buttonfield':
-				extras = {
+				attrs = {
 					input: { type: 'text' },
 					button: { type: 'submit' }
 				};
 				break;
 			case 'buttonset':
-				extras = {
+				attrs = {
 					buttons: [
 						{ type: 'submit', label: 'Submit' },
 						{ type: 'reset', label: 'Reset' },
@@ -21,8 +21,23 @@ define(function(require) {
 					]
 				};
 				break;
+			case 'radioset':
+				attrs = {
+					values: [
+						{ value: 'foo', label: 'Foo option 1' },
+						{ value: 'bar', label: 'Bar option 2' },
+						{ value: 'baz', label: 'Baz option 3' },
+					]
+				};
+				break;
+			case 'radio':
+				attrs = {
+					value: 'radio',
+					label: 'Radio Button'
+				};
+				break;
 			case 'select':
-				extras = {
+				attrs = {
 					values: [
 						{ value: '', label: 'None' },
 						{ value: 'foo', label: 'Foo' },
@@ -31,8 +46,8 @@ define(function(require) {
 				};
 				break;
 		}
-		_.extend(object, extras);
-		return object;
+		_.extend(base, attrs);
+		return base;
 	};
 
 	// this helper returns a jquery selector matching the html input for a given element type
@@ -56,6 +71,9 @@ define(function(require) {
 			case 'buttonfield':
 				sel = 'input[type=text]';
 				break;
+			case 'radioset':
+				sel = 'input[type=radio]';
+				break;
 			default:
 				sel = 'input[type='+type+']';
 		}
@@ -69,6 +87,8 @@ define(function(require) {
 		'password',
 		'textarea',
 		'checkbox',
+		'radio',
+		'radioset',
 		'select',
 		'buttonfield',
 		'submit',
@@ -97,6 +117,8 @@ define(function(require) {
 		password: ['class', 'type', 'id', 'name', 'value', 'size', 'placeholder', 'maxlength', 'disabled'],
 		textarea: ['class', 'id', 'name', 'rows', 'cols', 'placeholder', 'maxlength', 'disabled'],
 		checkbox: ['class', 'type', 'id', 'name', 'disabled', 'checked'],
+		radio: ['class', 'type', 'id', 'name', 'disabled', 'checked'],
+		radioset: ['class'],
 		select: ['class', 'id', 'name', 'disabled'],
 		buttonfield: ['class'],
 		submit: ['class', 'type', 'id', 'name', 'disabled'],
@@ -110,6 +132,8 @@ define(function(require) {
 		password: ['type', 'id', 'name', 'value'],
 		textarea: ['id', 'name'],
 		checkbox: ['type', 'id', 'name'],
+		radio: ['type', 'id', 'name'],
+		radioset: [],
 		select: ['id', 'name'],
 		buttonfield: [],
 		submit: ['type', 'id', 'name'],

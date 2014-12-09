@@ -43,14 +43,7 @@ define(function(require) {
 			// validate model
 			if (! (this.model instanceof Element)) throw new Error('InputView requires an Element model.');
 
-			// convert model's `values` attribute to a collection
 			this.collection = this.model.get('values');
-			if (_.isArray(this.collection)) {
-				this.collection = new Backbone.Collection(this.collection);
-			}
-			if (! (this.collection instanceof Backbone.Collection)) {
-				throw new Error('InputSelectView requires an array or collection of values.');
-			}
 
 			// add placeholder option
 			if (this.model.get('placeholder')) {

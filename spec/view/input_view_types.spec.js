@@ -1,4 +1,4 @@
-/* global describe, it, expect, beforeEach */
+/* global describe, it, expect, beforeEach, testregion */
 /* jshint expr: true */
 define(function(require) {
 	'use strict';
@@ -7,6 +7,7 @@ define(function(require) {
 	var InputViewTypes = require('src/view/input_view_types');
 	var Element = require('src/model/element');
 	var elements = require('spec/helpers/element_types');
+	var clone = require('spec/helpers/clone');
 	require('spec/helpers/jquery_attr');
 
 
@@ -22,7 +23,9 @@ define(function(require) {
 			describe('InputViewType '+type, function() {
 				describe('View class', function() {
 					beforeEach(function() {
-						this.options = elements.index[type];
+						// cloning because some tests modify these options
+						// so each test needs its own copy of this.options
+						this.options = clone(elements.index[type]);
 						this.element = new Element(this.options);
 						this.View = InputViewTypes[type];
 					});
@@ -46,7 +49,9 @@ define(function(require) {
 				});
 				describe('view instance', function() {
 					beforeEach(function() {
-						this.options = elements.index[type];
+						// cloning because some tests modify these options
+						// so each test needs its own copy of this.options
+						this.options = clone(elements.index[type]);
 						this.element = new Element(this.options);
 						this.View = InputViewTypes[type];
 						this.view = new this.View({ model: this.element });
@@ -110,42 +115,88 @@ define(function(require) {
 							expect(this.view.setInputValue).to.exist;
 							expect(_.isFunction(this.view.setInputValue)).to.be.true;
 						});
-						it('should display the default model value', function() {
-							this.view.render();
-							expect(this.view.getInputValue()).to.equal(this.element.get('value'));
-						});
-						it('should display a different initial model value', function() {
-							var initial_value = 'foo';
-							if (type === 'checkbox') {
-								initial_value = true;
-							}
-							this.element.set('value', initial_value);
-							this.view.render();
-							expect(this.view.getInputValue()).to.equal(initial_value);
-						});
-						it('should set model value when input value changes', function() {
-							var default_value = this.element.get('value');
-							var changed_value = 'foo';
-							if (type === 'checkbox') {
-								changed_value = true;
-							}
-							expect(default_value).to.not.equal(changed_value);
-							this.view.render();
-							this.view.setInputValue(changed_value);
-							this.view.$el.trigger('change');
-							expect(this.element.get('value')).to.equal(changed_value);
-						});
-						it('should update input value when model value changes', function() {
-							this.view.render();
-							var initial_value = this.view.getInputValue();
-							var changed_value = 'foo';
-							if (type === 'checkbox') {
-								changed_value = true;
-							}
-							expect(initial_value).to.not.equal(changed_value);
-							this.element.set('value', changed_value);
-							expect(this.view.getInputValue()).to.equal(changed_value);
-						});
+
+						if (! _.contains(['radio', 'radioset'], type)) {
+							it('should display the default model value', function() {
+								this.view.render();
+								expect(this.view.getInputValue()).to.equal(this.element.get('value'));
+							});
+							it('should display a different initial model value', function() {
+								var initial_value = 'foo';
+								if (_.contains(['checkbox', 'radio'], type)) {
+									initial_value = true;
+								}
+								this.element.set('value', initial_value);
+								this.view.render();
+								expect(this.view.getInputValue()).to.equal(initial_value);
+							});
+							it('should set model value when input value changes', function() {
+								var default_value = this.element.get('value');
+								var changed_value = 'foo';
+								if (_.contains(['checkbox', 'radio'], type)) {
+									changed_value = true;
+								}
+								expect(default_value).to.not.equal(changed_value);
+								this.view.render();
+								this.view.setInputValue(changed_value);
+								this.view.$el.trigger('change');
+								expect(this.element.get('value')).to.equal(changed_value);
+							});
+							it('should update input value when model value changes', function() {
+								this.view.render();
+								var initial_value = this.view.getInputValue();
+								var changed_value = 'foo';
+								if (_.contains(['checkbox', 'radio'], type)) {
+									changed_value = true;
+								}
+								expect(initial_value).to.not.equal(changed_value);
+								this.element.set('value', changed_value);
+								expect(this.view.getInputValue()).to.equal(changed_value);
+							});
+
+						} else if (type === 'radioset') {
+							describe('radioset behavior', function() {
+								beforeEach(function() {
+									this.element_options = clone(elements.index[type]);
+									this.element = new Element(this.element_options);
+									this.view_options = {
+										model: this.element
+									};
+									this.View = InputViewTypes[type];
+								});
+
+								it('should update its value when a child input is selected',
+								function() {
+									this.view = new this.View(this.view_options);
+									testregion.show(this.view);
+								});
+							});
+
+						} else if (type === 'radio' ) {
+							describe('radio behavior', function() {
+								beforeEach(function() {
+									this.element_options = clone(elements.index[type]);
+									this.element = new Element(this.element_options);
+									this.view_options = {
+										model: this.element
+									};
+									this.View = InputViewTypes[type];
+								});
+
+								it('should be checked initially if group value is radio value', function() {
+									this.element.set('value', 'foo');
+									this.view_options.selected = 'foo';
+									this.view = new this.View(this.view_options);
+									expect(this.view.getInputValue()).to.be.true;
+								});
+								it('should not be checked initially if group value is not radio value');
+								it('should set group value to radio value when clicked');
+								it('should be checked if group value changes to radio value');
+								it('should not be checked if group value changes to other value');
+							});
+						}
+
+
 					}
 				});
 			});
