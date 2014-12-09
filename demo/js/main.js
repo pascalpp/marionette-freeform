@@ -26,7 +26,7 @@ define(function(require) {
 	var end = new RegExp('\\s+\/\\* end example \\*\/[^•]+', 'gim');
 
 	var view_model = new Backbone.Model({
-		example: 'radioset',
+		example: 'basic',
 		theme: 'inline'
 	});
 
