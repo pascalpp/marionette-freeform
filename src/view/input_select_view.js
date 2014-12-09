@@ -9,21 +9,10 @@ define(function(require) {
 	var InputSelectOptionView = Marionette.ItemView.extend({
 		tagName: 'option',
 		template: _.template('<%- label %>'),
-		attribute_keys: ['value', 'disabled']
+		attribute_keys: ['value', 'disabled', 'selected']
 	});
 
-	// apply methods from InputAttributes mixin
-	_.extend(InputSelectOptionView.prototype, InputAttributes, {
-		attributes: function() {
-			// use super method to apply attribute_keys
-			var attributes = InputAttributes.attributes.call(this);
-
-			// add selected attribute if model value matches options.selected
-			attributes['selected'] = (this.model.get('value') === this.options.selected);
-
-			return attributes;
-		}
-	});
+	_.extend(InputSelectOptionView.prototype, InputAttributes);
 
 
 	var InputSelectView = Marionette.CollectionView.extend({

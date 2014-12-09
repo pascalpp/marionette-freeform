@@ -18,6 +18,9 @@ marionette-freeform TODO
 - [ ] autofocus attribute http://davidwalsh.name/autofocus
 - [ ] input[type=hidden]
 	- is there a need for this? 'hidden' values could just be defined in the form model and included in the serialized data
+- [ ] input[type=file]
+- [ ] input[type=image] ?
+- [ ] _new_ input types? http://www.w3.org/TR/html-markup/input.html
 - [ ] form data serialization
 - [ ] form action attribute
 	- should this library support traditional form submission?

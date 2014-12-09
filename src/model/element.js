@@ -24,12 +24,13 @@ define(function(require) {
 			show_label_before: true
 		},
 		checkbox: {
-			value: false,
-			show_label_after: true
+			value: '',
+			show_label_after: true,
+			checked: false
 		},
 		radio: {
 			show_label_after: true,
-			selected: false
+			checked: false
 		},
 		radioset: {
 			value: '',
@@ -211,8 +212,16 @@ define(function(require) {
 		},
 
 		elementEvents: {
-			'change:value': 'onChangeValue'
+			'change:value': 'onChangeValue',
+			'change:related_model': 'setupRelatedModel',
+			'change:related_key': 'setupRelatedModel',
 		},
+
+		collectionEvents: {
+			'change:related_model': 'setupRelatedModel',
+		},
+
+		bindEntityEvents: Marionette.proxyBindEntityEvents,
 
 		constructor: function(attrs, options) {
 			attrs = Attributes.validate(attrs);
@@ -220,13 +229,13 @@ define(function(require) {
 			Backbone.Model.apply(this, [attrs, options]);
 
 			this.setupRadioset();
+			this.setupSelect();
 			this.setupRelatedModel();
 
-			this.listenTo(this, 'change:related_model change:related_key', this.setupRelatedModel);
-			this.listenTo(this, 'change:value', this.onChangeValue);
+			this.bindEntityEvents(this, this.elementEvents);
 
 			if (this.collection) {
-				this.listenTo(this.collection, 'change:related_model', this.setupRelatedModel);
+				this.bindEntityEvents(this.collection, this.collectionEvents);
 			}
 		},
 
@@ -239,8 +248,23 @@ define(function(require) {
 					radioset: this
 				});
 			}, this);
-			// set selected to true on first radio with same value
+			// set checked to true on first radio with same value
 			var same_value = this.get('values').findWhere({ value: this.get('value') });
+			if (same_value) same_value.set('checked', true);
+		},
+
+		setupSelect: function() {
+			if (this.get('type') !== 'select') return;
+			this.selectSetSelectedOption();
+			this.on('change:value', this.selectSetSelectedOption);
+		},
+		selectSetSelectedOption: function() {
+			// set selected to true on first options with same value
+			var values = this.get('values');
+			values.each(function(value) {
+				value.unset('selected');
+			});
+			var same_value = values.findWhere({ value: this.get('value') });
 			if (same_value) same_value.set('selected', true);
 		},
 

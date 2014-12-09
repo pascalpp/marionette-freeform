@@ -6,24 +6,17 @@ define(function(require) {
 
 	var InputRadioView = InputView.extend({
 
-		attribute_keys: ['type', 'id', 'name', 'disabled'],
-
-		attributes: function() {
-			// use super method to apply attribute_keys
-			var attributes = InputView.prototype.attributes.call(this);
-
-			// add checked attribute as forced boolean of model.value
-			attributes['checked'] = (this.model.get('value') === this.options.selected);
-
-			return attributes;
-		},
+		attribute_keys: ['type', 'id', 'name', 'disabled', 'checked', 'value'],
 
 		onInputChange: function() {
-
+			var checked = this.$el.is(':checked');
+			this.model.set('checked', checked);
 		},
 
 		getInputValue: function() {
-			return this.$el.is(':checked');
+			var checked = this.$el.is(':checked');
+			var value = this.model.get('value');
+			if (checked) return value;
 		},
 
 		setInputValue: function(value) {

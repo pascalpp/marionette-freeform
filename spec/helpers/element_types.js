@@ -116,8 +116,8 @@ define(function(require) {
 		text: ['class', 'type', 'id', 'name', 'value', 'size', 'placeholder', 'maxlength', 'disabled'],
 		password: ['class', 'type', 'id', 'name', 'value', 'size', 'placeholder', 'maxlength', 'disabled'],
 		textarea: ['class', 'id', 'name', 'rows', 'cols', 'placeholder', 'maxlength', 'disabled'],
-		checkbox: ['class', 'type', 'id', 'name', 'disabled', 'checked'],
-		radio: ['class', 'type', 'id', 'name', 'disabled', 'checked'],
+		checkbox: ['class', 'type', 'id', 'name', 'disabled', 'checked', 'value'],
+		radio: ['class', 'type', 'id', 'name', 'disabled', 'checked', 'value'],
 		radioset: ['class'],
 		select: ['class', 'id', 'name', 'disabled'],
 		buttonfield: ['class'],
@@ -131,8 +131,8 @@ define(function(require) {
 		text: ['type', 'id', 'name', 'value'],
 		password: ['type', 'id', 'name', 'value'],
 		textarea: ['id', 'name'],
-		checkbox: ['type', 'id', 'name'],
-		radio: ['type', 'id', 'name'],
+		checkbox: ['type', 'id', 'name', 'value'],
+		radio: ['type', 'id', 'name', 'value'],
 		radioset: [],
 		select: ['id', 'name'],
 		buttonfield: [],
@@ -153,6 +153,7 @@ define(function(require) {
 		'placeholder': 'foo',
 		'rows': 5,
 		'size': 6,
+		'value': 'value',
 	};
 
 	var getValidAttributeValue = function(attr, type) {

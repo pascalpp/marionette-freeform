@@ -6,8 +6,9 @@ define(function(require) {
 	var Model = require('src/model/model');
 	var Element = require('src/model/element');
 	var ElementList = require('src/model/element_list');
+	var log = require('src/lib/log');
 
-	describe('ElementModel', function() {
+	describe('Element', function() {
 
 		describe('with no type', function() {
 			beforeEach(function() {
@@ -205,7 +206,8 @@ define(function(require) {
 						type: 'select',
 						values: [
 							{ value: 'foo', label: 'Foo' },
-							{ value: 'foo', label: 'Foo' },
+							{ value: '', label: 'None' },
+							{ value: 'bar', label: 'Bar' },
 						]
 					};
 					try {
@@ -233,6 +235,9 @@ define(function(require) {
 				it('should have show_label_before set to true', function() {
 					expect(this.element.get('show_label_before')).to.be.true;
 				});
+				it('should set "selected" to true on the first matching option', function() {
+					expect(this.element.get('values').at(1).get('selected')).to.be.true;
+				});
 			});
 			describe('with a values collection', function() {
 				beforeEach(function() {
@@ -241,7 +246,8 @@ define(function(require) {
 						type: 'select',
 						values: new Backbone.Collection([
 							{ value: 'foo', label: 'Foo' },
-							{ value: 'foo', label: 'Foo' },
+							{ value: '', label: 'None' },
+							{ value: 'bar', label: 'Bar' },
 						])
 					};
 					try {
@@ -266,6 +272,9 @@ define(function(require) {
 				it('should have show_label_before set to true', function() {
 					expect(this.element.get('show_label_before')).to.be.true;
 				});
+				it('should set "selected" to true on the first matching option', function() {
+					expect(this.element.get('values').at(1).get('selected')).to.be.true;
+				});
 			});
 
 		});
@@ -279,8 +288,8 @@ define(function(require) {
 			it('should be valid', function() {
 				expect(this.element.isValid()).to.be.true;
 			});
-			it('should have a default value of false', function() {
-				expect(this.element.get('value')).to.be.false;
+			it('should have a default value of ""', function() {
+				expect(this.element.get('value')).to.equal("");
 			});
 			it('should have show_label_before set to null', function() {
 				expect(this.element.get('show_label_before')).to.be.null;
@@ -320,8 +329,8 @@ define(function(require) {
 				it('should be valid', function() {
 					expect(this.element.isValid()).to.be.true;
 				});
-				it('should have "selected" set to false by default', function() {
-					expect(this.element.get('selected')).to.be.false;
+				it('should have "checked" set to false by default', function() {
+					expect(this.element.get('checked')).to.be.false;
 				});
 				it('should have show_label_before set to null', function() {
 					expect(this.element.get('show_label_before')).to.be.null;
@@ -408,15 +417,15 @@ define(function(require) {
 						expect(name).to.equal(this.element.cid);
 					}, this);
 				});
-				it('should set "selected" to true for first child radio with same value', function() {
+				it('should set "checked" to true for first child radio with same value', function() {
 					var values = this.element.get('values');
 					var same_value = values.findWhere({value: this.element.get('value')});
 					// check that the test is setup correctly
 					// one of the test values defined in beforeEach above should have a matching value
 					expect(same_value).to.exist;
-					expect(same_value.get('selected')).to.be.true;
+					expect(same_value.get('checked')).to.be.true;
 				});
-				it('should not set "selected" to true for any other child radios but the first match', function() {
+				it('should not set "checked" to true for any other child radios but the first match', function() {
 					var values = this.element.get('values');
 					var same_value = values.findWhere({value: this.element.get('value')});
 					// check that the test is setup correctly
@@ -428,7 +437,7 @@ define(function(require) {
 					expect(_.isArray(others)).to.be.true;
 					expect(others.length).to.equal(2); // test data validation
 					_.each(others, function(other) {
-						expect(other.get('selected')).to.be.false;
+						expect(other.get('checked')).to.be.false;
 					});
 				});
 				it('should set "radioset" of each value to itself', function() {
@@ -494,15 +503,15 @@ define(function(require) {
 						expect(name).to.equal(this.element.cid);
 					}, this);
 				});
-				it('should set "selected" to true for first child radio with same value', function() {
+				it('should set "checked" to true for first child radio with same value', function() {
 					var values = this.element.get('values');
 					var same_value = values.findWhere({value: this.element.get('value')});
 					// check that the test is setup correctly
 					// one of the test values defined in beforeEach above should have a matching value
 					expect(same_value).to.exist;
-					expect(same_value.get('selected')).to.be.true;
+					expect(same_value.get('checked')).to.be.true;
 				});
-				it('should not set "selected" to true for any other child radios but the first match', function() {
+				it('should not set "checked" to true for any other child radios but the first match', function() {
 					var values = this.element.get('values');
 					var same_value = values.findWhere({value: this.element.get('value')});
 					// check that the test is setup correctly
@@ -514,7 +523,7 @@ define(function(require) {
 					expect(_.isArray(others)).to.be.true;
 					expect(others.length).to.equal(2); // test data validation
 					_.each(others, function(other) {
-						expect(other.get('selected')).to.be.false;
+						expect(other.get('checked')).to.be.false;
 					});
 				});
 				it('should set "radioset" of each value to itself', function() {

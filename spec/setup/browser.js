@@ -8,6 +8,12 @@ define(function(require) {
 
 	mocha.setup('bdd');
 
+	// add a colon to all descriptions for better URL grepping
+	var original_describe = describe;
+	describe = function(description, callback) {
+		original_describe.apply(original_describe, ['· '+description+':', callback]);
+	};
+
 	mocha.loaded = function() {
 		var $testregion = $('#test-region');
 		window.testregion = new Marionette.Region({
@@ -38,13 +44,14 @@ define(function(require) {
 
 		var showPending = function() {
 			var count = $('.test.pending').length;
+			$pending = $stats.find('li.pending');
+			if (! $pending.length) {
+				$pending = $('<li class="pending">pending: <em></em></li>').addClass('pending');
+				$stats.find('li.failures').after($pending);
+			}
+			$pending.find('em').text(count);
 			if (count > 0) {
-				$pending = $stats.find('li.pending');
-				if (! $pending.length) {
-					$pending = $('<li class="pending">pending: <em></em></li>').addClass('pending');
-					$stats.find('li.failures').after($pending);
-				}
-				$pending.find('em').text(count);
+				$stats.addClass('pending');
 			}
 		};
 
