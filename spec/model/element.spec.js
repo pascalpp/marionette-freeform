@@ -6,7 +6,7 @@ define(function(require) {
 	var Model = require('src/model/model');
 	var Element = require('src/model/element');
 	var ElementList = require('src/model/element_list');
-	var log = require('src/lib/log');
+	var log = require('src/lib/log'); /* jshint ignore: line */
 
 	describe('Element', function() {
 
@@ -170,7 +170,7 @@ define(function(require) {
 					expect(this.error.message).to.equal('Select Element requires a list of values.');
 				});
 			});
-			describe('with an empty values array - what should we do? this is allowed now, but not sure if it should be', function() {
+			describe('with an empty values array', function() {
 				beforeEach(function() {
 					this.error = null;
 					this.options = {
@@ -289,7 +289,7 @@ define(function(require) {
 				expect(this.element.isValid()).to.be.true;
 			});
 			it('should have a default value of ""', function() {
-				expect(this.element.get('value')).to.equal("");
+				expect(this.element.get('value')).to.equal('');
 			});
 			it('should have show_label_before set to null', function() {
 				expect(this.element.get('show_label_before')).to.be.null;

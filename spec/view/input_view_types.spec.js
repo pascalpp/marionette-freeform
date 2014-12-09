@@ -8,7 +8,7 @@ define(function(require) {
 	var Element = require('src/model/element');
 	var elements = require('spec/helpers/element_types');
 	var clone = require('spec/helpers/clone');
-	var log = require('src/lib/log');
+	var log = require('src/lib/log'); /* jshint ignore: line */
 	require('spec/helpers/jquery_attr');
 
 
@@ -121,42 +121,7 @@ define(function(require) {
 							expect(_.isFunction(this.view.setInputValue)).to.be.true;
 						});
 
-						if (! _.contains(['checkbox', 'radio', 'radioset'], type)) {
-							it('should display the default model value', function() {
-								this.view.render();
-								expect(this.view.getInputValue()).to.equal(this.element.get('value'));
-							});
-							it('should display a different initial model value', function() {
-								var initial_value = 'foo';
-								this.element.set('value', initial_value);
-								this.view.render();
-								expect(this.view.getInputValue()).to.equal(initial_value);
-							});
-							it('should set model value when input value changes', function() {
-								var default_value = this.element.get('value');
-								var changed_value = 'foo';
-								if (_.contains(['checkbox', 'radio'], type)) {
-									changed_value = true;
-								}
-								expect(default_value).to.not.equal(changed_value);
-								this.view.render();
-								this.view.setInputValue(changed_value);
-								this.view.$el.trigger('change');
-								expect(this.element.get('value')).to.equal(changed_value);
-							});
-							it('should update input value when model value changes', function() {
-								this.view.render();
-								var initial_value = this.view.getInputValue();
-								var changed_value = 'foo';
-								if (_.contains(['checkbox', 'radio'], type)) {
-									changed_value = true;
-								}
-								expect(initial_value).to.not.equal(changed_value);
-								this.element.set('value', changed_value);
-								expect(this.view.getInputValue()).to.equal(changed_value);
-							});
-
-						} else if (type === 'checkbox' ) {
+						if (type === 'checkbox' ) {
 							describe('checkbox behavior', function() {
 								beforeEach(function() {
 									this.element_options = clone(elements.index[type]);
@@ -251,7 +216,7 @@ define(function(require) {
 								it('should not be checked if group value changes to other value');
 							});
 
-						} else if (type === 'radioset') {
+						} else if (type === 'xxxradioset') {
 							describe('radioset behavior', function() {
 								beforeEach(function() {
 									this.element_options = clone(elements.index[type]);
@@ -268,6 +233,61 @@ define(function(require) {
 									testregion.show(this.view);
 								});
 							});
+
+						} else {
+							it('should display the default model value', function() {
+								testregion.show(this.view);
+								expect(this.view.getInputValue()).to.equal(this.element.get('value'));
+							});
+							it('should display a different initial model value', function() {
+								var initial_value = 'foo';
+								this.element.set('value', initial_value);
+								testregion.show(this.view);
+								expect(this.view.getInputValue()).to.equal(initial_value);
+							});
+							it('should set model value when input value changes', function() {
+								var default_value = this.element.get('value');
+								var changed_value = 'foo';
+								if (_.contains(['checkbox', 'radio'], type)) {
+									changed_value = true;
+								}
+								expect(default_value).to.not.equal(changed_value);
+								testregion.show(this.view);
+								this.view.setInputValue(changed_value);
+								this.view.$el.trigger('change');
+								expect(this.element.get('value')).to.equal(changed_value);
+							});
+							it('should update input value when model value changes', function() {
+								testregion.show(this.view);
+								var initial_value = this.view.getInputValue();
+								var changed_value = 'foo';
+								if (_.contains(['checkbox', 'radio'], type)) {
+									changed_value = true;
+								}
+								expect(initial_value).to.not.equal(changed_value);
+								this.element.set('value', changed_value);
+								expect(this.view.getInputValue()).to.equal(changed_value);
+							});
+
+							if (type === 'select') {
+								it('should add option nodes when values are added to values collection', function() {
+									testregion.show(this.view);
+									var values = this.element.get('values');
+									var length = values.length;
+									values.add({ value:'dark', 'label':'Dark' });
+									expect(values.length).to.equal(length + 1);
+									expect(this.view.$('option').length).to.equal(values.length);
+								});
+								it('should remove option nodes when values are removed from values collection', function() {
+									testregion.show(this.view);
+									var values = this.element.get('values');
+									var length = values.length;
+									values.remove(values.last());
+									expect(values.length).to.equal(length - 1);
+									expect(this.view.$('option').length).to.equal(values.length);
+								});
+								it('should retain placeholder when values collection is emptied');
+							}
 
 						}
 

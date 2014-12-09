@@ -8,11 +8,13 @@ define(function(require) {
 
 	mocha.setup('bdd');
 
-	// add a colon to all descriptions for better URL grepping
+	/* jshint ignore: start */
+	// add a prefix/suffix to all descriptions for better URL grepping
 	var original_describe = describe;
 	describe = function(description, callback) {
 		original_describe.apply(original_describe, ['· '+description+':', callback]);
 	};
+	/* jshint ignore: end */
 
 	mocha.loaded = function() {
 		var $testregion = $('#test-region');

@@ -70,10 +70,20 @@ ul#mocha-stats {
 	color: #ffffff;
 }
 
-#test-region {
+#test-node {
 	position: fixed;
-	right: 20px;
-	bottom: 20px;
+	right: 0px;
+	bottom: 0px;
+	font-family: Helvetica, Sans-Serif;
+	padding: 20px;
+	padding-bottom: 0;
+	background-color: #fff;
+	box-shadow: 0 0 50px #eee;
+	border: 1px solid #eee;
+}
+#test-node > p {
+	text-align: right;
+	font-size: 12px;
 }
 
 
@@ -84,7 +94,11 @@ ul#mocha-stats {
 
 <div id="mocha"></div>
 <div id="fixtures" hidden></div>
-<div id="test-region"></div>
+<div id="test-node">
+	<div id="test-region"></div>
+	<p>Test Node</p>
+</div>
+
 
 
 <script src="../node_modules/mocha/mocha.js"></script>
