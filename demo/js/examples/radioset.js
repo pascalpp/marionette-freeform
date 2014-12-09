@@ -11,7 +11,7 @@ define(function(require) {
 
 	/* begin example */
 
-	// define a radioset element
+	// define a single radioset element
 	// radiosets must supply a list of values
 	var elements = [
 		{
@@ -19,16 +19,15 @@ define(function(require) {
 			type: 'radioset',
 			label: 'What’s your favorite?',
 			validator: function(value) {
-
+				if (value === 'poop') return 'You’re crazy!';
 			},
 			values: [
 				{ value: 'pizza', label: 'Pizza' },
 				{ value: 'chocolate', label: 'Chocolate' },
 				{ value: 'icecream', label: 'Ice Cream' },
-				{ value: 'coffee', label: 'Coffee' },
+				{ value: 'poop', label: 'Poop' },
 			]
 		}
-
 	];
 
 	// define a form model

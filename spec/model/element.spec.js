@@ -7,7 +7,7 @@ define(function(require) {
 	var Element = require('src/model/element');
 	var ElementList = require('src/model/element_list');
 
-	describe('Element', function() {
+	describe('ElementModel', function() {
 
 		describe('with no type', function() {
 			beforeEach(function() {

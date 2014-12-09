@@ -22,6 +22,16 @@
     vertical-align: top; }
   .freeform-inline .element.type-textarea label {
     margin-top: 5px; }
+  .freeform-inline .element.type-radioset > * {
+    vertical-align: top; }
+  .freeform-inline .element.type-radioset > label.label {
+    width: 200px;
+    text-align: right;
+    padding-right: 20px; }
+  .freeform-inline .element.type-radioset .element {
+    margin-bottom: 0.5em; }
+  .freeform-inline .element.type-radio input {
+    margin-right: 0.3em; }
   .freeform-inline .element.type-checkbox {
     padding-left: 146px; }
     .freeform-inline .element.type-checkbox input {

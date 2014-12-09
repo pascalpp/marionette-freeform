@@ -9,7 +9,7 @@ define(function(require) {
 	var elements = require('spec/helpers/element_types');
 	var clone = require('spec/helpers/clone');
 
-	describe('Form', function() {
+	describe('FormModel', function() {
 
 		describe('with no elements', function() {
 			beforeEach(function() {
