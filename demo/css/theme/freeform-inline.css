@@ -12,9 +12,9 @@
   .freeform-inline .element.type-textarea .input-region,
   .freeform-inline .element.type-select .input-region {
     width: 280px; }
-  .freeform-inline .element.type-text label.label,
-  .freeform-inline .element.type-textarea label.label,
-  .freeform-inline .element.type-select label.label {
+  .freeform-inline .element.type-text .label-region,
+  .freeform-inline .element.type-textarea .label-region,
+  .freeform-inline .element.type-select .label-region {
     width: 140px;
     text-align: right;
     padding-right: 5px; }
@@ -24,7 +24,7 @@
     margin-top: 5px; }
   .freeform-inline .element.type-radioset > * {
     vertical-align: top; }
-  .freeform-inline .element.type-radioset > label.label {
+  .freeform-inline .element.type-radioset > .label-region {
     width: 200px;
     text-align: right;
     padding-right: 20px; }

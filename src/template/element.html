@@ -1,11 +1,13 @@
-<% if (label && show_label && show_label_before) { %>
-	<label class="<%= label_class %>" for="<%= id %>"><%- label %></label>
+<% if (show_label_before) { %>
+	<span class="label-region"></span>
 <% } %>
 
 	<span class="input-region"></span>
 
-<% if (label && show_label && show_label_after) { %>
-	<label class="<%= label_class %>" for="<%= id %>"><%- label %></label>
+<% if (show_label_after) { %>
+	<span class="label-region"></span>
 <% } %>
 
+<% if (show_error) { %>
 	<span class="error-region"></span>
+<% } %>

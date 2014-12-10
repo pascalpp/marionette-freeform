@@ -3,7 +3,7 @@ define(function(require) {
 
 	var Marionette = require('marionette');
 
-	var ErrorView = Marionette.ItemView.extend({
+	var LabelView = Marionette.ItemView.extend({
 
 		tagName: 'label',
 
@@ -11,11 +11,11 @@ define(function(require) {
 			return this.options.className;
 		},
 
-		template: _.template('<%- error %>'),
+		template: _.template('<%- label %>'),
 
 		templateHelpers: function() {
 			return {
-				error: this.options.error
+				label: this.options.label
 			};
 		},
 
@@ -27,6 +27,6 @@ define(function(require) {
 
 	});
 
-	return ErrorView;
+	return LabelView;
 
 });

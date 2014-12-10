@@ -24,6 +24,7 @@ define(function(require) {
 			case 'radioset':
 				attrs = {
 					values: [
+						{ value: '', label: 'None' },
 						{ value: 'foo', label: 'Foo option 1' },
 						{ value: 'bar', label: 'Bar option 2' },
 						{ value: 'baz', label: 'Baz option 3' },

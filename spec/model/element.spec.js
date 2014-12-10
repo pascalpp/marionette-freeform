@@ -6,7 +6,7 @@ define(function(require) {
 	var Model = require('src/model/model');
 	var Element = require('src/model/element');
 	var ElementList = require('src/model/element_list');
-	var log = require('src/lib/log');
+	var log = require('src/lib/log'); /* jshint ignore: line */
 
 	describe('Element', function() {
 
@@ -109,6 +109,9 @@ define(function(require) {
 			it('should have show_label_before set to true', function() {
 				expect(this.element.get('show_label_before')).to.be.true;
 			});
+			it('should have show_error set to true', function() {
+				expect(this.element.get('show_error')).to.be.true;
+			});
 
 		});
 
@@ -127,6 +130,9 @@ define(function(require) {
 			it('should have show_label_before set to true', function() {
 				expect(this.element.get('show_label_before')).to.be.true;
 			});
+			it('should have show_error set to true', function() {
+				expect(this.element.get('show_error')).to.be.true;
+			});
 
 		});
 
@@ -144,6 +150,9 @@ define(function(require) {
 			});
 			it('should have show_label_before set to true', function() {
 				expect(this.element.get('show_label_before')).to.be.true;
+			});
+			it('should have show_error set to true', function() {
+				expect(this.element.get('show_error')).to.be.true;
 			});
 
 		});
@@ -170,7 +179,7 @@ define(function(require) {
 					expect(this.error.message).to.equal('Select Element requires a list of values.');
 				});
 			});
-			describe('with an empty values array - what should we do? this is allowed now, but not sure if it should be', function() {
+			describe('with an empty values array', function() {
 				beforeEach(function() {
 					this.error = null;
 					this.options = {
@@ -235,6 +244,9 @@ define(function(require) {
 				it('should have show_label_before set to true', function() {
 					expect(this.element.get('show_label_before')).to.be.true;
 				});
+				it('should have show_error set to true', function() {
+					expect(this.element.get('show_error')).to.be.true;
+				});
 				it('should set "selected" to true on the first matching option', function() {
 					expect(this.element.get('values').at(1).get('selected')).to.be.true;
 				});
@@ -272,6 +284,9 @@ define(function(require) {
 				it('should have show_label_before set to true', function() {
 					expect(this.element.get('show_label_before')).to.be.true;
 				});
+				it('should have show_error set to true', function() {
+					expect(this.element.get('show_error')).to.be.true;
+				});
 				it('should set "selected" to true on the first matching option', function() {
 					expect(this.element.get('values').at(1).get('selected')).to.be.true;
 				});
@@ -289,13 +304,16 @@ define(function(require) {
 				expect(this.element.isValid()).to.be.true;
 			});
 			it('should have a default value of ""', function() {
-				expect(this.element.get('value')).to.equal("");
+				expect(this.element.get('value')).to.equal('');
 			});
 			it('should have show_label_before set to null', function() {
 				expect(this.element.get('show_label_before')).to.be.null;
 			});
 			it('should have show_label_after set to true', function() {
 				expect(this.element.get('show_label_after')).to.be.true;
+			});
+			it('should have show_error set to true', function() {
+				expect(this.element.get('show_error')).to.be.true;
 			});
 
 		});
@@ -397,6 +415,9 @@ define(function(require) {
 				it('should have show_label_before set to true', function() {
 					expect(this.element.get('show_label_before')).to.be.true;
 				});
+				it('should have show_error set to true', function() {
+					expect(this.element.get('show_error')).to.be.true;
+				});
 				it('should convert values array to an ElementList', function() {
 					var values = this.element.get('values');
 					expect(values instanceof ElementList).to.be.true;
@@ -440,14 +461,6 @@ define(function(require) {
 						expect(other.get('checked')).to.be.false;
 					});
 				});
-				it('should set "radioset" of each value to itself', function() {
-					var values = this.element.get('values');
-					var radiosets = values.pluck('radioset');
-					expect(_.isArray(radiosets)).to.be.true;
-					_.each(radiosets, function(radioset) {
-						expect(radioset).to.equal(this.element);
-					}, this);
-				});
 				it('should set disabled on each child radio when disabled');
 			});
 			describe('with a values backbone.collection', function() {
@@ -482,6 +495,9 @@ define(function(require) {
 				});
 				it('should have show_label_before set to true', function() {
 					expect(this.element.get('show_label_before')).to.be.true;
+				});
+				it('should have show_error set to true', function() {
+					expect(this.element.get('show_error')).to.be.true;
 				});
 				it('should convert values collection to an ElementList', function() {
 					var values = this.element.get('values');
@@ -525,14 +541,6 @@ define(function(require) {
 					_.each(others, function(other) {
 						expect(other.get('checked')).to.be.false;
 					});
-				});
-				it('should set "radioset" of each value to itself', function() {
-					var values = this.element.get('values');
-					var radiosets = values.pluck('radioset');
-					expect(_.isArray(radiosets)).to.be.true;
-					_.each(radiosets, function(radioset) {
-						expect(radioset).to.equal(this.element);
-					}, this);
 				});
 				it('should set disabled on each child radio when disabled');
 			});
@@ -618,6 +626,9 @@ define(function(require) {
 				it('should have show_label_before set to true', function() {
 					expect(this.element.get('show_label_before')).to.be.true;
 				});
+				it('should have show_error set to true', function() {
+					expect(this.element.get('show_error')).to.be.true;
+				});
 			});
 
 		});
@@ -648,6 +659,11 @@ define(function(require) {
 				expect(this.submit_element.get('show_label_after')).to.be.false;
 				expect(this.reset_element.get('show_label_after')).to.be.false;
 				expect(this.button_element.get('show_label_after')).to.be.false;
+			});
+			it('should have show_error set to false', function() {
+				expect(this.submit_element.get('show_error')).to.be.false;
+				expect(this.reset_element.get('show_error')).to.be.false;
+				expect(this.button_element.get('show_error')).to.be.false;
 			});
 
 		});

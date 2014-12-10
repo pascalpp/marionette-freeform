@@ -4,7 +4,7 @@ define(function(require) {
 	var Marionette = require('marionette');
 	var Element = require('src/model/element');
 	var InputAttributes = require('./input_attributes');
-
+	var log = require('src/lib/log'); /* jshint ignore: line */
 
 	var InputSelectOptionView = Marionette.ItemView.extend({
 		tagName: 'option',
@@ -27,12 +27,12 @@ define(function(require) {
 		},
 
 		constructor: function(options) {
-			Marionette.CollectionView.call(this, options);
-
 			// validate model
-			if (! (this.model instanceof Element)) throw new Error('InputView requires an Element model.');
+			if (! (options.model instanceof Element)) throw new Error('InputView requires an Element model.');
 
-			this.collection = this.model.get('values');
+			options.collection = options.model.get('values');
+
+			Marionette.CollectionView.call(this, options);
 
 			// add placeholder option
 			if (this.model.get('placeholder')) {

@@ -8,6 +8,11 @@ define(function(require) {
 
 		attribute_keys: ['type', 'id', 'name', 'disabled', 'checked', 'value'],
 
+		onInputChange: function() {
+			var checked = this.$el.is(':checked');
+			this.model.set('checked', checked);
+		},
+
 		getInputValue: function() {
 			var checked = this.$el.is(':checked');
 			var value = this.model.get('value');

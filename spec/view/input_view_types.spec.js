@@ -8,11 +8,11 @@ define(function(require) {
 	var Element = require('src/model/element');
 	var elements = require('spec/helpers/element_types');
 	var clone = require('spec/helpers/clone');
-	var log = require('src/lib/log');
+	var log = require('src/lib/log'); /* jshint ignore: line */
 	require('spec/helpers/jquery_attr');
 
 
-	var button_elements = ['submit', 'reset', 'button', 'buttonset', 'buttonfield'];
+	var non_value_elements = ['submit', 'reset', 'button', 'buttonset', 'buttonfield', 'radioset'];
 
 	describe('InputViewTypes', function() {
 
@@ -111,7 +111,7 @@ define(function(require) {
 						expect(_.contains(attrs, 'foo_unsupported')).to.be.false;
 
 					});
-					if (! _.contains(button_elements, type)) {
+					if (! _.contains(non_value_elements, type)) {
 						it('should have a getInputValue method', function() {
 							expect(this.view.getInputValue).to.exist;
 							expect(_.isFunction(this.view.getInputValue)).to.be.true;
@@ -121,42 +121,7 @@ define(function(require) {
 							expect(_.isFunction(this.view.setInputValue)).to.be.true;
 						});
 
-						if (! _.contains(['checkbox', 'radio', 'radioset'], type)) {
-							it('should display the default model value', function() {
-								this.view.render();
-								expect(this.view.getInputValue()).to.equal(this.element.get('value'));
-							});
-							it('should display a different initial model value', function() {
-								var initial_value = 'foo';
-								this.element.set('value', initial_value);
-								this.view.render();
-								expect(this.view.getInputValue()).to.equal(initial_value);
-							});
-							it('should set model value when input value changes', function() {
-								var default_value = this.element.get('value');
-								var changed_value = 'foo';
-								if (_.contains(['checkbox', 'radio'], type)) {
-									changed_value = true;
-								}
-								expect(default_value).to.not.equal(changed_value);
-								this.view.render();
-								this.view.setInputValue(changed_value);
-								this.view.$el.trigger('change');
-								expect(this.element.get('value')).to.equal(changed_value);
-							});
-							it('should update input value when model value changes', function() {
-								this.view.render();
-								var initial_value = this.view.getInputValue();
-								var changed_value = 'foo';
-								if (_.contains(['checkbox', 'radio'], type)) {
-									changed_value = true;
-								}
-								expect(initial_value).to.not.equal(changed_value);
-								this.element.set('value', changed_value);
-								expect(this.view.getInputValue()).to.equal(changed_value);
-							});
-
-						} else if (type === 'checkbox' ) {
+						if (type === 'checkbox' ) {
 							describe('checkbox behavior', function() {
 								beforeEach(function() {
 									this.element_options = clone(elements.index[type]);
@@ -247,27 +212,99 @@ define(function(require) {
 									expect(this.view.getInputValue()).to.not.equal('pizza');
 									expect(this.view.getInputValue()).to.not.exist;
 								});
-								it('should be checked if group value changes to radio value');
-								it('should not be checked if group value changes to other value');
-							});
-
-						} else if (type === 'radioset') {
-							describe('radioset behavior', function() {
-								beforeEach(function() {
-									this.element_options = clone(elements.index[type]);
-									this.element = new Element(this.element_options);
-									this.view_options = {
-										model: this.element
-									};
-									this.View = InputViewTypes[type];
-								});
-
-								it('should update its value when a child input is selected',
-								function() {
+								it('should set checked to true when clicked', function() {
+									this.element.set('checked', false);
 									this.view = new this.View(this.view_options);
 									testregion.show(this.view);
+									this.view.$el.click();
+									expect(this.element.get('checked')).to.be.true;
+								});
+								it('should set checked to false when a different radio is clicked', function() {
+									this.element.set('checked', true);
+									this.view = new this.View(this.view_options);
+									testregion.show(this.view);
+									var other_element = new Element(clone(elements.index[type]));
+									other_element.set('value', 'other_value');
+									other_element.set('checked', false);
+									other_element.set('name', this.element.get('name'));
+									var other_options = { model: other_element };
+									var other_view = new this.View(other_options);
+									testregion.$el.append(other_view.render().el);
+									other_view.$el.trigger('click');
+									expect(other_element.get('checked')).to.be.true;
+									expect(this.element.get('checked')).to.be.false;
 								});
 							});
+
+						} else {
+							it('should display the default model value', function() {
+								testregion.show(this.view);
+								expect(this.view.getInputValue()).to.equal(this.element.get('value'));
+							});
+							it('should display a different initial model value', function() {
+								var initial_value = 'foo';
+								this.element.set('value', initial_value);
+								testregion.show(this.view);
+								expect(this.view.getInputValue()).to.equal(initial_value);
+							});
+							if (type !== 'radioset') {
+								it('should set model value when input value changes', function() {
+									var default_value = this.element.get('value');
+									var changed_value = 'foo';
+									expect(default_value).to.not.equal(changed_value);
+									testregion.show(this.view);
+									this.view.setInputValue(changed_value);
+									this.view.$el.trigger('change');
+									expect(this.element.get('value')).to.equal(changed_value);
+								});
+								it('should update input value when model value changes', function() {
+									testregion.show(this.view);
+									var initial_value = this.view.getInputValue();
+									var changed_value = 'foo';
+									expect(initial_value).to.not.equal(changed_value);
+									this.element.set('value', changed_value);
+									expect(this.view.getInputValue()).to.equal(changed_value);
+								});
+							}
+
+							if (type === 'select') {
+								it('should add option nodes when values are added to values collection', function() {
+									testregion.show(this.view);
+									var values = this.element.get('values');
+									var length = values.length;
+									values.add({ value:'dark', 'label':'Dark' });
+									expect(values.length).to.equal(length + 1);
+									expect(this.view.$('option').length).to.equal(values.length);
+								});
+								it('should remove option nodes when values are removed from values collection', function() {
+									testregion.show(this.view);
+									var values = this.element.get('values');
+									var length = values.length;
+									values.remove(values.last());
+									expect(values.length).to.equal(length - 1);
+									expect(this.view.$('option').length).to.equal(values.length);
+								});
+								it('should retain placeholder when values collection is emptied');
+							}
+							if (type === 'radioset') {
+
+								it('should add option nodes when values are added to values collection', function() {
+									testregion.show(this.view);
+									var values = this.element.get('values');
+									var length = values.length;
+									values.add({ type:'radio', value:'dark', 'label':'Dark' });
+									expect(values.length).to.equal(length + 1);
+									expect(this.view.$('option').length).to.equal(values.length);
+								});
+								it('should remove option nodes when values are removed from values collection', function() {
+									testregion.show(this.view);
+									var values = this.element.get('values');
+									var length = values.length;
+									values.remove(values.last());
+									expect(values.length).to.equal(length - 1);
+									expect(this.view.$('option').length).to.equal(values.length);
+								});
+							}
 
 						}
 

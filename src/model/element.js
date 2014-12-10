@@ -3,11 +3,18 @@ define(function(require) {
 
 	var Marionette = require('marionette');
 	var Model = require('./model');
+	var log = require('src/lib/log'); /* jshint ignore: line */
 
+	/* shim for window.console */
 	if (! window.console) window.console = {
 		log: function() {},
 		error: function() {}
 	};
+
+	/**
+		TODO
+		- refactor to use different constructors for each element type
+	*/
 
 	// every valid type should have default options defined here
 	var default_options = {
@@ -213,6 +220,7 @@ define(function(require) {
 
 		elementEvents: {
 			'change:value': 'onChangeValue',
+			'change:checked': 'onChangeValue',
 			'change:related_model': 'setupRelatedModel',
 			'change:related_key': 'setupRelatedModel',
 		},
@@ -242,15 +250,29 @@ define(function(require) {
 		setupRadioset: function() {
 			if (this.get('type') !== 'radioset') return;
 			// make sure every radio element has a reference to the radioset
-			this.get('values').each(function(value) {
-				value.set({
-					name: this.cid,
-					radioset: this
+			var radios = this.get('values');
+			radios.each(function(radio) {
+				radio.set({
+					name: this.cid
 				});
 			}, this);
 			// set checked to true on first radio with same value
-			var same_value = this.get('values').findWhere({ value: this.get('value') });
+			var same_value = radios.findWhere({ value: this.get('value') });
 			if (same_value) same_value.set('checked', true);
+
+			this.listenTo(radios, 'change:checked', function(model, checked, options) {
+				if (checked) {
+					this.set('value', model.get('value'));
+				}
+			});
+			this.listenTo(this, 'change:value', function(model, value, options) {
+				var checked = radios.findWhere({ checked: true });
+				if (checked && checked.get('value') !== value) {
+					checked.set('checked', false);
+				}
+				var same_value = radios.findWhere({ 'value': value });
+				if (same_value) same_value.set('checked', true);
+			});
 		},
 
 		setupSelect: function() {
