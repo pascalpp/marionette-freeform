@@ -66,7 +66,7 @@ define(function(require) {
 						this.options = { model: this.element };
 						try {
 							this.element_view = new ElementView(this.options);
-							this.element_view.render();
+							testregion.show(this.element_view);
 						} catch(e) {
 							this.error = e;
 						}
@@ -109,7 +109,7 @@ define(function(require) {
 
 					it('should contain a node matching "'+selector+'"', function() {
 						var count = 1;
-						if (type === 'radioset') count = 3; // test data for radioset has 3 inputs
+						if (type === 'radioset') count = 4; // test data for radioset has 4 inputs
 						if (type === 'buttonset') count = 3; // test data for buttonset has 3 buttons
 						expect(this.element_view.$).to.exist;
 						var $input = this.element_view.$(selector);
@@ -119,9 +119,37 @@ define(function(require) {
 
 					if (! _.contains(['submit','reset','button','buttonset'], type)) {
 						describe('with a label', function() {
-							it('should show the label');
-							it('should update the label when it changes');
-							it('should hide the label when it is unset');
+							beforeEach(function() {
+								this.element = new Element(clone(elements.index[type]));
+								this.label = _.uniqueId('label');
+								this.element.set('label', this.label);
+								this.selector = '> .label-region label.label';
+								this.options = { model: this.element };
+								this.view = new ElementView(this.options);
+							});
+
+							it('should show the label', function() {
+								testregion.show(this.view);
+								expect(this.view.$(this.selector).length).to.equal(1);
+								expect(this.view.$(this.selector).text()).to.equal(this.label);
+							});
+							it('should update the label when it changes', function() {
+								testregion.show(this.view);
+								var new_label = _.uniqueId('label');
+								this.element.set('label', new_label);
+								expect(this.view.$(this.selector).length).to.equal(1);
+								expect(this.view.$(this.selector).text()).to.equal(new_label);
+							});
+							it('should hide the label when it is set to an empty string', function() {
+								testregion.show(this.view);
+								this.element.set('label', '');
+								expect(this.view.$(this.selector).length).to.equal(0);
+							});
+							it('should hide the label when it is unset', function() {
+								testregion.show(this.view);
+								this.element.unset('label');
+								expect(this.view.$(this.selector).length).to.equal(0);
+							});
 						});
 
 						describe('when the element has an error', function() {
@@ -156,7 +184,7 @@ define(function(require) {
 								expect(element_view.$el.hasClass(custom_error_class)).to.be.true;
 							});
 							it('should show the error message in a label with the default error class', function() {
-								var default_error_selector = 'label.error';
+								var default_error_selector = '> .error-region label.error'; // need specificity since some elements can contain nested element_views (e.g. radioset)
 								var element_view = new ElementView(this.options);
 								element_view.render();
 								expect(element_view.$(default_error_selector).length).to.equal(0);
@@ -190,7 +218,7 @@ define(function(require) {
 									expect(this.element_view.$el.hasClass(default_error_class)).to.be.false;
 								});
 								it('should remove the default error label from the DOM', function() {
-									var default_error_selector = 'label.error';
+									var default_error_selector = '> .error-region label.error'; // need specificity since some elements can contain nested element_views (e.g. radioset)
 									expect(this.element_view.$(default_error_selector).length).to.equal(1);
 									this.element.set('value', 'bar');
 									expect(this.element_view.$(default_error_selector).length).to.equal(0);
@@ -220,8 +248,8 @@ define(function(require) {
 									expect(element_view.$el.hasClass(custom_error_class)).to.be.false;
 								});
 								it('should remove a custom error label from the DOM', function() {
-									var default_error_selector = 'label.error';
-									var custom_error_selector = 'label.myerror';
+									var default_error_selector = '> .error-region label.error'; // need specificity since some elements can contain nested element_views (e.g. radioset)
+									var custom_error_selector = '> .error-region label.myerror';
 									var element = new Element({
 										type: 'text',
 										error_class: 'myerror',

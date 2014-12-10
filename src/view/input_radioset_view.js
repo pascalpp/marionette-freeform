@@ -33,35 +33,8 @@ define(function(require) {
 			var className = this.model.get('className');
 			if (className) this.$el.addClass(className);
 
-		},
-
-		xtriggers: {},
-
-		xchildTriggers: {
-			'change': 'child:change'
-		},
-
-		xonChildChange: function() {
-			// debugger;
-		},
-
-		xonInputChange: function() {
-			var value = this.getInputValue();
-			this.model.set('value', value, { from: this });
-		},
-
-		getInputValue: function() {
-			return this.$el.val();
-		},
-		setInputValue: function(value) {
-			return this.$el.val(value);
-		},
-
-		xonModelChangeValue: function(model, value, options) {
-			if (options.from !== this) {
-				this.$el.val(value);
-			}
 		}
+
 	});
 
 	return InputRadiosetView;

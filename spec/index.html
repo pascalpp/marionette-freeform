@@ -50,7 +50,7 @@ ul#mocha-stats {
 	color: #ffffff;
 }
 #mocha-stats.failed .progress {
-	opacity: 0.2;
+	opacity: 0.5;
 }
 #mocha-stats.failed .failures {
 	font-weight: bold;
@@ -119,8 +119,10 @@ require(['spec/setup/browser'], function() {
 		'spec/model/form.spec',
 		'spec/view/element_view.spec',
 		'spec/view/input_view_types.spec',
+		'spec/view/input_radioset_view.spec',
 		'spec/view/error_view.spec',
 		'spec/lib/setPrefixedClassname.spec',
+		'spec/functional/required_checkbox.spec',
 	];
 	require(tests, function() {
 		mocha.loaded();

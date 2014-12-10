@@ -21,9 +21,6 @@ define(function(require) {
 	log						= require('src/lib/log'); /* jshint ignore: line */
 	require('src/lib/setPrefixedClassname');
 
-	var jshint = new RegExp('\\s+\/\\* jshint.*\\*\/', 'gim');
-	var begin = new RegExp('[^•]+\/\\* begin example \\*\/\n', 'gim');
-	var end = new RegExp('\\s+\/\\* end example \\*\/[^•]+', 'gim');
 
 	var view_model = new Backbone.Model({
 		example: 'basic',
@@ -60,6 +57,11 @@ define(function(require) {
 			template: RadiosetTemplate
 		},
 	};
+
+	/* regexes used for displaying example code */
+	var jshint = new RegExp('\\s+\/\\* jshint.*\\*\/', 'gim');
+	var begin = new RegExp('[^•]+\/\\* begin example \\*\/\n', 'gim');
+	var end = new RegExp('\\s+\/\\* end example \\*\/[^•]+', 'gim');
 
 	var ExampleViewer = Marionette.LayoutView.extend({
 		template: 'script.example',
