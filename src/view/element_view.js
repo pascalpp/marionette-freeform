@@ -6,7 +6,6 @@ define(function(require) {
 	Element				= require('src/model/element'),
 	InputViewTypes		= require('./input_view_types'),
 	LabelView			= require('./label_view'),
-	ErrorView			= require('./error_view'),
 	Template			= require('text!src/template/element.html'),
 	log					= require('src/lib/log'); /* jshint ignore: line */
 	require('src/lib/setPrefixedClassname');
@@ -89,27 +88,6 @@ define(function(require) {
 			return InputView;
 		},
 
-		showError: function() {
-			if (! this.error_region) return;
-
-			var error = this.model.get('error');
-			var class_prefix = _.result(this, 'className');
-			var error_class = class_prefix + '-' + this.model.get('error_class');
-
-			if (error) {
-				var error_view = new ErrorView({
-					for: this.model.get('id'),
-					error: error,
-					className: this.model.get('error_class')
-				});
-				this.error_region.show(error_view);
-				this.$el.addClass(error_class);
-			} else {
-				this.error_region.empty();
-				this.$el.removeClass(error_class);
-			}
-		},
-
 		showLabel: function() {
 			if (! this.label_region) return;
 
@@ -125,7 +103,29 @@ define(function(require) {
 			} else {
 				this.label_region.empty();
 			}
-		}
+		},
+
+		showError: function() {
+			if (! this.error_region) return;
+
+			var error = this.model.get('error');
+			var class_prefix = _.result(this, 'className');
+			var error_class = class_prefix + '-' + this.model.get('error_class');
+
+			if (error) {
+				var error_view = new LabelView({
+					for: this.model.get('id'),
+					label: error,
+					className: this.model.get('error_class')
+				});
+				this.error_region.show(error_view);
+				this.$el.addClass(error_class);
+			} else {
+				this.error_region.empty();
+				this.$el.removeClass(error_class);
+			}
+		},
+
 
 	});
 

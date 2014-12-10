@@ -17,9 +17,8 @@ define(function(require) {
 	/* jshint ignore: end */
 
 	mocha.loaded = function() {
-		var $testregion = $('#test-region');
 		window.testregion = new Marionette.Region({
-			el: $testregion
+			el: $('#test-node .region')
 		});
 
 		mocha.checkLeaks();

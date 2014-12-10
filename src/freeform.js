@@ -10,7 +10,7 @@ define(function(require) {
 	FormView				= require('src/view/form_view'),
 	ElementView				= require('src/view/element_view'),
 	InputViewTypes			= require('src/view/input_view_types'),
-	ErrorView				= require('src/view/error_view'),
+	LabelView				= require('src/view/label_view'),
 	log						= require('src/lib/log'); /* jshint ignore: line */
 
 	var FreeForm = {
@@ -21,7 +21,7 @@ define(function(require) {
 		FormView: FormView,
 		ElementView: ElementView,
 		InputViewTypes: InputViewTypes,
-		ErrorView: ErrorView
+		LabelView: LabelView
 	};
 
 	Marionette.FreeForm = FreeForm;
