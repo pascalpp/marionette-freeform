@@ -164,6 +164,7 @@ define(function(require) {
 
 	return {
 		types: types,
+		tested: {}, // tracker for test loops, to verify that all elements have been tested in some form
 		objects: objects,
 		index: index,
 		selectors: selectors,

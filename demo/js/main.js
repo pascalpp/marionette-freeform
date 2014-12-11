@@ -23,7 +23,7 @@ define(function(require) {
 
 
 	var view_model = new Backbone.Model({
-		example: 'basic',
+		example: 'button_field',
 		theme: 'inline'
 	});
 

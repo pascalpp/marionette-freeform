@@ -12,7 +12,7 @@ define(function(require) {
 	// add a prefix/suffix to all descriptions for better URL grepping
 	var original_describe = describe;
 	describe = function(description, callback) {
-		original_describe.apply(original_describe, ['· '+description+':', callback]);
+		original_describe.apply(original_describe, ['-'+description+'-', callback]);
 	};
 	/* jshint ignore: end */
 

@@ -11,16 +11,14 @@ define(function(require) {
 	var log = require('src/lib/log'); /* jshint ignore: line */
 	require('spec/helpers/jquery_attr');
 
+	var compound_types = [];
 
-	var non_value_elements = ['submit', 'reset', 'button', 'buttonset', 'buttonfield', 'radioset'];
 
-	describe('InputViewTypes', function() {
+	describe('Compound InputViews', function() {
 
-		it('should have the same number of items as elements test helper', function() {
-			expect(_.keys(InputViewTypes).length).to.equal(elements.types.length);
-		});
+		_.each(compound_types, function(type) {
+			elements.tested[type] = true;
 
-		_.each(elements.types, function(type) {
 			describe('InputViewType '+type, function() {
 				describe('View class', function() {
 					beforeEach(function() {
@@ -247,25 +245,23 @@ define(function(require) {
 								testregion.show(this.view);
 								expect(this.view.getInputValue()).to.equal(initial_value);
 							});
-							if (type !== 'radioset') {
-								it('should set model value when input value changes', function() {
-									var default_value = this.element.get('value');
-									var changed_value = 'foo';
-									expect(default_value).to.not.equal(changed_value);
-									testregion.show(this.view);
-									this.view.setInputValue(changed_value);
-									this.view.$el.trigger('change');
-									expect(this.element.get('value')).to.equal(changed_value);
-								});
-								it('should update input value when model value changes', function() {
-									testregion.show(this.view);
-									var initial_value = this.view.getInputValue();
-									var changed_value = 'foo';
-									expect(initial_value).to.not.equal(changed_value);
-									this.element.set('value', changed_value);
-									expect(this.view.getInputValue()).to.equal(changed_value);
-								});
-							}
+							it('should set model value when input value changes', function() {
+								var default_value = this.element.get('value');
+								var changed_value = 'foo';
+								expect(default_value).to.not.equal(changed_value);
+								testregion.show(this.view);
+								this.view.setInputValue(changed_value);
+								this.view.$el.trigger('change');
+								expect(this.element.get('value')).to.equal(changed_value);
+							});
+							it('should update input value when model value changes', function() {
+								testregion.show(this.view);
+								var initial_value = this.view.getInputValue();
+								var changed_value = 'foo';
+								expect(initial_value).to.not.equal(changed_value);
+								this.element.set('value', changed_value);
+								expect(this.view.getInputValue()).to.equal(changed_value);
+							});
 
 							if (type === 'select') {
 								it('should add option nodes when values are added to values collection', function() {
@@ -285,25 +281,6 @@ define(function(require) {
 									expect(this.view.$('option').length).to.equal(values.length);
 								});
 								it('should retain placeholder when values collection is emptied');
-							}
-							if (type === 'radioset') {
-
-								it('should add option nodes when values are added to values collection', function() {
-									testregion.show(this.view);
-									var values = this.element.get('values');
-									var length = values.length;
-									values.add({ type:'radio', value:'dark', 'label':'Dark' });
-									expect(values.length).to.equal(length + 1);
-									expect(this.view.$('option').length).to.equal(values.length);
-								});
-								it('should remove option nodes when values are removed from values collection', function() {
-									testregion.show(this.view);
-									var values = this.element.get('values');
-									var length = values.length;
-									values.remove(values.last());
-									expect(values.length).to.equal(length - 1);
-									expect(this.view.$('option').length).to.equal(values.length);
-								});
 							}
 
 						}
