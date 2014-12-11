@@ -12,9 +12,9 @@ define(function(require) {
 	RelatedExample			= require('./examples/related_model'),
 	RelatedCode				= require('text!./examples/related_model.js'),
 	RelatedTemplate			= require('text!./examples/template/related_model.html'),
-	ButtonFieldExample		= require('./examples/button_field'),
-	ButtonFieldCode			= require('text!./examples/button_field.js'),
-	ButtonFieldTemplate		= require('text!./examples/template/button_field.html'),
+	ButtonFieldExample		= require('./examples/buttonfield'),
+	ButtonFieldCode			= require('text!./examples/buttonfield.js'),
+	ButtonFieldTemplate		= require('text!./examples/template/buttonfield.html'),
 	RadiosetExample			= require('./examples/radioset'),
 	RadiosetCode			= require('text!./examples/radioset.js'),
 	RadiosetTemplate		= require('text!./examples/template/single.html'),
@@ -23,7 +23,7 @@ define(function(require) {
 
 
 	var view_model = new Backbone.Model({
-		example: 'basic',
+		example: 'buttonfield',
 		theme: 'inline'
 	});
 
@@ -42,7 +42,7 @@ define(function(require) {
 			code: RelatedCode,
 			template: RelatedTemplate
 		},
-		'button_field': {
+		'buttonfield': {
 			label: 'Buttonfield',
 			description: 'A very simple field consisting of a combined text field and button. This one requires a bit of CSS to achieve its appearance, of course.',
 			view: ButtonFieldExample,

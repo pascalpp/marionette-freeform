@@ -3,7 +3,7 @@ define(function(require) {
 
 	var
 	Marionette			= require('marionette'),
-	Element				= require('src/model/element'),
+	Element				= require('src/model/element.base'),
 	InputViewTypes		= require('./input_view_types'),
 	LabelView			= require('./label_view'),
 	Template			= require('text!src/template/element.html'),

@@ -2,7 +2,7 @@ define(function(require) {
 	'use strict';
 
 	var Marionette = require('marionette');
-	var Element = require('src/model/element');
+	var Element = require('src/model/element.base');
 	var InputAttributes = require('./input_attributes');
 
 

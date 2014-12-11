@@ -4,7 +4,7 @@ define(function(require) {
 	'use strict';
 
 	var Model = require('src/model/model');
-	var Element = require('src/model/element');
+	var BaseElement = require('src/model/element.base');
 	var ElementList = require('src/model/element_list');
 	var elements = require('spec/helpers/element_types');
 	var clone = require('spec/helpers/clone');
@@ -31,7 +31,7 @@ define(function(require) {
 
 			it('each model should be an Element', function() {
 				this.element_list.each(function(model) {
-					expect(model instanceof Element).to.be.true;
+					expect(model instanceof BaseElement).to.be.true;
 				});
 			});
 
@@ -53,7 +53,7 @@ define(function(require) {
 			});
 			it('should throw an error', function() {
 				expect(this.error).to.exist;
-				expect(this.error.message).to.equal('Element requires a type.');
+				expect(this.error.message).to.equal('Element requires a valid type.');
 			});
 
 		});

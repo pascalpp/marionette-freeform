@@ -4,7 +4,7 @@ define(function(require) {
 	var Model = require('src/model/model'),
 		Form = require('src/model/form'),
 		FormView = require('src/view/form_view'),
-		Template = require('text!./template/button_field.html'),
+		Template = require('text!./template/buttonfield.html'),
 		log = require('src/lib/log'); /* jshint ignore: line */
 
 	Model.mixin(Backbone.Model);

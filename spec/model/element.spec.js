@@ -9,6 +9,7 @@ define(function(require) {
 	var log = require('src/lib/log'); /* jshint ignore: line */
 
 	describe('Element', function() {
+		this.timeout(0);
 
 		describe('with no type', function() {
 			beforeEach(function() {
@@ -26,7 +27,7 @@ define(function(require) {
 			});
 			it('should throw an error', function() {
 				expect(this.error).to.exist;
-				expect(this.error.message).to.equal('Element requires a type.');
+				expect(this.error.message).to.equal('Element requires a valid type.');
 			});
 
 		});
@@ -47,7 +48,7 @@ define(function(require) {
 			});
 			it('should throw an error', function() {
 				expect(this.error).to.exist;
-				expect(this.error.message).to.equal('Element requires a type.');
+				expect(this.error.message).to.equal('Element requires a valid type.');
 			});
 
 		});
@@ -68,7 +69,7 @@ define(function(require) {
 			});
 			it('should throw an error', function() {
 				expect(this.error).to.exist;
-				expect(this.error.message).to.equal('Element requires a type.');
+				expect(this.error.message).to.equal('Element requires a valid type.');
 			});
 
 		});
@@ -89,7 +90,7 @@ define(function(require) {
 			});
 			it('should throw an error', function() {
 				expect(this.error).to.exist;
-				expect(this.error.message).to.equal('Element type "foo" is not valid.');
+				expect(this.error.message).to.equal('Element requires a valid type.');
 			});
 
 		});
@@ -100,9 +101,6 @@ define(function(require) {
 				this.element = new Element(this.options);
 			});
 
-			it('should be valid', function() {
-				expect(this.element.isValid()).to.be.true;
-			});
 			it('should have a default value of ""', function() {
 				expect(this.element.get('value')).to.equal('');
 			});
@@ -121,9 +119,6 @@ define(function(require) {
 				this.element = new Element(this.options);
 			});
 
-			it('should be valid', function() {
-				expect(this.element.isValid()).to.be.true;
-			});
 			it('should have a default value of ""', function() {
 				expect(this.element.get('value')).to.equal('');
 			});
@@ -142,9 +137,6 @@ define(function(require) {
 				this.element = new Element(this.options);
 			});
 
-			it('should be valid', function() {
-				expect(this.element.isValid()).to.be.true;
-			});
 			it('should have a default value of ""', function() {
 				expect(this.element.get('value')).to.equal('');
 			});
@@ -199,9 +191,6 @@ define(function(require) {
 				it('should not throw an error', function() {
 					expect(this.error).to.not.exist;
 				});
-				it('should be valid', function() {
-					expect(this.element.isValid()).to.be.true;
-				});
 				it('should have a default value of ""', function() {
 					expect(this.element.get('value')).to.equal('');
 				});
@@ -231,9 +220,6 @@ define(function(require) {
 				});
 				it('should not throw an error', function() {
 					expect(this.error).to.not.exist;
-				});
-				it('should be valid', function() {
-					expect(this.element.isValid()).to.be.true;
 				});
 				it('should convert values array to a Collection', function() {
 					expect(this.element.get('values') instanceof Backbone.Collection).to.be.true;
@@ -275,9 +261,6 @@ define(function(require) {
 				it('should not throw an error', function() {
 					expect(this.error).to.not.exist;
 				});
-				it('should be valid', function() {
-					expect(this.element.isValid()).to.be.true;
-				});
 				it('should have a default value of ""', function() {
 					expect(this.element.get('value')).to.equal('');
 				});
@@ -300,9 +283,6 @@ define(function(require) {
 				this.element = new Element(this.options);
 			});
 
-			it('should be valid', function() {
-				expect(this.element.isValid()).to.be.true;
-			});
 			it('should have a default value of ""', function() {
 				expect(this.element.get('value')).to.equal('');
 			});
@@ -344,9 +324,6 @@ define(function(require) {
 					this.element = new Element(this.options);
 				});
 
-				it('should be valid', function() {
-					expect(this.element.isValid()).to.be.true;
-				});
 				it('should have "checked" set to false by default', function() {
 					expect(this.element.get('checked')).to.be.false;
 				});
@@ -405,9 +382,6 @@ define(function(require) {
 				});
 				it('should not throw an error', function() {
 					expect(this.error).to.not.exist;
-				});
-				it('should be valid', function() {
-					expect(this.element.isValid()).to.be.true;
 				});
 				it('should have a default value of ""', function() {
 					expect(this.element.get('value')).to.equal('');
@@ -486,9 +460,6 @@ define(function(require) {
 				});
 				it('should not throw an error', function() {
 					expect(this.error).to.not.exist;
-				});
-				it('should be valid', function() {
-					expect(this.element.isValid()).to.be.true;
 				});
 				it('should have a default value of ""', function() {
 					expect(this.element.get('value')).to.equal('');
@@ -614,9 +585,6 @@ define(function(require) {
 					}
 				});
 
-				it('should be valid', function() {
-					expect(this.element.isValid()).to.be.true;
-				});
 				it('should not throw an error', function() {
 					expect(this.error).to.be.null;
 				});
@@ -640,11 +608,6 @@ define(function(require) {
 				this.button_element = new Element({ type: 'button' });
 			});
 
-			it('should be valid', function() {
-				expect(this.submit_element.isValid()).to.be.true;
-				expect(this.reset_element.isValid()).to.be.true;
-				expect(this.button_element.isValid()).to.be.true;
-			});
 			it('should have a default label matching its type', function() {
 				expect(this.submit_element.get('label')).to.equal('Submit');
 				expect(this.reset_element.get('label')).to.equal('Reset');
@@ -706,9 +669,6 @@ define(function(require) {
 				}
 			});
 
-			it('should be valid', function() {
-				expect(this.element.isValid()).to.be.true;
-			});
 			it('should not throw an error', function() {
 				expect(this.error).to.be.null;
 			});
@@ -733,9 +693,6 @@ define(function(require) {
 				}
 			});
 
-			it('should be valid', function() {
-				expect(this.element.isValid()).to.be.true;
-			});
 			it('should not throw an error', function() {
 				expect(this.error).to.be.null;
 			});
@@ -885,9 +842,6 @@ define(function(require) {
 				}
 			});
 
-			it('should be valid', function() {
-				expect(this.element.isValid()).to.be.true;
-			});
 			it('should not throw an error', function() {
 				expect(this.error).to.be.null;
 			});
