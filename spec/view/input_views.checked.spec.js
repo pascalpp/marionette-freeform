@@ -48,6 +48,7 @@ define(function(require) {
 							model: this.element
 						};
 						this.View = InputViewTypes[type];
+						this.view = new this.View(this.view_options);
 					});
 
 					it('should be checked initially if checked is true', function() {
@@ -82,6 +83,25 @@ define(function(require) {
 						testregion.show(this.view);
 						expect(this.view.getInputValue()).to.not.equal('pizza');
 						expect(this.view.getInputValue()).to.not.exist;
+					});
+					it('should be checked when clicked', function() {
+						testregion.show(this.view);
+						// click it once
+						this.view.$el.trigger('click');
+						expect(this.view.$el.is(':checked')).to.be.true;
+					});
+					it('should be unchecked when clicked twice', function() {
+						testregion.show(this.view);
+						// click it once
+						this.view.$el.trigger('click');
+						this.view.$el.trigger('click');
+						expect(this.view.$el.is(':checked')).to.be.false;
+					});
+					it('should be checked when clicked thrice', function() {
+						this.view.$el.trigger('click');
+						this.view.$el.trigger('click');
+						this.view.$el.trigger('click');
+						expect(this.view.$el.is(':checked')).to.be.true;
 					});
 
 				});
