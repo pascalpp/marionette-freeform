@@ -10,7 +10,7 @@ define(function(require) {
 	InputSelectView			= require('./input_select_view'),
 	InputButtonView			= require('./input_button_view'),
 	InputButtonsetView		= require('./input_buttonset_view'),
-	InputButtonFieldView	= require('./input_button_field_view');
+	InputButtonFieldView	= require('./input_buttonfield_view');
 
 
 	var InputViewTypes = {

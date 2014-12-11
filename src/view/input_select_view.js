@@ -34,20 +34,12 @@ define(function(require) {
 
 			Marionette.CollectionView.call(this, options);
 
-			// add placeholder option
-			if (this.model.get('placeholder')) {
-				this.collection.unshift({
-					value: '',
-					label: this.model.get('placeholder'),
-					disabled: true
-				});
-			}
-
 			// listen for external changes to the model
 			this.listenTo(this.model, 'change:value', this.onModelChangeValue);
 
 			// these steps allow the view to consume an existing dom element
 			this.listenTo(this, 'render', this.setAttributes);
+			this.listenTo(this, 'render', this.showPlaceholder);
 			var className = this.model.get('className');
 			if (className) this.$el.addClass(className);
 		},
@@ -56,6 +48,19 @@ define(function(require) {
 
 		triggers: {
 			'change': 'input:change',
+		},
+
+		showPlaceholder: function() {
+			// add placeholder option
+			if (this.model.get('placeholder')) {
+				var placeholder = new Backbone.Model({
+					value: '',
+					label: this.model.get('placeholder'),
+					disabled: true
+				});
+				var ChildView = this.getChildView(placeholder);
+				this.addChild(placeholder, ChildView, 0);
+			}
 		},
 
 		onInputChange: function() {

@@ -151,6 +151,9 @@ define(function(require) {
 			if (! (attrs.button instanceof Element)) {
 				attrs.button = new Element(attrs.button);
 			}
+			// set the input value to buttonfield's value
+			attrs.input.set('value', attrs.value);
+
 			return attrs;
 		},
 
@@ -236,6 +239,7 @@ define(function(require) {
 
 			Backbone.Model.apply(this, [attrs, options]);
 
+			this.setupButtonfield();
 			this.setupRadioset();
 			this.setupSelect();
 			this.setupRelatedModel();
@@ -245,6 +249,17 @@ define(function(require) {
 			if (this.collection) {
 				this.bindEntityEvents(this.collection, this.collectionEvents);
 			}
+		},
+
+		setupButtonfield: function() {
+			if (this.get('type') !== 'buttonfield') return;
+			var input = this.get('input');
+			this.listenTo(input, 'change:value', function(model, value, options) {
+				this.set('value', value);
+			});
+			this.on('change:value', function(model, value, options) {
+				input.set('value', value);
+			});
 		},
 
 		setupRadioset: function() {
