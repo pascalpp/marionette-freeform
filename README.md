@@ -95,7 +95,7 @@ An `ElementView` is a `Marionette.ItemView` which displays an `InputView` for th
 A `FormView` is a `Marionette.LayoutView` which receives a `Form` model. The FormView displays an `ElementView` for each element in the form's `elements` collection. The `template` provided to the FormView should define a DOM element for each element, matching the element's `el` selector. This allows you to define the order of elements separately from their order in the collection, and to provide any custom markup or grouping you require.
 
 ### An example FormView template, for a Sign Up page:
-
+```html
 	<form>
 		<fieldset class="first-name"></fieldset>
 		<fieldset class="last-name"></fieldset>
@@ -104,6 +104,7 @@ A `FormView` is a `Marionette.LayoutView` which receives a `Form` model. The For
 		<fieldset class="password2"></fieldset>
 		<button></button>
 	</form>
+```
 Note that the markup is pretty straightforward, and leaves appearance to your CSS.
 
 
@@ -123,7 +124,7 @@ Unless you're using some additional validation framework, Backbone validation is
 - You check if `model.isValid()`.
 - Then `isValid` calls the model's `validate` method, passing the model's current attributes.
 - The `validate` method is empty by default; you must define its behavior. For example:
-
+```js
 		validate: function(attrs) {
 			if (! attrs.user_name) {
 				return 'User requires a username.';
@@ -138,13 +139,14 @@ Unless you're using some additional validation framework, Backbone validation is
 				return 'Your last name is kinda long.'
 			}
 		}
+```
 
 - If `validate` returns a string, that string is set as `model.validationError` and `isValid` returns `false`. Then your code can show that error message somewhere.
 
 However, one of the key requirements of Free Forms is being able to validate individual attributes. Backbone.Model.isValid checks _all_ attributes, and it doesn't tell us directly which attribute generated the error. When a user modifies an input element, we need to be able to validate just one attribute and display only errors that apply to it. To address this need, I'm using a subclass of Backbone.Model called BaseModel, which modifies validation thusly:
 
 - First, it overrides the `validate` method to loop through the keys of the passed attributes, calling a new method `validateAttribute` for each one, passing the key and its value.
-
+```js
 		validate: function(attrs) {
 			var invalid;
 			_.each(_.keys(attrs), function(key) {
@@ -153,18 +155,20 @@ However, one of the key requirements of Free Forms is being able to validate ind
 			}, this);
 			return invalid;
 		},
+```
 
 - Then it defines the new `validateAttribute` method, which looks for a `validator` function in `this.validators`:
-
+```js
 		validateAttribute: function(key, val) {
 			var validator = this.validators && this.validators[key];
 			if (_.isFunction(validator)) {
 				return validator.call(this, val);
 			}
 		},
+```
 
 - this.validators is undefined in the BaseModel, but can be defined in any subclass. Here are the same example validators from above:
-	
+```js	
 		validators: {
 			'user_name': function(user_name) {
 				if (! user_name) return 'A username is required.';
@@ -179,7 +183,8 @@ However, one of the key requirements of Free Forms is being able to validate ind
 				if (last_name.length > 30) return 'Your last name is kinda long.';
 			}
 		},
-		
+```
+
 The net effect of these modifications is that `Model.isValid` works just as before, but instead of definiing logic in `Model.validate`, we add a validator method for each attribute in `Model.validators`. Having done so, we can call `Model.isValid()` to validate the whole model in its current state, but we can _also_ call `Model.validateAttribute(attr, value)` to find out if that value _would be_ valid for that attribute, before we even set it on the model. It is this hook that is key to how Free Forms validation works.
 
 When the user makes a change in an HTML input, the InputView gets the value and sets it on the Element model. That triggers a change event listener in the ElementView, which calls its own validate method. If the element has a related model, it calls `related_model.validateAttribute(this.model.key, this.model.value)` (pseudo-code). If that method returns an error string, that error is set on the Element model, which triggers the view to show a label.error near the input field. Any subsequent input changes will rerun validation, and if the validation doesn't return an error, the error attribute is unset on the Element model and the error label automatically disappears.
