@@ -35,7 +35,7 @@
     "grunt-contrib-sass": "^0.8.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha-test": "^0.12.4",
-    "jquery": "^1.8.0 || ^2.0.0",
+    "jquery": "^3.0.0",
     "jsdom": "^0.10.5",
     "jshint-stylish": "^1.0.0",
     "load-grunt-tasks": "^1.0.0",
